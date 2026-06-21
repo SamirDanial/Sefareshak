@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-05-07T07:43:05.633598+00:00",
+  "dry_run": false,
+  "on_conflict": "skip",
+  "total_duration_s": 15.31,
+  "summary": {
+    "succeeded": 1,
+    "skipped": 0,
+    "failed": 0,
+    "total_rows": 5
+  },
+  "organizations": [
+    {
+      "org_id": "cmopibpds000lkyofwgs98bex",
+      "org_name": "Eatery Neumarkt",
+      "status": "success",
+      "reason": null,
+      "row_counts": {
+        "organizations": 1,
+        "settings": 1,
+        "reservation_settings": 1,
+        "hero_sections": 1,
+        "roles": 0,
+        "branch_types": 0,
+        "branches": 1,
+        "zones": 0,
+        "tables": 0,
+        "floor_elements": 0,
+        "categories": 0,
+        "declarations": 0,
+        "optional_ingredients": 0,
+        "pos_devices": 0
+      },
+      "warnings": [],
+      "duration_s": 11.25
+    }
+  ]
+}

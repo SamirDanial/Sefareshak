@@ -1,0 +1,2282 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                          String               @id @default(cuid())
+  clerkId                     String               @unique
+  email                       String?              @unique
+  firstName                   String?
+  lastName                    String?
+  phone                       String?
+  description                 String?
+  userType                    UserType             @default(USER)
+  organizationId              String?
+  orgRole                     OrgRole?
+  isActive                    Boolean              @default(true)
+  createdAt                   DateTime             @default(now())
+  updatedAt                   DateTime             @updatedAt
+  hasAcceptedRequiredPolicies Boolean              @default(false)
+  orders                      Order[]
+  reservations                Reservation[]
+  kitchenTickets              KitchenTicket[]
+  addresses                   UserAddress[]
+  assignedBranches            UserBranch[]
+  userRoles                   UserRoleAssignment[]
+  branchClicks                BranchClick[]
+  branchLikes                 BranchLike[]
+  branchSubscriptions         BranchSubscription[]
+  tabletNotificationPreferences TabletNotificationPreference[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+model Organization {
+  id                  String  @id @default(cuid())
+  name                String
+  slug                String  @unique
+  organizationNumber  String  @default("")
+  isActive            Boolean @default(true)
+
+  // Organization validation fields
+  isValidated         Boolean   @default(false)
+  validatedAt         DateTime?
+  validatedBy         String? // Super admin who validated
+  validationExpiresAt DateTime? // When validation expires
+  validationNotes     String? // Notes from super admin
+  gracePeriodEndsAt   DateTime? // One week grace period after expiration
+
+  maxActiveBranches     Int?
+  freeVersion           Boolean @default(false)
+  reservationsAllowed   Boolean @default(true)
+  onlinePaymentsAllowed Boolean @default(true)
+  cardPaymentsAllowed   Boolean @default(true)
+  paypalAllowed         Boolean @default(true)
+  vouchersAllowed       Boolean @default(true)
+
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  branches           Branch[]
+  users              User[]
+  validations        OrganizationValidation[]
+  validationPayments ValidationPayment[]
+
+  heroSection HeroSection?
+
+  roles Role[]
+
+  settings            Settings?
+  reservationSettings ReservationSettings?
+
+  categories          Category[]
+  meals               Meal[]
+  deals               Deal[]
+  addons              AddOn[]
+  declarations        Declaration[]
+  optionalIngredients OptionalIngredient[]
+
+  posDevices         PosDevice[]
+  fiscalTransactions FiscalTransaction[]
+  tssOutageLogs      TssOutageLog[]
+  pushNotifications  PushNotification[]
+  tabletNotificationPreferences TabletNotificationPreference[]
+  pushSubscriptions  PushSubscription[]
+
+  @@map("organizations")
+}
+
+// Organization validation history model
+model OrganizationValidation {
+  id                String    @id @default(cuid())
+  organizationId    String
+  validatedBy       String // Super admin who validated
+  validatedAt       DateTime  @default(now())
+  expiresAt         DateTime // Flexible date chosen by super admin
+  gracePeriodEndsAt DateTime // expiresAt + 7 days
+  notes             String? // Validation notes from super admin
+  isActive          Boolean   @default(true) // Current active validation
+  unvalidatedAt     DateTime? // When validation was temporarily unvalidated
+  unvalidatedBy     String? // Super admin who unvalidated
+
+  // Request workflow tracking
+  requestedAt  DateTime? // When organization requested validation
+  requestedBy  String? // Organization owner who requested
+  requestNotes String? // Notes from organization owner
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([validatedBy])
+  @@index([expiresAt])
+  @@index([gracePeriodEndsAt])
+  @@map("organization_validations")
+}
+
+// Validation payment tracking model
+model ValidationPayment {
+  id             String        @id @default(cuid())
+  organizationId String
+  validationId   String? // Link to specific validation
+  amount         Decimal       @db.Decimal(10, 2)
+  currency       String        @default("USD")
+  paymentMethod  PaymentMethod
+  paymentStatus  PaymentStatus @default(PENDING)
+  paidAt         DateTime?
+  transactionId  String? // External transaction ID
+  notes          String? // Payment notes
+
+  // Validity period this payment covers
+  validFrom  DateTime @default(now())
+  validUntil DateTime // Until when this payment makes organization valid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([validationId])
+  @@index([paymentStatus])
+  @@index([validUntil])
+  @@map("validation_payments")
+}
+
+model BranchType {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  branches  Branch[]
+
+  @@map("branch_types")
+}
+
+model Category {
+  id               String          @id @default(cuid())
+  organizationId   String?
+  name             String
+  description      String?
+  taxPercentage    Decimal?        @db.Decimal(5, 2)
+  image            String?
+  isActive         Boolean         @default(true)
+  isFeatured       Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  featuredOrder    Int             @default(0)
+  listOrder        Int             @default(0)
+  excludedBranches String[]        @default([])
+  addonCategories  AddonCategory[]
+  meals            Meal[]
+  deals            Deal[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@map("categories")
+}
+
+model Meal {
+  id                      String                   @id @default(cuid())
+  organizationId          String?
+  sku                     String?
+  name                    String
+  description             String?
+  basePrice               Decimal                  @db.Decimal(10, 2)
+  taxPercentage           Decimal?                 @db.Decimal(5, 2)
+  image                   String?
+  isActive                Boolean                  @default(true)
+  isFeatured              Boolean                  @default(false)
+  isDrink                 Boolean                  @default(false)
+  categoryId              String
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  featuredOrder           Int                      @default(0)
+  listOrder               Int                      @default(0)
+  excludedBranches        String[]                 @default([])
+  mealAddOns              MealAddOn[]
+  branchPrices            MealBranchPrice[]
+  branchAvailabilities    MealBranchAvailability[]
+  mealDeclarations        MealDeclaration[]
+  mealOptionalIngredients MealOptionalIngredient[]
+  mealSizes               MealSize[]
+  mealSizeWeights         MealSizeWeight[]
+  mealDailyDeliverables   MealDailyDeliverable[]
+  category                Category                 @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems              OrderItem[]
+  reservationOrderItems   ReservationOrderItem[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("meals")
+}
+
+model Deal {
+  id               String   @id @default(cuid())
+  organizationId   String?
+  name             String
+  description      String?
+  sku              String?
+  image            String?
+  isActive         Boolean  @default(true)
+  isFeatured       Boolean  @default(false)
+  featuredOrder    Int      @default(0)
+  listOrder        Int      @default(0)
+  excludedBranches String[] @default([])
+  categoryId       String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  category                Category                 @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  components              DealComponent[]
+  branchPrices            DealBranchPrice[]
+  dealAddOns              DealAddOn[]
+  dealDeclarations        DealDeclaration[]
+  dealOptionalIngredients DealOptionalIngredient[]
+  orderItems              OrderItem[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("deals")
+}
+
+model DealComponent {
+  id            String   @id @default(cuid())
+  dealId        String
+  name          String
+  price         Decimal  @db.Decimal(10, 2)
+  taxPercentage Decimal  @db.Decimal(5, 2)
+  quantity      Int      @default(1)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  deal         Deal                       @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  branchPrices DealComponentBranchPrice[]
+  orderItems   OrderItem[]
+
+  @@index([dealId])
+  @@map("deal_components")
+}
+
+model DealBranchPrice {
+  id        String   @id @default(cuid())
+  dealId    String
+  branchId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, branchId])
+  @@index([dealId])
+  @@index([branchId])
+  @@map("deal_branch_prices")
+}
+
+model DealComponentBranchPrice {
+  id              String   @id @default(cuid())
+  dealComponentId String
+  branchId        String
+  price           Decimal  @db.Decimal(10, 2)
+  taxPercentage   Decimal? @db.Decimal(5, 2)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  dealComponent DealComponent @relation(fields: [dealComponentId], references: [id], onDelete: Cascade)
+  branch        Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([dealComponentId, branchId])
+  @@index([dealComponentId])
+  @@index([branchId])
+  @@map("deal_component_branch_prices")
+}
+
+model DealAddOn {
+  id      String @id @default(cuid())
+  dealId  String
+  addOnId String
+
+  deal  Deal  @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  addOn AddOn @relation(fields: [addOnId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, addOnId])
+  @@map("deal_addons")
+}
+
+model DealDeclaration {
+  id            String @id @default(cuid())
+  dealId        String
+  declarationId String
+
+  deal        Deal        @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  declaration Declaration @relation(fields: [declarationId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, declarationId])
+  @@map("deal_declarations")
+}
+
+model DealOptionalIngredient {
+  id                   String @id @default(cuid())
+  dealId               String
+  optionalIngredientId String
+
+  deal               Deal               @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  optionalIngredient OptionalIngredient @relation(fields: [optionalIngredientId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, optionalIngredientId])
+  @@map("deal_optional_ingredients")
+}
+
+model MealSize {
+  id              String           @id @default(cuid())
+  name            String
+  price           Decimal          @db.Decimal(10, 2)
+  taxPercentage   Decimal?         @db.Decimal(5, 2)
+  mealId          String
+  sizeType        SizeType         @default(M)
+  meal            Meal             @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  mealSizeWeights MealSizeWeight[]
+
+  @@unique([mealId, name])
+  @@map("meal_sizes")
+}
+
+model MealBranchPrice {
+  id            String   @id @default(cuid())
+  mealId        String
+  branchId      String
+  basePrice     Decimal  @db.Decimal(10, 2)
+  taxPercentage Decimal? @db.Decimal(5, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  branch        Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  meal          Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, branchId])
+  @@index([mealId])
+  @@index([branchId])
+  @@map("meal_branch_prices")
+}
+
+model MealBranchAvailability {
+  id                 String   @id @default(cuid())
+  mealId             String
+  branchId           String
+  isAvailableAllWeek Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  meal    Meal                           @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  branch  Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  windows MealBranchAvailabilityWindow[]
+
+  @@unique([mealId, branchId])
+  @@index([mealId])
+  @@index([branchId])
+  @@map("meal_branch_availabilities")
+}
+
+model MealBranchAvailabilityWindow {
+  id             String   @id @default(cuid())
+  availabilityId String
+  dayOfWeek      Int
+  startTime      String
+  endTime        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  availability MealBranchAvailability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
+
+  @@index([availabilityId])
+  @@map("meal_branch_availability_windows")
+}
+
+// Weight per meal size per branch (used for deliverable quantity calculations)
+model MealSizeWeight {
+  id         String   @id @default(cuid())
+  mealId     String
+  mealSizeId String
+  branchId   String
+  weight     Decimal  @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  meal     Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  mealSize MealSize @relation(fields: [mealSizeId], references: [id], onDelete: Cascade)
+  branch   Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, mealSizeId, branchId])
+  @@index([mealId, branchId])
+  @@index([branchId])
+  @@map("meal_size_weights")
+}
+
+// Daily deliverable weight limit per meal per branch (applies every day)
+model MealDailyDeliverable {
+  id                     String   @id @default(cuid())
+  mealId                 String
+  branchId               String
+  dailyDeliverableWeight Decimal  @db.Decimal(10, 2)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, branchId])
+  @@index([mealId, branchId])
+  @@map("meal_daily_deliverables")
+}
+
+model AddonBranchPrice {
+  id            String   @id @default(cuid())
+  addonId       String
+  branchId      String
+  basePrice     Decimal  @db.Decimal(10, 2)
+  taxPercentage Decimal? @db.Decimal(5, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  addon         AddOn    @relation(fields: [addonId], references: [id], onDelete: Cascade)
+  branch        Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([addonId, branchId])
+  @@index([addonId])
+  @@index([branchId])
+  @@map("addon_branch_prices")
+}
+
+model AddOn {
+  id                         String                      @id @default(cuid())
+  organizationId             String?
+  name                       String
+  description                String?
+  sku                        String?                     // Article number for DSFinV-K export
+  price                      Decimal?                    @db.Decimal(10, 2)
+  taxPercentage              Decimal?                    @db.Decimal(5, 2)
+  image                      String?
+  type                       AddOnType                   @default(BOOLEAN)
+  isActive                   Boolean                     @default(true)
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  excludedBranches           String[]                    @default([])
+  addonBranchPrices          AddonBranchPrice[]
+  addonCategories            AddonCategory[]
+  addonSizes                 AddonSize[]
+  mealAddOns                 MealAddOn[]
+  dealAddOns                 DealAddOn[]
+  orderItemAddOns            OrderItemAddOn[]
+  reservationOrderItemAddOns ReservationOrderItemAddOn[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("addons")
+}
+
+model AddonSize {
+  id            String   @id @default(cuid())
+  addonId       String
+  sizeType      SizeType
+  price         Decimal  @db.Decimal(10, 2)
+  taxPercentage Decimal? @db.Decimal(5, 2)
+  addon         AddOn    @relation(fields: [addonId], references: [id], onDelete: Cascade)
+
+  @@unique([addonId, sizeType])
+  @@map("addon_sizes")
+}
+
+model MealAddOn {
+  id      String @id @default(cuid())
+  mealId  String
+  addOnId String
+  addOn   AddOn  @relation(fields: [addOnId], references: [id], onDelete: Cascade)
+  meal    Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, addOnId])
+  @@map("meal_addons")
+}
+
+model AddonCategory {
+  id         String   @id @default(cuid())
+  addonId    String
+  categoryId String
+  addon      AddOn    @relation(fields: [addonId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([addonId, categoryId])
+  @@map("addon_categories")
+}
+
+model Declaration {
+  id               String            @id @default(cuid())
+  organizationId   String?
+  name             String
+  type             String?
+  description      String?
+  icon             String?
+  shownInFilter    Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  excludedBranches String[]          @default([])
+  mealDeclarations MealDeclaration[]
+  dealDeclarations DealDeclaration[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("declarations")
+}
+
+model MealDeclaration {
+  id            String      @id @default(cuid())
+  mealId        String
+  declarationId String
+  declaration   Declaration @relation(fields: [declarationId], references: [id], onDelete: Cascade)
+  meal          Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, declarationId])
+  @@map("meal_declarations")
+}
+
+model OptionalIngredient {
+  id                                      String                                   @id @default(cuid())
+  organizationId                          String?
+  name                                    String
+  description                             String?
+  createdAt                               DateTime                                 @default(now())
+  updatedAt                               DateTime                                 @updatedAt
+  mealOptionalIngredients                 MealOptionalIngredient[]
+  dealOptionalIngredients                 DealOptionalIngredient[]
+  orderItemOptionalIngredients            OrderItemOptionalIngredient[]
+  reservationOrderItemOptionalIngredients ReservationOrderItemOptionalIngredient[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@map("optional_ingredients")
+}
+
+model MealOptionalIngredient {
+  id                   String             @id @default(cuid())
+  mealId               String
+  optionalIngredientId String
+  meal                 Meal               @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  optionalIngredient   OptionalIngredient @relation(fields: [optionalIngredientId], references: [id], onDelete: Cascade)
+
+  @@unique([mealId, optionalIngredientId])
+  @@map("meal_optional_ingredients")
+}
+
+model Order {
+  id                           String        @id @default(cuid())
+  orderNumber                  String        @unique
+  userId                       String?
+  status                       OrderStatus   @default(PENDING)
+  billSnapshot                 Json?         // Immutable bill snapshot created at order creation
+  orderType                    OrderType     @default(DELIVERY)
+  taxInclusive                 Boolean       @default(false)
+  isMerged                     Boolean       @default(false)
+  isPosOrder                   Boolean       @default(false)
+  mergedAt                     DateTime?
+  confirmedAt                  DateTime?
+  preparationTime              Int?
+  totalAmount                  Decimal       @db.Decimal(10, 2)
+  currency                     String        @default("usd")
+  deliveryFee                  Decimal       @default(0) @db.Decimal(10, 2)
+  taxAmount                    Decimal       @default(0) @db.Decimal(10, 2)
+  itemTaxAmount                Decimal       @default(0) @db.Decimal(10, 2)
+  addonTaxAmount               Decimal       @default(0) @db.Decimal(10, 2)
+  deliveryTaxAmount            Decimal       @default(0) @db.Decimal(10, 2)
+  businessDaySessionId         String?
+  paymentMethod                PaymentMethod @default(CASH_ON_DELIVERY)
+  paymentStatus                PaymentStatus @default(PENDING)
+  paymentIntentId              String?       @unique
+  paymentId                    String?       @unique
+  payment                      Payment?      @relation("PaymentOrderLink")
+  deliveryAddress              String?
+  deliveryStreetAddress        String?
+  deliveryHouseNumber          String?
+  deliveryPostalCode           String?
+  deliveryBuilding             String?
+  deliveryFloor                String?
+  deliveryApartment            String?
+  deliveryPhone                String?
+  deliveryNotes                String?
+  pickupPhone                  String?
+  pickupNotes                  String?
+  guestName                    String?
+  guestEmail                   String?
+  guestPhone                   String?
+  deliveryDistanceKm           Decimal?      @db.Decimal(10, 4)
+  takeawayServiceFee           Decimal?      @db.Decimal(10, 2)
+  takeawayServiceTaxPercentage Decimal       @default(0) @db.Decimal(5, 2)
+  takeawayServiceTaxAmount     Decimal       @default(0) @db.Decimal(10, 2)
+  createdAt                    DateTime      @default(now())
+  updatedAt                    DateTime      @updatedAt
+  branchId                     String?
+  deliveryExtraDetails         String?
+
+  // Cancel + New Order modification linkage
+  replacesOrderId   String? @unique
+  replacesOrder     Order?  @relation("OrderReplacement", fields: [replacesOrderId], references: [id])
+  replacementOrders Order[] @relation("OrderReplacement")
+
+  // History timeline (similar to ReservationOrder.history)
+  history Json?
+
+  // Cancellation reason (when order is cancelled)
+  cancellationReason String?
+
+  // Discount fields (POS order-level discount, applied pre-tax)
+  discountType   String? // "FIXED" | "PERCENTAGE" | null
+  discountValue  Decimal? @db.Decimal(10, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(10, 2)
+
+  // Voucher payment fields
+  voucherPaymentAmount Decimal @default(0) @db.Decimal(10, 2)
+  voucherCodes        String[] @default([])
+  voucherRemainingBalances Json? // Store { [code: string]: remainingBalance } snapshot at transaction time
+
+  // Scheduled/Future Order fields
+  scheduledDate      DateTime? // The date/time the order is scheduled for (null = ASAP/today)
+  isScheduledOrder   Boolean             @default(false)
+  // Fiscal posting timestamp (Germany-style EOD): set when the transaction is finalized
+  postedAt           DateTime?
+  notifications      Notification[]
+  orderItems         OrderItem[]
+  branch             Branch?             @relation(fields: [branchId], references: [id])
+  user               User?               @relation(fields: [userId], references: [id])
+  refunds            Refund[]
+  businessDaySession BusinessDaySession? @relation(fields: [businessDaySessionId], references: [id])
+  adjustments        OrderAdjustment[]
+
+  fiscalTransaction FiscalTransaction? @relation("FiscalTransactionOrder")
+  fiscalSigningQueue FiscalSigningQueue?
+
+  @@index([paymentId])
+  @@index([scheduledDate])
+  @@index([isScheduledOrder])
+  @@index([businessDaySessionId])
+  @@index([postedAt])
+  @@map("orders")
+}
+
+model BusinessDaySession {
+  id             String            @id @default(cuid())
+  branchId       String
+  sequenceNumber Int
+  status         BusinessDayStatus @default(OPEN)
+  startedAt      DateTime          @default(now())
+  endedAt        DateTime?
+  closedByUserId String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  branch              Branch                        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  orders              Order[]
+  reservationOrders   ReservationOrder[]
+  report              BusinessDayReport?
+  dsfinvkSubmission   BusinessDayDsfinvkSubmission?
+  appliedAdjustments  OrderAdjustment[]             @relation("AppliedBusinessDayAdjustments")
+  originalAdjustments OrderAdjustment[]             @relation("OriginalBusinessDayAdjustments")
+
+  @@unique([branchId, sequenceNumber])
+  @@index([branchId, status])
+  @@map("business_day_sessions")
+}
+
+model BusinessDayReport {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  data      Json
+  createdAt DateTime @default(now())
+
+  session BusinessDaySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("business_day_reports")
+}
+
+model BusinessDayDsfinvkSubmission {
+  id        String  @id @default(cuid())
+  sessionId String  @unique
+  ok        Boolean
+  error     String?
+
+  fiskalyOrganizationId    String?
+  cashRegisterId           String?
+  cashRegisterExportId     String?
+  cashPointClosingExportId String?
+  exportId                 String?
+
+  payload   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  session BusinessDaySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([cashRegisterId])
+  @@index([cashPointClosingExportId])
+  @@index([exportId])
+  @@map("business_day_dsfinvk_submissions")
+}
+
+model OrderAdjustment {
+  id                String              @id @default(cuid())
+  branchId          String
+  type              OrderAdjustmentType
+  status            RefundStatus        @default(PENDING)
+  amount            Decimal             @db.Decimal(10, 2)
+  currency          String
+  originalOrderId   String?
+  originalSessionId String?
+  appliedSessionId  String?
+  refundId          String?
+  createdByUserId   String?
+  metadata          Json?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  branch          Branch              @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  originalOrder   Order?              @relation(fields: [originalOrderId], references: [id], onDelete: SetNull)
+  refund          Refund?             @relation(fields: [refundId], references: [id], onDelete: SetNull)
+  originalSession BusinessDaySession? @relation("OriginalBusinessDayAdjustments", fields: [originalSessionId], references: [id], onDelete: SetNull)
+  appliedSession  BusinessDaySession? @relation("AppliedBusinessDayAdjustments", fields: [appliedSessionId], references: [id], onDelete: SetNull)
+
+  @@index([branchId, createdAt])
+  @@index([appliedSessionId])
+  @@index([originalSessionId])
+  @@map("order_adjustments")
+}
+
+model OrderItem {
+  id                           String                        @id @default(cuid())
+  orderId                      String
+  itemType                     OrderItemType                 @default(MEAL)
+  mealId                       String?
+  dealId                       String?
+  dealComponentId              String?
+  parentDealItemId             String?
+  quantity                     Int
+  unitPrice                    Decimal                       @db.Decimal(10, 2)
+  totalPrice                   Decimal                       @db.Decimal(10, 2)
+  taxAmount                    Decimal                       @default(0) @db.Decimal(10, 2)
+  taxPercentage                Decimal                       @default(0) @db.Decimal(5, 2)
+  selectedSize                 String?
+  specialInstructions          String?
+
+  // Per-item adjustment fields
+  itemDiscountType             String?                       // "FIXED" | "PERCENTAGE" | null
+  itemDiscountValue            Decimal?                      @db.Decimal(10, 2)
+  itemDiscountAmount           Decimal                       @default(0) @db.Decimal(10, 2)
+  itemDiscountScope            AdjustmentScope               @default(PER_LINE)
+  itemSurchargeAmount          Decimal                       @default(0) @db.Decimal(10, 2)
+  itemSurchargeScope           AdjustmentScope               @default(PER_LINE)
+  createdAt                    DateTime                      @default(now())
+  updatedAt                    DateTime                      @updatedAt
+  mealSizeType                 SizeType?
+  orderItemAddOns              OrderItemAddOn[]
+  orderItemOptionalIngredients OrderItemOptionalIngredient[]
+  meal                         Meal?                         @relation(fields: [mealId], references: [id])
+  deal                         Deal?                         @relation(fields: [dealId], references: [id])
+  dealComponent                DealComponent?                @relation(fields: [dealComponentId], references: [id])
+  parentDealItem               OrderItem?                    @relation("OrderItemDealParent", fields: [parentDealItemId], references: [id])
+  dealChildItems               OrderItem[]                   @relation("OrderItemDealParent")
+  order                        Order                         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model OrderItemAddOn {
+  id                String    @id @default(cuid())
+  orderItemId       String
+  addon_id          String?
+  addOnName         String
+  addOnPrice        Decimal   @db.Decimal(10, 2)
+  taxAmount         Decimal   @default(0) @db.Decimal(10, 2)
+  taxPercentage     Decimal   @default(0) @db.Decimal(5, 2)
+  addon_type        AddOnType @default(BOOLEAN)
+  quantity          Int       @default(1)
+  addon_description String?
+  addonSizeType     SizeType?
+  addon             AddOn?    @relation(fields: [addon_id], references: [id])
+  orderItem         OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+
+  @@map("order_item_addons")
+}
+
+model OrderItemOptionalIngredient {
+  id                   String             @id @default(cuid())
+  orderItemId          String
+  optionalIngredientId String
+  isIncluded           Boolean            @default(true)
+  ingredientName       String
+  optionalIngredient   OptionalIngredient @relation(fields: [optionalIngredientId], references: [id])
+  orderItem            OrderItem          @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+
+  @@unique([orderItemId, optionalIngredientId])
+  @@map("order_item_optional_ingredients")
+}
+
+model UserAddress {
+  id        String   @id @default(cuid())
+  userId    String
+  label     String
+  street    String
+  building  String?
+  floor     String?
+  apartment String?
+  city      String
+  state     String
+  zipCode   String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_addresses")
+}
+
+model Refund {
+  id                 String            @id @default(cuid())
+  orderId            String?
+  reservationOrderId String?
+  refundType         RefundType
+  amount             Decimal           @db.Decimal(10, 2)
+  reason             String?
+  stripeRefundId     String?           @unique
+  paypalRefundId     String?           @unique
+  status             RefundStatus      @default(PENDING)
+  refundedBy         String
+  refundedAt         DateTime?
+  metadata           Json?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  order              Order?            @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reservationOrder   ReservationOrder? @relation(fields: [reservationOrderId], references: [id], onDelete: Cascade)
+  paymentId          String?
+  payment            Payment?          @relation(fields: [paymentId], references: [id])
+  adjustments        OrderAdjustment[]
+
+  @@index([paymentId])
+  @@index([reservationOrderId])
+  @@map("refunds")
+}
+
+model Settings {
+  id                                  String                     @id @default(cuid())
+  organizationId                      String?                    @unique
+  organization                        Organization?              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  businessName                        String?
+  businessEmail                       String?
+  businessPhone                       String?
+  businessAddress                     String?
+  timezone                            String?
+  serviceType                         ServiceType                @default(RESTAURANT)
+  businessLogo                        String?
+  country                             String?
+  state                               String?
+  city                                String?
+  addressLineOne                      String?
+  latitude                            Decimal?                   @db.Decimal(10, 8)
+  longitude                           Decimal?                   @db.Decimal(11, 8)
+  fiskalyEnabled                      Boolean                    @default(false)
+  fiskalyEnvironment                  FiskalyEnvironment         @default(TEST)
+  fiskalyApiBaseUrl                   String?
+  fiskalyClientId                     String?
+  fiskalyClientSecret                 String?
+  fiskalyManagedOrganizationId        String?
+  fiskalyTssId                        String?
+  fiskalyTssAdminPuk                  String?
+  fiskalyTssAdminPinEncrypted         String?
+  fiskalyProvisioningStatus           FiskalyProvisioningStatus?
+  fiskalyProvisioningLastErrorCode    String?
+  fiskalyProvisioningLastErrorMessage String?
+  fiskalyProvisionedAt                DateTime?
+  taxPercentage                       Decimal                    @default(0.00) @db.Decimal(5, 2)
+  serviceTaxPercentage                Decimal                    @default(0.00) @db.Decimal(5, 2)
+  deliveryTaxPercentage               Decimal                    @default(0.00) @db.Decimal(5, 2)
+  deliveryFee                         Decimal                    @default(0.00) @db.Decimal(10, 2)
+  enableMinimumOrder                  Boolean                    @default(false)
+  minimumOrderAmount                  Decimal                    @default(0.00) @db.Decimal(10, 2)
+  currency                            String                     @default("USD")
+  taxInclusive                        Boolean                    @default(true)
+  orderPreparationTime                Int                        @default(30)
+  maxOrderQuantity                    Int                        @default(10)
+  allowExcludeOptionalIngredients     Boolean                    @default(true)
+  orderMergeTimeframeMinutes          Int                        @default(10)
+  pickupEnabled                       Boolean                    @default(true)
+  deliveryEnabled                     Boolean                    @default(false)
+  deliveryRadius                      Decimal                    @default(5.00) @db.Decimal(15, 2)
+  deliveryRatePerKilometer            Decimal                    @default(0.00) @db.Decimal(10, 2)
+  useDynamicDeliveryFee               Boolean                    @default(false)
+  useTieredDeliveryFee                Boolean                    @default(false)
+  initialDeliveryRange                Decimal                    @default(3.00) @db.Decimal(15, 2)
+  initialDeliveryPrice                Decimal                    @default(2.00) @db.Decimal(10, 2)
+  extendedDeliveryThreshold           Decimal?                   @db.Decimal(15, 2)
+  extendedDeliveryRate                Decimal?                   @db.Decimal(10, 2)
+  deliveryTimeEstimate                Int                        @default(45)
+  enableFreeDelivery                  Boolean                    @default(false)
+  freeDeliveryThreshold               Decimal                    @default(50.00) @db.Decimal(10, 2)
+  acceptCash                          Boolean                    @default(true)
+  acceptCard                          Boolean                    @default(true)
+  acceptOnlinePayment                 Boolean                    @default(true)
+  pickupAcceptCash                    Boolean                    @default(true)
+  pickupAcceptCard                    Boolean                    @default(true)
+  pickupAcceptOnlinePayment           Boolean                    @default(true)
+  pickupAcceptPayPal                  Boolean                    @default(false)
+  pickupTakeawayServiceFee            Decimal                    @default(0.00) @db.Decimal(10, 2)
+  facebookUrl                         String?
+  instagramUrl                        String?
+  twitterUrl                          String?
+  websiteUrl                          String?
+  seoTitle                            String?
+  seoDescription                      String?
+  seoOgImage                          String?
+  createdAt                           DateTime                   @default(now())
+  updatedAt                           DateTime                   @updatedAt
+  fridayClose                         String?
+  fridayIsOff                         Boolean                    @default(false)
+  fridayOpen                          String?
+  mondayClose                         String?
+  mondayIsOff                         Boolean                    @default(false)
+  mondayOpen                          String?
+  saturdayClose                       String?
+  saturdayIsOff                       Boolean                    @default(false)
+  saturdayOpen                        String?
+  sundayClose                         String?
+  sundayIsOff                         Boolean                    @default(false)
+  sundayOpen                          String?
+  thursdayClose                       String?
+  thursdayIsOff                       Boolean                    @default(false)
+  thursdayOpen                        String?
+  tuesdayClose                        String?
+  tuesdayIsOff                        Boolean                    @default(false)
+  tuesdayOpen                         String?
+  wednesdayClose                      String?
+  wednesdayIsOff                      Boolean                    @default(false)
+  wednesdayOpen                       String?
+  allowOrdersOutsideHours             Boolean                    @default(false)
+  appStatus                           AppStatus                  @default(LIVE)
+  fridayPeriods                       Json?
+  mondayPeriods                       Json?
+  saturdayPeriods                     Json?
+  sundayPeriods                       Json?
+  thursdayPeriods                     Json?
+  tuesdayPeriods                      Json?
+  wednesdayPeriods                    Json?
+  mainBranchId                        String?
+  acceptPayPal                        Boolean                    @default(false)
+  reservationDepositPercentage        Decimal?                   @db.Decimal(5, 2)
+  reservationAllowedPaymentMethods    ReservationPaymentMethod[]
+
+  // Future Order Scheduling (master enable/disable)
+  futureOrdersEnabled Boolean @default(false)
+
+  // Future Order Settings - Pickup
+  enableFuturePickupOrders Boolean @default(false)
+  futurePickupOrderDays    Int     @default(0) // Max days in advance (0 = today only)
+
+  // Future Order Settings - Delivery
+  enableFutureDeliveryOrders Boolean @default(false)
+  futureDeliveryOrderDays    Int     @default(0) // Max days in advance (0 = today only)
+
+  // Scheduled Order Merge Settings
+  allowScheduledOrderMerge       Boolean @default(false) // Allow merging scheduled orders
+  scheduledOrderMergeCutoffHours Int     @default(2) // Hours before scheduled time to stop allowing merges
+
+  // Scheduled Order Management Settings (Cancellation/Modification/Refund)
+  scheduledOrderAllowCancellation        Boolean @default(false)
+  scheduledOrderCancellationWindowHours  Int     @default(0)
+  scheduledOrderFullRefundHoursBefore    Int     @default(24)
+  scheduledOrderPartialRefundHoursBefore Int     @default(12)
+  scheduledOrderNoRefundHoursBefore      Int     @default(2)
+  scheduledOrderPartialRefundPercentage  Int     @default(50)
+  scheduledOrderReducedRefundPercentage  Int     @default(25)
+
+  scheduledOrderAllowModification       Boolean @default(false)
+  scheduledOrderModificationWindowHours Int     @default(0)
+
+  scheduledOrderAllowShallowModification Boolean @default(false)
+
+  scheduledOrderAutoConfirm Boolean @default(true)
+
+  scheduledOrderMinimumAmount Float? @default(0)
+
+  // Scheduled Order Time Slot Settings
+  scheduledOrderTimeSlotInterval Int @default(30)
+
+  // Scheduled Order Capacity (null = unlimited)
+  scheduledOrderMaxOrdersPerSlot Int?
+
+  // German Tax Information for DSFinV-K Compliance
+  taxNumber     String? // Steuernummer (German tax office number)
+  vatId         String? // USt-IdNr (EU VAT identification number)
+  fiscalName    String? // DSFinV-K NAME field (fiscal location name)
+  fiscalStreet  String? // DSFinV-K STRASSE field (fiscal location street)
+  fiscalZip     String? // DSFinV-K PLZ field (fiscal location zip code)
+  fiscalCity    String? // DSFinV-K ORT field (fiscal location city)
+  fiscalCountry String? @default("DEU") // DSFinV-K LAND field (fiscal location country)
+
+  @@map("settings")
+}
+
+model PosDevice {
+  id                                        String                     @id @default(cuid())
+  organizationId                            String
+  branchId                                  String
+  name                                      String
+  deviceCode                                String
+  fiskalyClientId                           String?
+  fiskalyClientSerialNumber                 String?
+  fiskalyClientProvisioningStatus           FiskalyProvisioningStatus?
+  fiskalyClientProvisioningLastErrorCode    String?
+  fiskalyClientProvisioningLastErrorMessage String?
+  isActive                                  Boolean                    @default(true)
+  isDeleted                                 Boolean                    @default(false)
+  deletedAt                                 DateTime?
+  deletedBy                                 String? // User ID who deleted the device
+  deletionReason                            String? // Reason for deletion
+  fiskalyDeprovisioned                      Boolean                    @default(false) // Track if Fiskaly client was cleaned up
+  createdAt                                 DateTime                   @default(now())
+  updatedAt                                 DateTime                   @updatedAt
+
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  branch             Branch              @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  fiscalTransactions FiscalTransaction[]
+
+  @@unique([organizationId, deviceCode])
+  @@index([organizationId])
+  @@index([branchId])
+  @@map("pos_devices")
+}
+
+model FiscalTransaction {
+  id                  String                  @id @default(cuid())
+  organizationId      String
+  branchId            String
+  deviceId            String?
+  orderId             String?                 @unique
+  reservationOrderId  String?                 @unique
+  status              FiscalTransactionStatus @default(CREATED)
+  clientTransactionId String                  @unique
+  tssTransactionId    String?
+  startedAt           DateTime?
+  finishedAt          DateTime?
+  signaturePayload    Json?
+  errorCode           String?
+  errorMessage        String?
+  lastAttemptAt       DateTime?
+  attemptCount        Int                     @default(0)
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+
+  organization     Organization                  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  branch           Branch                        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  device           PosDevice?                    @relation(fields: [deviceId], references: [id], onDelete: SetNull)
+  order            Order?                        @relation("FiscalTransactionOrder", fields: [orderId], references: [id], onDelete: SetNull)
+  reservationOrder ReservationOrder?             @relation("FiscalTransactionReservationOrder", fields: [reservationOrderId], references: [id], onDelete: SetNull)
+  corrections      FiscalTransactionCorrection[]
+
+  @@index([organizationId, createdAt])
+  @@index([branchId, createdAt])
+  @@index([deviceId])
+  @@index([status])
+  @@map("fiscal_transactions")
+}
+
+model FiscalSigningQueue {
+  id                 String   @id @default(cuid())
+  orderId            String   @unique
+  status             String   // "PENDING", "PROCESSING", "FAILED", "SIGNED"
+  attempts           Int      @default(0)
+  lastAttemptAt      DateTime?
+  nextAttemptAt      DateTime @default(now())
+  errorMessage       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  order              Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([status, nextAttemptAt])
+  @@map("fiscal_signing_queue")
+}
+
+model TssOutageLog {
+  id             String    @id @default(cuid())
+  organizationId String
+  startedAt      DateTime  @default(now())
+  endedAt        DateTime?
+  reason         String
+  resolved       Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, resolved])
+  @@map("tss_outage_logs")
+}
+
+model Branch {
+  id                                  String                     @id @default(cuid())
+  name                                String
+  code                                String?
+  isActive                            Boolean                    @default(true)
+  isUrgentlyClosed                    Boolean                    @default(false)
+  urgentCloseMessage                  String?
+  urgentClosedAt                      DateTime?
+  urgentClosedByUserId                String?
+  branchImage                         String?
+  serviceType                         ServiceType?
+  businessEmail                       String?
+  businessPhone                       String?
+  businessAddress                     String?
+  address                             String?
+  city                                String?
+  state                               String?
+  zipCode                             String?
+  country                             String?
+  timezone                            String?
+  latitude                            Decimal?                   @db.Decimal(10, 8)
+  longitude                           Decimal?                   @db.Decimal(11, 8)
+  deliveryRadius                      Decimal?                   @db.Decimal(15, 2)
+  deliveryFee                         Decimal?                   @db.Decimal(10, 2)
+  deliveryRatePerKilometer            Decimal?                   @db.Decimal(10, 2)
+  useDynamicDeliveryFee               Boolean?
+  useTieredDeliveryFee                Boolean?
+  initialDeliveryRange                Decimal?                   @db.Decimal(15, 2)
+  initialDeliveryPrice                Decimal?                   @db.Decimal(10, 2)
+  extendedDeliveryThreshold           Decimal?                   @db.Decimal(15, 2)
+  extendedDeliveryRate                Decimal?                   @db.Decimal(10, 2)
+  deliveryTimeEstimate                Int?
+  enableFreeDelivery                  Boolean?
+  freeDeliveryThreshold               Decimal?                   @db.Decimal(10, 2)
+  taxPercentage                       Decimal?                   @db.Decimal(5, 2)
+  serviceTaxPercentage                Decimal?                   @db.Decimal(5, 2)
+  deliveryTaxPercentage               Decimal?                   @db.Decimal(5, 2)
+  enableMinimumOrder                  Boolean?
+  minimumOrderAmount                  Decimal?                   @db.Decimal(10, 2)
+  currency                            String?
+  taxInclusive                        Boolean                    @default(true)
+  orderPreparationTime                Int?
+  maxOrderQuantity                    Int?
+  allowExcludeOptionalIngredients     Boolean?
+  orderMergeTimeframeMinutes          Int?
+  pickupEnabled                       Boolean?
+  deliveryEnabled                     Boolean?
+  acceptCash                          Boolean?
+  acceptCard                          Boolean?
+  acceptOnlinePayment                 Boolean?
+  pickupAcceptCash                    Boolean?
+  pickupAcceptCard                    Boolean?
+  pickupAcceptOnlinePayment           Boolean?
+  pickupAcceptPayPal                  Boolean?
+  pickupTakeawayServiceFee            Decimal?                   @db.Decimal(10, 2)
+  allowOrdersOutsideHours             Boolean?
+  mondayIsOff                         Boolean?
+  mondayOpen                          String?
+  mondayClose                         String?
+  mondayPeriods                       Json?
+  tuesdayIsOff                        Boolean?
+  tuesdayOpen                         String?
+  tuesdayClose                        String?
+  tuesdayPeriods                      Json?
+  wednesdayIsOff                      Boolean?
+  wednesdayOpen                       String?
+  wednesdayClose                      String?
+  wednesdayPeriods                    Json?
+  thursdayIsOff                       Boolean?
+  thursdayOpen                        String?
+  thursdayClose                       String?
+  thursdayPeriods                     Json?
+  fridayIsOff                         Boolean?
+  fridayOpen                          String?
+  fridayClose                         String?
+  fridayPeriods                       Json?
+  saturdayIsOff                       Boolean?
+  saturdayOpen                        String?
+  saturdayClose                       String?
+  saturdayPeriods                     Json?
+  sundayIsOff                         Boolean?
+  sundayOpen                          String?
+  sundayClose                         String?
+  sundayPeriods                       Json?
+  appStatus                           AppStatus?
+  facebookUrl                         String?
+  instagramUrl                        String?
+  twitterUrl                          String?
+  websiteUrl                          String?
+  createdAt                           DateTime                   @default(now())
+  updatedAt                           DateTime                   @updatedAt
+  reservationAllowCancellation        Boolean?
+  reservationAllowSameDayBooking      Boolean?
+  reservationBufferTimeMinutes        Int?
+  reservationEnablePreOrder           Boolean?
+  reservationExcludedDates            Json?
+  reservationFridayClose              String?
+  reservationFridayOpen               String?
+  reservationFullRefundHoursBefore    Int?
+  reservationIsEnabled                Boolean?
+  reservationMaxAdvanceBookingDays    Int?
+  reservationMaxCapacityPerTimeSlot   Int?
+  reservationMaxGuestsPerReservation  Int?
+  reservationMinAdvanceBookingHours   Int?
+  reservationModificationWindowHours  Int?
+  reservationMondayClose              String?
+  reservationMondayOpen               String?
+  reservationNoRefundHoursBefore      Int?
+  reservationPartialRefundHoursBefore Int?
+  reservationPreOrderMinAmount        Decimal?                   @db.Decimal(10, 2)
+  reservationSaturdayClose            String?
+  reservationSaturdayOpen             String?
+  reservationSundayClose              String?
+  reservationSundayOpen               String?
+  reservationThursdayClose            String?
+  reservationThursdayOpen             String?
+  reservationTier                     ReservationTier?
+  reservationTimeSlotInterval         Int?
+  reservationTuesdayClose             String?
+  reservationTuesdayOpen              String?
+  reservationWednesdayClose           String?
+  reservationWednesdayOpen            String?
+  acceptPayPal                        Boolean?
+  reservationDepositPercentage        Decimal?                   @db.Decimal(5, 2)
+  reservationAllowedPaymentMethods    ReservationPaymentMethod[]
+
+  // Future Order Scheduling (master enable/disable) (null = inherit from global)
+  futureOrdersEnabled Boolean?
+
+  // Future Order Settings - Pickup (null = inherit from global)
+  enableFuturePickupOrders Boolean?
+  futurePickupOrderDays    Int?
+
+  // Future Order Settings - Delivery (null = inherit from global)
+  enableFutureDeliveryOrders Boolean?
+  futureDeliveryOrderDays    Int?
+
+  // Scheduled Order Merge Settings (null = inherit from global)
+  allowScheduledOrderMerge       Boolean?
+  scheduledOrderMergeCutoffHours Int?
+
+  // Scheduled Order Management Settings (null = inherit from global)
+  scheduledOrderAllowCancellation        Boolean?
+  scheduledOrderCancellationWindowHours  Int?
+  scheduledOrderFullRefundHoursBefore    Int?
+  scheduledOrderPartialRefundHoursBefore Int?
+  scheduledOrderNoRefundHoursBefore      Int?
+  scheduledOrderPartialRefundPercentage  Int?
+  scheduledOrderReducedRefundPercentage  Int?
+
+  scheduledOrderAllowModification       Boolean?
+  scheduledOrderModificationWindowHours Int?
+
+  scheduledOrderAllowShallowModification Boolean?
+
+  scheduledOrderAutoConfirm Boolean?
+
+  scheduledOrderMinimumAmount Float?
+
+  // Scheduled Order Time Slot Settings (null = inherit from global)
+  scheduledOrderTimeSlotInterval Int?
+
+  // Scheduled Order Capacity (null = inherit from global; global null = unlimited)
+  scheduledOrderMaxOrdersPerSlot Int?
+
+  organizationId String?
+  branchTypeId   String?
+
+  addonBranchPrices         AddonBranchPrice[]
+  mealBranchPrices          MealBranchPrice[]
+  mealBranchAvailabilities  MealBranchAvailability[]
+  orders                    Order[]
+  reservationOrders         ReservationOrder[]
+  reservations              Reservation[]
+  kitchenTickets            KitchenTicket[]
+  mealSizeWeights           MealSizeWeight[]
+  mealDailyDeliverables     MealDailyDeliverable[]
+  tables                    Table[]
+  zones                     Zone[]
+  userBranches              UserBranch[]
+  userRoleAssignments       UserRoleAssignment[]
+  businessDaySessions       BusinessDaySession[]
+  orderAdjustments          OrderAdjustment[]
+  dealBranchPrices          DealBranchPrice[]
+  dealComponentBranchPrices DealComponentBranchPrice[]
+  branchClicks              BranchClick[]
+  branchLikes               BranchLike[]
+  branchSubscriptions       BranchSubscription[]
+  pushNotifications         PushNotification[]
+  pushSubscriptions         PushSubscription[]
+  tabletNotificationPreferences TabletNotificationPreference[]
+
+  posDevices         PosDevice[]
+  fiscalTransactions FiscalTransaction[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  branchType   BranchType?   @relation(fields: [branchTypeId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([branchTypeId])
+  @@map("branches")
+}
+
+// User-Branch assignment (which branches a user can access)
+model UserBranch {
+  id        String   @id @default(cuid())
+  userId    String
+  branchId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, branchId])
+  @@index([userId])
+  @@index([branchId])
+  @@map("user_branches")
+}
+
+// Role definition with permissions
+model Role {
+  id             String               @id @default(cuid())
+  organizationId String?
+  name           String
+  description    String?
+  permissions    Json // Stores permission object: { "orders": ["view", "create"], "menu": ["view", "update"] }
+  isSystem       Boolean              @default(false) // System roles cannot be deleted
+  isActive       Boolean              @default(true)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  userRoles      UserRoleAssignment[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+  @@map("roles")
+}
+
+// User-Role assignment (optionally scoped to a branch)
+model UserRoleAssignment {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  branchId  String? // null = role applies to all assigned branches
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  branch    Branch?  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId, branchId])
+  @@index([userId])
+  @@index([roleId])
+  @@index([branchId])
+  @@map("user_role_assignments")
+}
+
+model Notification {
+  id            String           @id @default(cuid())
+  orderId       String?
+  isSeen        Boolean          @default(false)
+  isOrderUpdate Boolean          @default(false)
+  seenAt        DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  reservationId String?
+  type          NotificationType @default(ORDER)
+  order         Order?           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  reservation   Reservation?     @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model PushSubscription {
+  id                   String                     @id @default(cuid())
+  userId               String
+  endpoint             String                     @unique
+  p256dh               String
+  auth                 String
+  userAgent            String?
+  isAppLevelSubscription Boolean                   @default(false) // Track if this is an app-level subscription
+  organizationId       String?                    // Organization user primarily interacts with
+  branchId             String?                    // Branch user primarily interacts with
+  createdAt            DateTime                   @default(now())
+  updatedAt            DateTime                   @updatedAt
+  clicks               PushNotificationClick[]
+  deliveries           PushNotificationDelivery[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  branch       Branch?       @relation(fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([branchId])
+  @@index([isAppLevelSubscription])
+  @@map("push_subscriptions")
+}
+
+// Branch click tracking model
+model BranchClick {
+  id        String   @id @default(cuid())
+  branchId  String
+  userId    String? // null for unknown/non-logged-in users
+  clickTime DateTime @default(now())
+  userAgent String? // optional browser/device info
+  ipAddress String? // optional IP address for analytics
+
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([branchId])
+  @@index([userId])
+  @@index([clickTime])
+  @@map("branch_clicks")
+}
+
+// Branch subscription model - customers can subscribe to branches
+model BranchSubscription {
+  id        String   @id @default(cuid())
+  branchId  String
+  userId    String
+  createdAt DateTime @default(now())
+
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, branchId])
+  @@index([branchId])
+  @@index([userId])
+  @@map("branch_subscriptions")
+}
+// Tablet notification preferences - track which users want tablet notifications
+model TabletNotificationPreference {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String?  // If set, receive notifications for all branches in org
+  branchId       String?  // If set (and orgId null), receive notifications for specific branch
+  enabled        Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  branch       Branch?      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId, branchId])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([branchId])
+  @@map("tablet_notification_preferences")
+}
+
+
+model PushNotification {
+  id              String                     @id @default(cuid())
+  title           String
+  message         String
+  image           String?
+  actionUrl       String?
+  actionLabel     String?
+  sentBy          String
+  totalRecipients Int                        @default(0)
+  organizationId  String?                    // Organization that sent the notification
+  branchId        String?                    // Specific branch if sent to branch subscribers only
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  clicks          PushNotificationClick[]
+  deliveries      PushNotificationDelivery[]
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  branch       Branch?       @relation(fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([organizationId])
+  @@index([branchId])
+  @@map("push_notifications")
+}
+
+model PushNotificationDelivery {
+  id             String           @id @default(cuid())
+  notificationId String
+  subscriptionId String
+  delivered      Boolean          @default(false)
+  deliveredAt    DateTime?
+  failed         Boolean          @default(false)
+  failureReason  String?
+  createdAt      DateTime         @default(now())
+  notification   PushNotification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  subscription   PushSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([notificationId])
+  @@index([subscriptionId])
+  @@map("push_notification_deliveries")
+}
+
+model PushNotificationClick {
+  id             String           @id @default(cuid())
+  notificationId String
+  subscriptionId String
+  clickedAt      DateTime         @default(now())
+  notification   PushNotification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  subscription   PushSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([notificationId])
+  @@index([clickedAt])
+  @@map("push_notification_clicks")
+}
+
+model HeroSection {
+  id                  String   @id @default(cuid())
+  organizationId      String?
+  badgeText           String?
+  title               String
+  subtitle            String?
+  backgroundImage     String?
+  primaryButtonText   String?
+  primaryButtonLink   String?
+  secondaryButtonText String?
+  secondaryButtonLink String?
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId])
+  @@map("hero_sections")
+}
+
+model TermsAndPolicy {
+  id            String              @id @default(cuid())
+  type          PolicyType
+  title         String
+  content       String
+  language      String              @default("en")
+  version       String
+  effectiveDate DateTime
+  isActive      Boolean             @default(false)
+  isRequired    Boolean             @default(true)
+  createdBy     String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  userConsents  PolicyUserConsent[]
+
+  @@unique([type, language, version], name: "unique_policy_version")
+  @@index([type, language, isActive])
+  @@map("terms_and_policies")
+}
+
+model PolicyUserConsent {
+  id            String         @id @default(cuid())
+  userId        String
+  policyId      String
+  policyVersion String
+  consentedAt   DateTime       @default(now())
+  ipAddress     String?
+  userAgent     String?
+  consentMethod ConsentMethod  @default(EXPLICIT)
+  revokedAt     DateTime?
+  revokedBy     String?
+  policy        TermsAndPolicy @relation(fields: [policyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, policyId, policyVersion])
+  @@index([userId])
+  @@index([policyId])
+  @@map("policy_user_consents")
+}
+
+model Reservation {
+  id                          String             @id @default(cuid())
+  reservationNumber           String             @unique
+  userId                      String?
+  tableId                     String?
+  status                      ReservationStatus  @default(PENDING)
+  type                        ReservationType    @default(SIMPLE)
+  reservationDate             DateTime
+  numberOfGuests              Int
+  customerName                String
+  customerEmail               String
+  customerPhone               String
+  specialRequests             String?
+  preferredZone               String?
+  paymentStatus               PaymentStatus?
+  paymentIntentId             String?            @unique
+  paymentId                   String?
+  confirmedAt                 DateTime?
+  seatedAt                    DateTime?
+  completedAt                 DateTime?
+  cancelledAt                 DateTime?
+  cancelledBy                 String?
+  cancellationReason          String?
+  internalNotes               String?
+  noShow                      Boolean            @default(false)
+  createdAt                   DateTime           @default(now())
+  updatedAt                   DateTime           @updatedAt
+  reservationOrderId          String?            @unique
+  incrementalPaymentIntentIds String?
+  branchId                    String?
+  zoneId                      String?
+  tableIds                    String[]           @default([])
+  notifications               Notification[]
+  tables                      ReservationTable[]
+  kitchenTickets              KitchenTicket[]
+  branch                      Branch?            @relation(fields: [branchId], references: [id])
+  reservationOrder            ReservationOrder?  @relation("ReservationOrder", fields: [reservationOrderId], references: [id])
+  table                       Table?             @relation(fields: [tableId], references: [id])
+  user                        User?              @relation(fields: [userId], references: [id])
+  zone                        Zone?              @relation(fields: [zoneId], references: [id])
+
+  @@index([reservationDate])
+  @@index([status])
+  @@index([type])
+  @@index([userId])
+  @@index([tableId])
+  @@index([reservationOrderId])
+  @@index([paymentId])
+  @@map("reservations")
+}
+
+model Zone {
+  id              String         @id @default(cuid())
+  branchId        String
+  name            String
+  description     String?
+  isActive        Boolean        @default(true)
+  capacity        Int?
+  canvasWidth     Int?           @default(800)
+  canvasHeight    Int?           @default(600)
+  backgroundImage String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  reservations    Reservation[]
+  tables          Table[]        @relation("ZoneTables")
+  floorElements   FloorElement[]
+  branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([branchId, name])
+  @@index([branchId])
+  @@map("zones")
+}
+
+model Table {
+  id                String             @id @default(cuid())
+  tableNumber       String
+  capacity          Int
+  zone              String?
+  status            TableStatus        @default(AVAILABLE)
+  isActive          Boolean            @default(true)
+  notes             String?
+  positionX         Float?             @default(0)
+  positionY         Float?             @default(0)
+  width             Float?             @default(60)
+  height            Float?             @default(60)
+  rotation          Float?             @default(0)
+  shape             String?            @default("SQUARE")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  branchId          String?
+  zoneId            String?
+  reservationTables ReservationTable[]
+  reservations      Reservation[]
+  branch            Branch?            @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  zoneRelation      Zone?              @relation("ZoneTables", fields: [zoneId], references: [id])
+
+  @@index([branchId])
+  @@index([zoneId])
+  @@map("tables")
+}
+
+model ReservationTable {
+  id            String      @id @default(cuid())
+  reservationId String
+  tableId       String
+  createdAt     DateTime    @default(now())
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  table         Table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  @@unique([reservationId, tableId])
+  @@index([reservationId])
+  @@index([tableId])
+  @@map("reservation_tables")
+}
+
+model FloorElement {
+  id        String   @id @default(cuid())
+  zoneId    String
+  type      String // WINDOW, DOOR, STAIRS, GARDEN, WALL, BAR, KITCHEN, RESTROOM, PLANT, PILLAR, LABEL
+  label     String?
+  positionX Float    @default(0)
+  positionY Float    @default(0)
+  width     Float    @default(50)
+  height    Float    @default(50)
+  rotation  Float    @default(0)
+  color     String?
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  zone      Zone     @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId])
+  @@map("floor_elements")
+}
+
+model ReservationOrder {
+  id                   String                 @id @default(cuid())
+  orderNumber          String                 @unique
+  reservationId        String?                @unique
+  branchId             String?
+  businessDaySessionId String?
+  totalAmount          Decimal                @db.Decimal(10, 2)
+  currency             String                 @default("usd")
+  taxAmount            Decimal                @default(0) @db.Decimal(10, 2)
+  itemTaxAmount        Decimal                @default(0) @db.Decimal(10, 2)
+  addonTaxAmount       Decimal                @default(0) @db.Decimal(10, 2)
+  paymentMethod        PaymentMethod          @default(ONLINE_PAYMENT)
+  paymentStatus        PaymentStatus          @default(PAID)
+  paymentIntentId      String?                @unique
+  paymentId            String?                @unique
+  paidAmount           Decimal                @default(0) @db.Decimal(10, 2)
+  depositPercentage    Decimal?               @db.Decimal(5, 2)
+  customerName         String
+  customerEmail        String
+  customerPhone        String
+  status               OrderStatus            @default(PENDING)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  // Fiscal posting timestamp (Germany-style EOD): set when the reservation transaction is finalized
+  postedAt             DateTime?
+  history              Json?
+  items                ReservationOrderItem[]
+  reservation          Reservation?           @relation("ReservationOrder")
+  payment              Payment?               @relation("PaymentReservationOrderLink")
+  refunds              Refund[]
+  branch               Branch?                @relation(fields: [branchId], references: [id])
+  businessDaySession   BusinessDaySession?    @relation(fields: [businessDaySessionId], references: [id])
+
+  fiscalTransaction FiscalTransaction? @relation("FiscalTransactionReservationOrder")
+
+  @@index([reservationId])
+  @@index([paymentIntentId])
+  @@index([paymentId])
+  @@index([status])
+  @@index([postedAt])
+  @@index([branchId])
+  @@index([businessDaySessionId])
+  @@map("reservation_orders")
+}
+
+model Payment {
+  id                 String            @id @default(cuid())
+  orderId            String?           @unique
+  reservationOrderId String?           @unique
+  paymentMethod      PaymentMethod
+  paymentProvider    PaymentProvider
+  providerPaymentId  String?           @unique
+  providerChargeId   String?           @unique
+  amount             Decimal           @db.Decimal(10, 2)
+  currency           String            @default("usd")
+  fees               Decimal?          @db.Decimal(10, 2)
+  netAmount          Decimal?          @db.Decimal(10, 2)
+  status             PaymentState      @default(PENDING)
+  metadata           Json?
+  webhookData        Json?
+  createdAt          DateTime          @default(now())
+  completedAt        DateTime?
+  failedAt           DateTime?
+  refundedAt         DateTime?
+  order              Order?            @relation("PaymentOrderLink", fields: [orderId], references: [id])
+  reservationOrder   ReservationOrder? @relation("PaymentReservationOrderLink", fields: [reservationOrderId], references: [id])
+  refunds            Refund[]
+
+  @@index([orderId])
+  @@index([reservationOrderId])
+  @@index([providerPaymentId])
+  @@index([providerChargeId])
+  @@map("payments")
+}
+
+model ReservationOrderItem {
+  id                  String                                   @id @default(cuid())
+  reservationOrderId  String
+  mealId              String
+  quantity            Int
+  unitPrice           Decimal                                  @db.Decimal(10, 2)
+  totalPrice          Decimal                                  @db.Decimal(10, 2)
+  taxAmount           Decimal                                  @default(0) @db.Decimal(10, 2)
+  taxPercentage       Decimal                                  @default(0) @db.Decimal(5, 2)
+  selectedSize        String?
+  mealSizeType        SizeType?
+  specialInstructions String?
+  createdAt           DateTime                                 @default(now())
+  updatedAt           DateTime                                 @updatedAt
+  addons              ReservationOrderItemAddOn[]
+  optionalIngredients ReservationOrderItemOptionalIngredient[]
+  meal                Meal                                     @relation(fields: [mealId], references: [id])
+  reservationOrder    ReservationOrder                         @relation(fields: [reservationOrderId], references: [id], onDelete: Cascade)
+
+  @@map("reservation_order_items")
+}
+
+model ReservationOrderItemAddOn {
+  id                     String               @id @default(cuid())
+  reservationOrderItemId String
+  addon_id               String?
+  addOnName              String
+  addOnPrice             Decimal              @db.Decimal(10, 2)
+  taxAmount              Decimal              @default(0) @db.Decimal(10, 2)
+  taxPercentage          Decimal              @default(0) @db.Decimal(5, 2)
+  addon_type             AddOnType            @default(BOOLEAN)
+  addonSizeType          SizeType?
+  quantity               Int                  @default(1)
+  addon_description      String?
+  addon                  AddOn?               @relation(fields: [addon_id], references: [id])
+  reservationOrderItem   ReservationOrderItem @relation(fields: [reservationOrderItemId], references: [id], onDelete: Cascade)
+
+  @@map("reservation_order_item_addons")
+}
+
+model ReservationOrderItemOptionalIngredient {
+  id                     String               @id @default(cuid())
+  reservationOrderItemId String
+  optionalIngredientId   String
+  isIncluded             Boolean              @default(true)
+  ingredientName         String
+  optionalIngredient     OptionalIngredient   @relation(fields: [optionalIngredientId], references: [id], onDelete: Cascade)
+  reservationOrderItem   ReservationOrderItem @relation(fields: [reservationOrderItemId], references: [id], onDelete: Cascade)
+
+  @@unique([reservationOrderItemId, optionalIngredientId])
+  @@map("reservation_order_item_optional_ingredients")
+}
+
+model KitchenTicket {
+  id            String  @id @default(cuid())
+  branchId      String
+  reservationId String?
+
+  status KitchenTicketStatus @default(NEW)
+  items  Json
+
+  createdByUserId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  branch        Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+  createdByUser User?        @relation(fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@index([branchId, createdAt])
+  @@index([reservationId])
+  @@map("kitchen_tickets")
+}
+
+model ReservationSettings {
+  id                       String                     @id @default(cuid())
+  organizationId           String?                    @unique
+  organization             Organization?              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  isEnabled                Boolean                    @default(false)
+  tier                     ReservationTier            @default(SIMPLE)
+  mondayOpen               String?
+  mondayClose              String?
+  tuesdayOpen              String?
+  tuesdayClose             String?
+  wednesdayOpen            String?
+  wednesdayClose           String?
+  thursdayOpen             String?
+  thursdayClose            String?
+  fridayOpen               String?
+  fridayClose              String?
+  saturdayOpen             String?
+  saturdayClose            String?
+  sundayOpen               String?
+  sundayClose              String?
+  timeSlotInterval         Int                        @default(30)
+  maxGuestsPerReservation  Int                        @default(20)
+  maxAdvanceBookingDays    Int                        @default(30)
+  allowSameDayBooking      Boolean                    @default(true)
+  allowCancellation        Boolean                    @default(true)
+  enablePreOrder           Boolean                    @default(true)
+  preOrderMinAmount        Decimal?                   @db.Decimal(10, 2)
+  fullRefundHoursBefore    Int?                       @default(24)
+  partialRefundHoursBefore Int?                       @default(4)
+  noRefundHoursBefore      Int?                       @default(1)
+  maxCapacityPerTimeSlot   Int?
+  bufferTimeMinutes        Int?                       @default(15)
+  blockedDates             String[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  minAdvanceBookingHours   Int                        @default(2)
+  modificationWindowHours  Int?                       @default(24)
+  excludedDates            Json?
+  depositPercentage        Decimal?                   @db.Decimal(5, 2)
+  allowedPaymentMethods    ReservationPaymentMethod[]
+
+  @@map("reservation_settings")
+}
+
+enum AppStatus {
+  LIVE
+  COMING_SOON
+  MAINTENANCE
+  OUT_OF_SERVICE
+}
+
+enum ServiceType {
+  RESTAURANT
+  MEAT_SHOP
+  BAKERY
+  FOOD_TRUCK
+}
+
+enum UserType {
+  SUPER_ADMIN
+  BRANCH_ADMIN
+  EMPLOYEE
+  WAITER
+  USER
+}
+
+enum OrgRole {
+  ORG_OWNER
+  ORG_ADMIN
+  ORG_STAFF
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY_FOR_DELIVERY
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  PICKED_UP
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  ONLINE
+  CASH_ON_DELIVERY
+  CARD_ON_DELIVERY
+  ONLINE_PAYMENT
+  CASH_ON_PICKUP
+  CARD_ON_PICKUP
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+}
+
+model AuditLog {
+  id String @id @default(cuid())
+
+  // Scope
+  organizationId String?
+  branchId       String?
+
+  // Actor (who performed the action)
+  actorUserId   String?
+  actorClerkId  String?
+  actorUserType String?
+  actorOrgRole  String?
+
+  // What happened
+  action     String
+  entityType String?
+  entityId   String?
+
+  // State change
+  before   Json?
+  after    Json?
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([branchId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+enum OrderItemType {
+  MEAL
+  DEAL
+  DEAL_COMPONENT
+  VOUCHER
+}
+
+enum PaymentProvider {
+  STRIPE
+  PAYPAL
+  NONE
+}
+
+enum PaymentState {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum AddOnType {
+  BOOLEAN
+  QUANTITY
+}
+
+enum SizeType {
+  S
+  M
+  L
+  XL
+}
+
+enum NotificationType {
+  ORDER
+  RESERVATION
+}
+
+enum RefundType {
+  FULL
+  PARTIAL
+  ITEM_SPECIFIC
+}
+
+enum RefundStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum BusinessDayStatus {
+  OPEN
+  CLOSED
+}
+
+enum OrderAdjustmentType {
+  REFUND
+  VOID
+  PRICE_CORRECTION
+}
+
+enum PolicyType {
+  TERMS_OF_SERVICE
+  PRIVACY_POLICY
+  COOKIE_POLICY
+  REFUND_POLICY
+  DELIVERY_POLICY
+  DATA_PROTECTION_POLICY
+  USER_AGREEMENT
+  OTHER
+}
+
+enum ConsentMethod {
+  EXPLICIT
+  IMPLICIT
+  PRE_CHECKED
+  ADMIN_SET
+}
+
+enum ReservationType {
+  SIMPLE
+  PRE_ORDER
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  SEATED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum TableStatus {
+  AVAILABLE
+  RESERVED
+  OCCUPIED
+  OUT_OF_SERVICE
+}
+
+enum ReservationTier {
+  SIMPLE
+  MEDIUM
+  COMPLEX
+}
+
+enum ReservationPaymentMethod {
+  ONLINE_CARD
+  PAYPAL
+  NONE
+}
+
+enum FiskalyEnvironment {
+  TEST
+  LIVE
+}
+
+enum FiskalyProvisioningStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  READY
+  FAILED
+}
+
+enum FiscalTransactionStatus {
+  CREATED
+  STARTED
+  FINISHED
+  FAILED
+  CANCELLED
+}
+
+enum FiscalCorrectionType {
+  REFUND
+  CANCELLATION
+}
+
+model FiscalTransactionCorrection {
+  id String @id @default(cuid())
+
+  organizationId     String
+  branchId           String
+  deviceId           String?
+  orderId            String?
+  reservationOrderId String?
+  refundId           String? @unique
+
+  fiscalTransactionId String
+  fiscalTransaction   FiscalTransaction @relation(fields: [fiscalTransactionId], references: [id], onDelete: Cascade)
+
+  type   FiscalCorrectionType
+  status FiscalTransactionStatus @default(CREATED)
+
+  amount   Decimal @db.Decimal(10, 2)
+  currency String?
+  metadata Json?
+
+  clientTransactionId String    @unique
+  tssTransactionId    String?
+  startedAt           DateTime?
+  finishedAt          DateTime?
+  signaturePayload    Json?
+  errorCode           String?
+  errorMessage        String?
+  lastAttemptAt       DateTime?
+  attemptCount        Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([branchId, createdAt])
+  @@index([orderId])
+  @@index([reservationOrderId])
+  @@index([deviceId])
+  @@index([status])
+  @@map("fiscal_transaction_corrections")
+}
+
+enum AdjustmentScope {
+  PER_UNIT
+  PER_LINE
+}
+
+enum KitchenTicketStatus {
+  NEW
+  PREPARING
+  READY
+  CANCELLED
+}
+
+enum VoucherType {
+  SINGLE_PURPOSE
+  MULTI_PURPOSE
+}
+
+enum VoucherStatus {
+  ACTIVE
+  PARTIALLY_REDEEMED
+  REDEEMED
+  EXPIRED
+  VOIDED
+}
+
+enum VoucherTxType {
+  ISSUANCE
+  REDEMPTION
+  PARTIAL_REDUCTION
+  VOID
+}
+
+model Voucher {
+  id                    String              @id @default(cuid())
+  voucherCode           String              @unique
+  voucherType           VoucherType
+  initialAmount         Decimal             @db.Decimal(10, 2)
+  currentAmount         Decimal             @db.Decimal(10, 2)
+  vatRate               Decimal?            @db.Decimal(5, 2) // Nullable, populated ONLY for SINGLE_PURPOSE
+  status                VoucherStatus       @default(ACTIVE)
+  expiresAt             DateTime
+  tseIssuanceSignature  String?             @db.Text
+  branchId              String?             // Branch where voucher was issued - vouchers can only be redeemed at the same branch
+  organizationId        String?             // Organization where voucher was issued
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  transactions          VoucherTransaction[]
+
+  @@map("vouchers")
+}
+
+model VoucherTransaction {
+  id            String        @id @default(cuid())
+  voucherId     String
+  txType        VoucherTxType
+  amount        Decimal       @db.Decimal(10, 2)
+  balanceBefore Decimal       @db.Decimal(10, 2)
+  balanceAfter  Decimal       @db.Decimal(10, 2)
+  cashierId     String?
+  orderId       String?
+  createdAt     DateTime      @default(now())
+
+  voucher       Voucher       @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+
+  @@map("voucher_transactions")
+}
+
+model BranchLike {
+  id        String   @id @default(cuid())
+  branchId  String
+  userId    String
+  createdAt DateTime @default(now())
+
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, branchId])
+  @@index([branchId])
+  @@index([userId])
+  @@map("branch_likes")
+}

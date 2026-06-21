@@ -1,0 +1,27 @@
+{
+  "org_ids": [
+    "cmopibpds000lkyofwgs98bex"
+  ],
+  "dry_run": false,
+  "transferred": 2,
+  "already_exists": 0,
+  "missing_on_src": 0,
+  "failed": 0,
+  "total_bytes": 11666,
+  "db_rows_updated": 0,
+  "duration_s": 14.8,
+  "files": [
+    {
+      "path": "/e8194882-5653-4a4a-9a22-89c829ebb76b.webp",
+      "status": "transferred",
+      "error": null,
+      "bytes": 5764
+    },
+    {
+      "path": "/87d8b61f-eadb-4c18-820a-e6f7ce69a110.webp",
+      "status": "transferred",
+      "error": null,
+      "bytes": 5902
+    }
+  ]
+}

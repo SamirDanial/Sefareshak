@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "83819005664",
+    "project_id": "next-foody-push-notification",
+    "storage_bucket": "next-foody-push-notification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83819005664:android:5f0aa11213ce00e82db285",
+        "android_client_info": {
+          "package_name": "com.nextfoody.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMmlny-Nic4HAZzCXAcy6S0d_bvWB5yjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83819005664:android:1c66795fcc66be502db285",
+        "android_client_info": {
+          "package_name": "com.samir.danial.tabletapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMmlny-Nic4HAZzCXAcy6S0d_bvWB5yjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

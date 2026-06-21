@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-05-06T13:34:38.985844+00:00",
+  "dry_run": false,
+  "on_conflict": "skip",
+  "total_duration_s": 17.53,
+  "summary": {
+    "succeeded": 1,
+    "skipped": 0,
+    "failed": 0,
+    "total_rows": 29
+  },
+  "organizations": [
+    {
+      "org_id": "cmlxpm1vq0001kydd2kg3vfoc",
+      "org_name": "Die Backmol",
+      "status": "success",
+      "reason": null,
+      "row_counts": {
+        "organizations": 1,
+        "settings": 1,
+        "reservation_settings": 1,
+        "hero_sections": 1,
+        "roles": 0,
+        "branch_types": 0,
+        "branches": 1,
+        "zones": 0,
+        "tables": 0,
+        "floor_elements": 0,
+        "categories": 4,
+        "declarations": 1,
+        "optional_ingredients": 0,
+        "addons": 1,
+        "addon_sizes": 1,
+        "addon_categories": 0,
+        "addon_branch_prices": 0,
+        "meals": 4,
+        "meal_sizes": 5,
+        "meal_branch_prices": 2,
+        "meal_branch_availabilities": 0,
+        "meal_branch_availability_windows": 0,
+        "meal_size_weights": 0,
+        "meal_daily_deliverables": 0,
+        "meal_addons": 0,
+        "meal_declarations": 0,
+        "meal_optional_ingredients": 0,
+        "deals": 1,
+        "deal_components": 3,
+        "deal_branch_prices": 0,
+        "deal_component_branch_prices": 0,
+        "deal_addons": 0,
+        "deal_declarations": 0,
+        "deal_optional_ingredients": 0,
+        "pos_devices": 2
+      },
+      "warnings": [],
+      "duration_s": 13.15
+    }
+  ]
+}

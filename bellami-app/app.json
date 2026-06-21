@@ -1,0 +1,110 @@
+{
+  "expo": {
+    "name": "Next Foody",
+    "slug": "next-foody",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "nextfoody",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "statusBarStyle": "dark",
+      "bundleIdentifier": "com.nextfoody.mobile",
+      "buildNumber": "3",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs access to your camera to take photos of meals.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to select meal images.",
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to check delivery availability and suggest nearby addresses.",
+        "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to receipt printers.",
+        "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to receipt printers.",
+        "LSApplicationQueriesSchemes": ["tel", "mailto", "http", "https"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0a0a",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "navigationBar": {
+        "visible": "immersive"
+      },
+      "statusBarStyle": "dark",
+      "package": "com.nextfoody.mobile",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECORD_AUDIO",
+        "BLUETOOTH",
+        "BLUETOOTH_ADMIN",
+        "BLUETOOTH_CONNECT",
+        "BLUETOOTH_SCAN"
+      ]
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#ffffff"
+          }
+        }
+      ],
+      "expo-system-ui",
+      "expo-screen-orientation",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them."
+        }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "enableGooglePay": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "This app needs access to your location to check delivery availability and suggest nearby addresses."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#ec4899"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "apiBaseUrl": "https://nextfoody.com",
+      "router": {},
+      "eas": {
+        "projectId": "f66c0153-48c3-4953-b5f3-e1607e1d52af"
+      }
+    }
+  }
+}

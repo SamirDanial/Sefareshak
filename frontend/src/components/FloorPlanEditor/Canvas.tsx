@@ -1,0 +1,525 @@
+import React, { useRef, useCallback, useEffect } from "react";
+import type {
+  DraggableTable,
+  DraggableFloorElement,
+  SelectedItem,
+} from "./types";
+import { GRID_SIZE } from "./types";
+import { TableElement } from "./TableElement";
+import { FloorElementComponent } from "./FloorElementComponent";
+
+interface CanvasProps {
+  width: number;
+  height: number;
+  zoom: number;
+  showGrid: boolean;
+  snapToGrid: boolean;
+  backgroundSvg?: string;
+  readOnly?: boolean;
+  paintMode?: boolean;
+  onPaintComplete?: (
+    rect: { x: number; y: number; width: number; height: number },
+    screen: { x: number; y: number }
+  ) => void;
+  tables: DraggableTable[];
+  floorElements: DraggableFloorElement[];
+  selectedItem: SelectedItem;
+  onSelectItem: (id: string | null, type: "table" | "element" | null) => void;
+  onMoveItem: (
+    id: string,
+    type: "table" | "element",
+    positionX: number,
+    positionY: number
+  ) => void;
+}
+
+export const Canvas: React.FC<CanvasProps> = ({
+  width,
+  height,
+  zoom,
+  showGrid,
+  snapToGrid,
+  backgroundSvg,
+  readOnly = false,
+  paintMode = false,
+  onPaintComplete,
+  tables,
+  floorElements,
+  selectedItem,
+  onSelectItem,
+  onMoveItem,
+}) => {
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const svgWrapperRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const dragItemRef = useRef<{ id: string; type: "table" | "element" } | null>(null);
+  const dragStartRef = useRef<{ x: number; y: number; itemX: number; itemY: number } | null>(null);
+  const paintDragRef = useRef<{
+    isPainting: boolean;
+    startX: number;
+    startY: number;
+    currentX: number;
+    currentY: number;
+  } | null>(null);
+  const [paintRect, setPaintRect] = React.useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const snapPosition = useCallback(
+    (value: number): number => {
+      if (!snapToGrid) return value;
+      return Math.round(value / GRID_SIZE) * GRID_SIZE;
+    },
+    [snapToGrid]
+  );
+
+  // Calculate effective dimensions and position offset considering rotation
+  // When rotating around center, the visual bounding box shifts
+  const getRotatedBounds = useCallback(
+    (itemWidth: number, itemHeight: number, rotation: number): { 
+      effectiveWidth: number; 
+      effectiveHeight: number;
+      offsetX: number;
+      offsetY: number;
+    } => {
+      // Normalize rotation to 0-360
+      const normalizedRotation = ((rotation % 360) + 360) % 360;
+      
+      // For 0° or 180°, no change
+      if (normalizedRotation === 0 || normalizedRotation === 180) {
+        return { 
+          effectiveWidth: itemWidth, 
+          effectiveHeight: itemHeight,
+          offsetX: 0,
+          offsetY: 0
+        };
+      }
+      
+      // For 90° or 270° rotations, swap width and height
+      if (normalizedRotation === 90 || normalizedRotation === 270) {
+        // When rotating 90°, the visual box shifts:
+        // The center stays at (x + W/2, y + H/2)
+        // The new visual top-left is at (center_x - H/2, center_y - W/2)
+        // Offset from original position:
+        const offsetX = (itemWidth - itemHeight) / 2;
+        const offsetY = (itemHeight - itemWidth) / 2;
+        return { 
+          effectiveWidth: itemHeight, 
+          effectiveHeight: itemWidth,
+          offsetX,
+          offsetY
+        };
+      }
+      
+      // For other rotations, calculate bounding box
+      const radians = (normalizedRotation * Math.PI) / 180;
+      const cos = Math.abs(Math.cos(radians));
+      const sin = Math.abs(Math.sin(radians));
+      const effectiveWidth = itemWidth * cos + itemHeight * sin;
+      const effectiveHeight = itemWidth * sin + itemHeight * cos;
+      const offsetX = (itemWidth - effectiveWidth) / 2;
+      const offsetY = (itemHeight - effectiveHeight) / 2;
+      
+      return { effectiveWidth, effectiveHeight, offsetX, offsetY };
+    },
+    []
+  );
+
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent, id: string, type: "table" | "element") => {
+      if (readOnly) return;
+      e.preventDefault();
+      isDraggingRef.current = true;
+      dragItemRef.current = { id, type };
+
+      // Find the item to get its current position
+      let item: DraggableTable | DraggableFloorElement | undefined;
+      if (type === "table") {
+        item = tables.find((t) => t.id === id);
+      } else {
+        item = floorElements.find((el) => el.id === id);
+      }
+
+      if (item) {
+        dragStartRef.current = {
+          x: e.clientX,
+          y: e.clientY,
+          itemX: item.positionX,
+          itemY: item.positionY,
+        };
+      }
+    },
+    [tables, floorElements, readOnly]
+  );
+
+  const getCanvasPoint = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const x = (clientX - rect.left) / zoom;
+      const y = (clientY - rect.top) / zoom;
+      return { x: Math.max(0, Math.min(width, x)), y: Math.max(0, Math.min(height, y)) };
+    },
+    [zoom, width, height]
+  );
+
+  const handlePaintMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (readOnly) return;
+      if (!paintMode) return;
+      if (!onPaintComplete) return;
+      if (e.button !== 0) return;
+
+      const target = e.target as Element | null;
+      if (target && target.closest("[data-floor-item]")) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const p = getCanvasPoint(e.clientX, e.clientY);
+      if (!p) return;
+
+      paintDragRef.current = {
+        isPainting: true,
+        startX: p.x,
+        startY: p.y,
+        currentX: p.x,
+        currentY: p.y,
+      };
+
+      setPaintRect({ x: p.x, y: p.y, width: 0, height: 0 });
+      onSelectItem(null, null);
+    },
+    [paintMode, onPaintComplete, getCanvasPoint, onSelectItem, readOnly]
+  );
+
+  const handlePaintMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!paintMode) return;
+      const s = paintDragRef.current;
+      if (!s?.isPainting) return;
+      const p = getCanvasPoint(e.clientX, e.clientY);
+      if (!p) return;
+      s.currentX = p.x;
+      s.currentY = p.y;
+
+      const x = Math.min(s.startX, s.currentX);
+      const y = Math.min(s.startY, s.currentY);
+      const w = Math.abs(s.currentX - s.startX);
+      const h = Math.abs(s.currentY - s.startY);
+      setPaintRect({ x, y, width: w, height: h });
+    },
+    [paintMode, getCanvasPoint]
+  );
+
+  const handlePaintMouseUp = useCallback(
+    (e: MouseEvent) => {
+      if (!paintMode) return;
+      if (!onPaintComplete) return;
+      const s = paintDragRef.current;
+      if (!s?.isPainting) return;
+
+      s.isPainting = false;
+
+      const x = Math.min(s.startX, s.currentX);
+      const y = Math.min(s.startY, s.currentY);
+      const w = Math.abs(s.currentX - s.startX);
+      const h = Math.abs(s.currentY - s.startY);
+
+      paintDragRef.current = null;
+      setPaintRect(null);
+
+      if (w < 8 || h < 8) return;
+
+      onPaintComplete(
+        {
+          x: snapPosition(x),
+          y: snapPosition(y),
+          width: snapPosition(w),
+          height: snapPosition(h),
+        },
+        { x: e.clientX, y: e.clientY }
+      );
+    },
+    [paintMode, onPaintComplete, snapPosition]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDraggingRef.current || !dragItemRef.current || !dragStartRef.current) return;
+
+      const deltaX = (e.clientX - dragStartRef.current.x) / zoom;
+      const deltaY = (e.clientY - dragStartRef.current.y) / zoom;
+
+      let newX = dragStartRef.current.itemX + deltaX;
+      let newY = dragStartRef.current.itemY + deltaY;
+
+      // Snap to grid
+      newX = snapPosition(newX);
+      newY = snapPosition(newY);
+
+      // Constrain to canvas bounds (considering rotation)
+      const item = dragItemRef.current.type === "table"
+        ? tables.find((t) => t.id === dragItemRef.current!.id)
+        : floorElements.find((el) => el.id === dragItemRef.current!.id);
+
+      if (item) {
+        const { effectiveWidth, effectiveHeight, offsetX, offsetY } = getRotatedBounds(
+          item.width,
+          item.height,
+          item.rotation
+        );
+        // The visual box starts at (positionX + offsetX, positionY + offsetY)
+        // We need: positionX + offsetX >= 0 AND positionX + offsetX + effectiveWidth <= width
+        // So: positionX >= -offsetX AND positionX <= width - effectiveWidth - offsetX
+        newX = Math.max(-offsetX, Math.min(width - effectiveWidth - offsetX, newX));
+        newY = Math.max(-offsetY, Math.min(height - effectiveHeight - offsetY, newY));
+      }
+
+      onMoveItem(dragItemRef.current.id, dragItemRef.current.type, newX, newY);
+    },
+    [zoom, snapPosition, getRotatedBounds, tables, floorElements, width, height, onMoveItem]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    isDraggingRef.current = false;
+    dragItemRef.current = null;
+    dragStartRef.current = null;
+  }, []);
+
+  // Touch event handlers for mobile
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent, id: string, type: "table" | "element") => {
+      if (readOnly) return;
+      if (e.touches.length !== 1) return;
+      
+      const touch = e.touches[0];
+      isDraggingRef.current = true;
+      dragItemRef.current = { id, type };
+
+      let item: DraggableTable | DraggableFloorElement | undefined;
+      if (type === "table") {
+        item = tables.find((t) => t.id === id);
+      } else {
+        item = floorElements.find((el) => el.id === id);
+      }
+
+      if (item) {
+        dragStartRef.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+          itemX: item.positionX,
+          itemY: item.positionY,
+        };
+      }
+    },
+    [tables, floorElements, readOnly]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!isDraggingRef.current || !dragItemRef.current || !dragStartRef.current) return;
+      if (e.touches.length !== 1) return;
+
+      e.preventDefault(); // Prevent scrolling while dragging
+      const touch = e.touches[0];
+
+      const deltaX = (touch.clientX - dragStartRef.current.x) / zoom;
+      const deltaY = (touch.clientY - dragStartRef.current.y) / zoom;
+
+      let newX = dragStartRef.current.itemX + deltaX;
+      let newY = dragStartRef.current.itemY + deltaY;
+
+      newX = snapPosition(newX);
+      newY = snapPosition(newY);
+
+      const item = dragItemRef.current.type === "table"
+        ? tables.find((t) => t.id === dragItemRef.current!.id)
+        : floorElements.find((el) => el.id === dragItemRef.current!.id);
+
+      if (item) {
+        const { effectiveWidth, effectiveHeight, offsetX, offsetY } = getRotatedBounds(
+          item.width,
+          item.height,
+          item.rotation
+        );
+        newX = Math.max(-offsetX, Math.min(width - effectiveWidth - offsetX, newX));
+        newY = Math.max(-offsetY, Math.min(height - effectiveHeight - offsetY, newY));
+      }
+
+      onMoveItem(dragItemRef.current.id, dragItemRef.current.type, newX, newY);
+    },
+    [zoom, snapPosition, getRotatedBounds, tables, floorElements, width, height, onMoveItem]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    isDraggingRef.current = false;
+    dragItemRef.current = null;
+    dragStartRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    const svgRoot = svgWrapperRef.current?.querySelector("svg") as SVGElement | null;
+    if (!svgRoot) return;
+
+    svgRoot.setAttribute("width", "100%");
+    svgRoot.setAttribute("height", "100%");
+    svgRoot.style.width = "100%";
+    svgRoot.style.height = "100%";
+    svgRoot.style.pointerEvents = "auto";
+    svgRoot.style.display = "block";
+  }, [backgroundSvg]);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("mousemove", handlePaintMouseMove);
+    window.addEventListener("mouseup", handlePaintMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("mousemove", handlePaintMouseMove);
+      window.removeEventListener("mouseup", handlePaintMouseUp);
+    };
+  }, [
+    handleMouseMove,
+    handleMouseUp,
+    handleTouchMove,
+    handleTouchEnd,
+    handlePaintMouseMove,
+    handlePaintMouseUp,
+  ]);
+
+  const handleCanvasClick = useCallback(
+    (e: React.MouseEvent) => {
+      // Only deselect if clicking directly on canvas, not on an item
+      if (e.target === canvasRef.current || e.target === canvasRef.current?.firstChild) {
+        onSelectItem(null, null);
+      }
+    },
+    [onSelectItem]
+  );
+
+  // Generate grid pattern
+  const gridPattern = showGrid ? (
+    <svg
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+      }}
+    >
+      <defs>
+        <pattern
+          id="grid"
+          width={GRID_SIZE * zoom}
+          height={GRID_SIZE * zoom}
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d={`M ${GRID_SIZE * zoom} 0 L 0 0 0 ${GRID_SIZE * zoom}`}
+            fill="none"
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth="1"
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+  ) : null;
+
+  return (
+    <div
+      className="h-full w-full overflow-auto bg-[#0d0d0d] p-4 md:p-8"
+      style={{ minHeight: 0 }}
+    >
+      <div
+        ref={canvasRef}
+        onClick={handleCanvasClick}
+        onMouseDown={handlePaintMouseDown}
+        style={{
+          width: width * zoom,
+          height: height * zoom,
+          backgroundColor: "#1a1a1a",
+          border: "2px solid #333",
+          borderRadius: "8px",
+          position: "relative",
+          cursor: "default",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+        }}
+      >
+        {backgroundSvg && (
+          <div
+            ref={svgWrapperRef}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              pointerEvents: "auto",
+            }}
+            dangerouslySetInnerHTML={{ __html: backgroundSvg }}
+          />
+        )}
+
+        {paintRect && (
+          <div
+            style={{
+              position: "absolute",
+              left: paintRect.x * zoom,
+              top: paintRect.y * zoom,
+              width: paintRect.width * zoom,
+              height: paintRect.height * zoom,
+              border: `${2 * zoom}px dashed rgba(236, 72, 153, 0.9)`,
+              background: "rgba(236, 72, 153, 0.12)",
+              borderRadius: `${6 * zoom}px`,
+              pointerEvents: "none",
+              zIndex: 100,
+            }}
+          />
+        )}
+
+        {gridPattern}
+
+        {/* Floor Elements (rendered first, under tables) */}
+        {floorElements.map((element) => (
+          <FloorElementComponent
+            key={element.id}
+            element={element}
+            isSelected={selectedItem?.id === element.id}
+            zoom={zoom}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onSelect={(id) => onSelectItem(id, "element")}
+          />
+        ))}
+
+        {/* Tables (rendered on top) */}
+        {tables.map((table) => (
+          <TableElement
+            key={table.id}
+            table={table}
+            isSelected={selectedItem?.id === table.id}
+            zoom={zoom}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onSelect={(id) => onSelectItem(id, "table")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+

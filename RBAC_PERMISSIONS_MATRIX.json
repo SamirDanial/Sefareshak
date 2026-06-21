@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "stage": 3,
+    "goal": "Admin permissions matrix validation (RBAC correctness)",
+    "sourceOfTruth": [
+      "backend/src/config/permissions.ts (RESOURCES, ACTIONS, RESOURCE_ACTIONS, DEFAULT_PERMISSIONS, SYSTEM_ROLES)",
+      "backend/src/middleware/rbac.ts (permission enforcement + ORG_OWNER/ORG_ADMIN implicit bypass allowlist)"
+    ]
+  },
+  "roleDefinitions": {
+    "SUPER_ADMIN": {
+      "type": "userType",
+      "notes": [
+        "Implicit full access to all resources/actions (hasImplicitFullAccess).",
+        "Data scoping must still be enforced by organizationContext/branch guards and controller where-clauses."
+      ]
+    },
+    "ORG_OWNER": {
+      "type": "orgRole",
+      "notes": [
+        "Bypasses permission checks ONLY for org-owned resources listed in ORG_ADMIN_IMPLICIT_RESOURCES.",
+        "Must be scoped to resolved organization by organizationContext and controller scoping."
+      ]
+    },
+    "ORG_ADMIN": {
+      "type": "orgRole",
+      "notes": [
+        "Same permissions bypass behavior as ORG_OWNER for org-owned resources.",
+        "Owner-only constraints (if any) are enforced in controllers (e.g., cannot modify ORG_OWNER in staff management)."
+      ]
+    },
+    "STAFF": {
+      "type": "systemRole",
+      "notes": [
+        "Represents staff permissions when assigned the SYSTEM_ROLES.STAFF role (or equivalent custom roles).",
+        "Branch access must be limited to assigned branches via requireBranchAccess / controller filters.",
+        "If userType has no defaults (e.g. EMPLOYEE), then roles define permissions entirely."
+      ]
+    },
+    "BRANCH_ADMIN": {
+      "type": "userType",
+      "notes": [
+        "Uses DEFAULT_PERMISSIONS.BRANCH_ADMIN plus any assigned role permissions.",
+        "Branch access should be limited to assigned branches."
+      ]
+    }
+  },
+  "matrix": {
+    "SUPER_ADMIN": {
+      "allResources": "ALL ACTIONS (implicit)"
+    },
+    "ORG_OWNER": {
+      "orgOwnedResources": "ALL ACTIONS for resources in ORG_ADMIN_IMPLICIT_RESOURCES (see backend/src/middleware/rbac.ts)",
+      "platformOnlyResources": {
+        "push_notifications": "DENY unless explicitly granted by role permissions",
+        "policies": "DENY unless explicitly granted by role permissions"
+      }
+    },
+    "ORG_ADMIN": {
+      "orgOwnedResources": "ALL ACTIONS for resources in ORG_ADMIN_IMPLICIT_RESOURCES (see backend/src/middleware/rbac.ts)",
+      "platformOnlyResources": {
+        "push_notifications": "DENY unless explicitly granted by role permissions",
+        "policies": "DENY unless explicitly granted by role permissions"
+      }
+    },
+    "BRANCH_ADMIN": {
+      "defaultPermissions": {
+        "dashboard": ["view"],
+        "orders": ["view", "create", "update", "cancel", "refund", "update_status"],
+        "reservations": ["view", "create", "update", "cancel", "refund", "confirm", "seat", "complete"],
+        "menu": ["view", "create", "update", "toggle_active"],
+        "deals": ["view", "create", "update", "toggle_active"],
+        "categories": ["view", "create", "update", "toggle_active"],
+        "meals": ["view", "create", "update", "toggle_active"],
+        "addons": ["view", "create", "update", "toggle_active"],
+        "declarations": ["view", "create", "update"],
+        "branches": [
+          "view",
+          "view_branch_settings",
+          "update_branch_settings",
+          "view_branch_reservation_settings",
+          "update_branch_reservation_settings"
+        ],
+        "settings": ["view", "update"],
+        "users": ["view", "create", "update", "assign_roles"],
+        "roles": ["view"],
+        "end_of_day": ["view", "close_day"],
+        "closed_days": ["view"],
+        "reports": ["view", "export"],
+        "analytics": ["view", "export"],
+        "analytics_revenue": ["view", "export"],
+        "analytics_category_insights": ["view"],
+        "analytics_reservation": ["view"],
+        "notifications": ["view"],
+        "push_notifications": ["view", "send"],
+        "hero_sections": ["view"],
+        "policies": ["view"],
+        "tables": ["view", "create", "update", "delete", "toggle_active"],
+        "table_status_grid": ["view"],
+        "zones": ["view", "create", "update", "delete", "toggle_active"]
+      }
+    },
+    "STAFF": {
+      "systemRolePermissions": {
+        "dashboard": ["view"],
+        "orders": ["view", "create", "update_status"],
+        "reservations": ["view", "create", "confirm", "seat", "complete"],
+        "menu": ["view"],
+        "deals": ["view"],
+        "categories": ["view"],
+        "meals": ["view"],
+        "addons": ["view"],
+        "tables": ["view"],
+        "table_status_grid": ["view"],
+        "zones": ["view"],
+        "notifications": ["view"]
+      }
+    }
+  },
+  "criticalResourcesChecklist": {
+    "branches": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Within-org operations must be scoped by organizationContext + branch org validation."]
+    },
+    "staff": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Staff management routes should be org-scoped; owner-only constraints are allowed."]
+    },
+    "orders": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Must be org-scoped. STAFF/BRANCH_ADMIN limited to assigned branches."]
+    },
+    "reservations": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Must be org-scoped. STAFF/BRANCH_ADMIN limited to assigned branches."]
+    },
+    "menu": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Org-scoped resources; SUPER_ADMIN requires explicit org selection." ]
+    },
+    "settings": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Org settings endpoints should enforce URL :id matches selected org for SUPER_ADMIN."]
+    },
+    "hero/branding": {
+      "expected": ["ORG_OWNER", "ORG_ADMIN"],
+      "notes": ["Hero sections should be org-scoped; public active hero can fall back to global." ]
+    }
+  }
+}

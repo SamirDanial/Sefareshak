@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags (neutral placeholders; organization-specific values are injected server-side) -->
+    <title>Online Ordering</title>
+    <meta name="title" content="Online Ordering" />
+    <meta name="description" content="Order food online." />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="theme-color" content="#ec4899" />
+
+    <!-- Open Graph / Facebook (neutral placeholders; injected server-side) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="/" />
+    <meta property="og:title" content="Online Ordering" />
+    <meta property="og:description" content="Order food online." />
+    <meta property="og:image" content="/vite.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Online Ordering" />
+    <meta property="og:site_name" content="Online Ordering" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter (neutral placeholders; injected server-side) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="/" />
+    <meta name="twitter:title" content="Online Ordering" />
+    <meta name="twitter:description" content="Order food online." />
+    <meta name="twitter:image" content="/vite.svg" />
+    <meta name="twitter:image:alt" content="Online Ordering" />
+
+    <!-- Additional SEO Tags -->
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="Restaurant" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+
+    <!-- Favicon (injected via script to avoid flashing fallback on /admin before org logo loads) -->
+    <script>
+      (function () {
+        try {
+          if (window.location && window.location.pathname && window.location.pathname.startsWith("/admin")) {
+            return;
+          }
+
+          var links = [
+            { rel: "icon", type: "image/png", href: "/NextFoody.png" },
+            { rel: "apple-touch-icon", sizes: "180x180", href: "/NextFoody.png" },
+            { rel: "icon", type: "image/png", sizes: "32x32", href: "/NextFoody.png" },
+            { rel: "icon", type: "image/png", sizes: "16x16", href: "/NextFoody.png" },
+          ];
+
+          for (var i = 0; i < links.length; i++) {
+            var l = document.createElement("link");
+            var cfg = links[i];
+            l.rel = cfg.rel;
+            if (cfg.type) l.type = cfg.type;
+            if (cfg.sizes) l.sizes = cfg.sizes;
+            l.href = cfg.href;
+            document.head.appendChild(l);
+          }
+        } catch {
+          // ignore
+        }
+      })();
+    </script>
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Canonical URL (injected server-side for /o/:slug) -->
+    <link rel="canonical" href="https://example.com/" />
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
