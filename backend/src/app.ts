@@ -57,6 +57,7 @@ const getIssuerCandidates = (): string[] => {
 };
 
 // Load environment variables
+// First comment by Lima jan
 dotenv.config();
 
 class AppSingleton {
