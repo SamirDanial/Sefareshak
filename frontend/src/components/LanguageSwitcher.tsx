@@ -12,9 +12,7 @@ import { cn } from "@/lib/utils";
 
 const languages = [
   { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
+  { code: "da", name: "دری (Dari)", flag: "🇦🇫" },
 ];
 
 export default function LanguageSwitcher() {

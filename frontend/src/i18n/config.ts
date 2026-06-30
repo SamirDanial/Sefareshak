@@ -3,9 +3,12 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 import enTranslations from "./locales/en.json";
-import frTranslations from "./locales/fr.json";
-import deTranslations from "./locales/de.json";
-import esTranslations from "./locales/es.json";
+import daTranslations from "./locales/da.json";
+
+const languageDirections: Record<string, "ltr" | "rtl"> = {
+  en: "ltr",
+  da: "rtl",
+};
 
 i18n
   .use(LanguageDetector)
@@ -15,14 +18,8 @@ i18n
       en: {
         translation: enTranslations,
       },
-      fr: {
-        translation: frTranslations,
-      },
-      de: {
-        translation: deTranslations,
-      },
-      es: {
-        translation: esTranslations,
+      da: {
+        translation: daTranslations,
       },
     },
     fallbackLng: "en",
@@ -35,5 +32,17 @@ i18n
       caches: ["localStorage"],
     },
   });
+
+// Update document direction when language changes
+i18n.on("languageChanged", (lng) => {
+  const direction = languageDirections[lng] || "ltr";
+  document.documentElement.dir = direction;
+  document.documentElement.lang = lng;
+});
+
+// Set initial direction
+const initialLang = i18n.language || "en";
+document.documentElement.dir = languageDirections[initialLang] || "ltr";
+document.documentElement.lang = initialLang;
 
 export default i18n;
