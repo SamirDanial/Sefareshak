@@ -330,6 +330,8 @@ const MealManagement: React.FC = () => {
   const [formData, setFormData] = useState<Omit<MealFormData, 'basePrice'> & { id?: string; basePrice: number | null }>({
     name: "",
     description: "",
+    nameFa: "",
+    descriptionFa: "",
     basePrice: null,
     taxPercentage: null,
     categoryId: "",
@@ -559,6 +561,8 @@ const MealManagement: React.FC = () => {
     setFormData({
       name: "",
       description: "",
+      nameFa: "",
+      descriptionFa: "",
       basePrice: null,
       taxPercentage: null,
       categoryId: "",
@@ -599,6 +603,8 @@ const MealManagement: React.FC = () => {
     setFormData({
       name: "",
       description: "",
+      nameFa: "",
+      descriptionFa: "",
       basePrice: null,
       taxPercentage: null,
       categoryId: selectedCategory || "",
@@ -648,6 +654,8 @@ const MealManagement: React.FC = () => {
       id: meal.id,
       name: meal.name,
       description: meal.description || "",
+      nameFa: (meal as any).nameFa || "",
+      descriptionFa: (meal as any).descriptionFa || "",
       basePrice: basePrice,
       taxPercentage: meal.taxPercentage,
       categoryId: meal.categoryId,
@@ -1636,6 +1644,8 @@ const MealManagement: React.FC = () => {
             setFormData({
               name: "",
               description: "",
+              nameFa: "",
+              descriptionFa: "",
               basePrice: null,
               taxPercentage: null,
               categoryId: "",
@@ -1808,6 +1818,42 @@ const MealManagement: React.FC = () => {
                 rows={3}
                 className="bg-transparent text-foreground border-border"
               />
+            </div>
+
+            {/* Persian Fields Section */}
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Persian (فارسی)</h3>
+              <div className="space-y-2">
+                <Label htmlFor="nameFa" className="text-foreground font-medium">
+                  Persian Name (نام فارسی)
+                </Label>
+                <Input
+                  id="nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder="نام فارسی"
+                  dir="rtl"
+                  className="text-foreground bg-card border-border"
+                />
+              </div>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="descriptionFa" className="text-foreground font-medium">
+                  Persian Description (توضیحات فارسی)
+                </Label>
+                <Textarea
+                  id="descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder="توضیحات فارسی"
+                  rows={3}
+                  dir="rtl"
+                  className="bg-transparent text-foreground border-border"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -2938,6 +2984,42 @@ const MealManagement: React.FC = () => {
                 rows={3}
                 className="bg-transparent text-foreground border-border"
               />
+            </div>
+
+            {/* Persian Fields Section */}
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Persian (فارسی)</h3>
+              <div className="space-y-2">
+                <Label htmlFor="edit-nameFa" className="text-foreground font-medium">
+                  Persian Name (نام فارسی)
+                </Label>
+                <Input
+                  id="edit-nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder="نام فارسی"
+                  dir="rtl"
+                  className="text-foreground bg-card border-border"
+                />
+              </div>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="edit-descriptionFa" className="text-foreground font-medium">
+                  Persian Description (توضیحات فارسی)
+                </Label>
+                <Textarea
+                  id="edit-descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder="توضیحات فارسی"
+                  rows={3}
+                  dir="rtl"
+                  className="bg-transparent text-foreground border-border"
+                />
+              </div>
             </div>
 
             <div className="space-y-2 mt-6">

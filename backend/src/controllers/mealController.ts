@@ -612,6 +612,8 @@ export const mealController = {
       const {
         name,
         description,
+        nameFa,
+        descriptionFa,
         sku,
         basePrice,
         taxPercentage,
@@ -739,6 +741,8 @@ export const mealController = {
             organizationId,
             name: name.trim(),
             description: description?.trim() || null,
+            nameFa: nameFa?.trim() || null,
+            descriptionFa: descriptionFa?.trim() || null,
             sku: sku?.trim() || null,
             basePrice: parseFloat(basePrice),
             taxPercentage:
@@ -884,6 +888,8 @@ export const mealController = {
       const {
         name,
         description,
+        nameFa,
+        descriptionFa,
         sku,
         basePrice,
         taxPercentage,
@@ -1008,6 +1014,9 @@ export const mealController = {
         if (name !== undefined) updateData.name = name.trim();
         if (description !== undefined)
           updateData.description = description?.trim() || null;
+        if (nameFa !== undefined) updateData.nameFa = nameFa?.trim() || null;
+        if (descriptionFa !== undefined)
+          updateData.descriptionFa = descriptionFa?.trim() || null;
         if (sku !== undefined) updateData.sku = sku?.trim() || null;
         if (basePrice !== undefined)
           updateData.basePrice = parseFloat(basePrice);

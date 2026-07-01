@@ -110,6 +110,8 @@ const MealManagement: React.FC = () => {
   >({
     name: "",
     description: "",
+    nameFa: "",
+    descriptionFa: "",
     basePrice: null,
     taxPercentage: null,
     categoryId: "",

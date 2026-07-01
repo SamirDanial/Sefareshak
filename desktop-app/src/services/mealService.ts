@@ -34,6 +34,8 @@ export interface Meal {
   id: string;
   name: string;
   description: string | null;
+  nameFa?: string | null;
+  descriptionFa?: string | null;
   basePrice: string;
   taxPercentage: number | null;
   image: string | null;
@@ -68,6 +70,8 @@ export interface Meal {
 export interface MealFormData {
   name: string;
   description?: string;
+  nameFa?: string;
+  descriptionFa?: string;
   basePrice: number;
   taxPercentage?: number | null;
   image?: string;

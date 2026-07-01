@@ -191,6 +191,8 @@ model Meal {
   sku                     String?
   name                    String
   description             String?
+  nameFa                  String?
+  descriptionFa           String?
   basePrice               Decimal                  @db.Decimal(10, 2)
   taxPercentage           Decimal?                 @db.Decimal(5, 2)
   image                   String?
