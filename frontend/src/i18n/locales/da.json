@@ -129,7 +129,7 @@
     "contactLine": "—",
     "taxLine": "—",
     "cashRegisterSale": "فروش صندوق",
-    "lieferando": "Lieferando",
+    "lieferando": "لیفراندو",
     "webshopLower": "فروشگاه آنلاین",
     "sumOrders": "مجموع سفارش‌ها",
     "sumCancelled": "مجموع لغوشده‌ها",
@@ -319,7 +319,8 @@
       "address": "آدرس",
       "email": "ایمیل",
       "noContactInfo": "هیچ اطلاعات تماسی موجود نیست",
-      "freeVersionNotice": "این شعبه از نسخه رایگان استفاده می‌کند. برای دسترسی به منوی کامل و امکانات سفارش، لطفاً مستقیماً با ما تماس بگیرید."  }
+      "freeVersionNotice": "این شعبه از نسخه رایگان استفاده می‌کند. برای دسترسی به منوی کامل و امکانات سفارش، لطفاً مستقیماً با ما تماس بگیرید."  
+    }
   },
   "serviceType": {
     "restaurant": "رستورانت",
@@ -370,7 +371,8 @@
     "failedToUpdateQuantity": "به‌روزرسانی تعداد ناموفق بود",
     "closedToday": "امروز بسته هستیم.",
     "nextOpen": "در {{day}} ساعت {{time}} دوباره باز خواهیم بود.",
-    "branchUrgentlyClosed": "این شعبه موقتاً بسته است."},
+    "branchUrgentlyClosed": "این شعبه موقتاً بسته است."
+  },
   "menu": {
     "title": "منو",
     "allCategories": "همه دسته‌بندی‌ها",
@@ -399,7 +401,7 @@
     "placeOrder": "ثبت سفارش",
     "processing": "در حال پردازش...",
     "voucher": {
-      "title": "Do you have a voucher?",
+      "title": "آیا ووچر دارید؟",
       "placeholder": "کد ووچر",
       "apply": "اعمال",
       "success": "ووچر با موفقیت اعمال شد!",
@@ -456,7 +458,8 @@
       "morning": "صبح",
       "afternoon": "بعدازظهر",
       "evening": "شب",
-      "noSlotsInPeriod": "در این بازه زمانی، زمانی موجود نیست" },
+      "noSlotsInPeriod": "در این بازه زمانی، زمانی موجود نیست" 
+    },
     "step1": {
       "title": "آدرس تحویل",
       "description": "آدرس تحویل سفارش خود را انتخاب کنید",
@@ -664,12 +667,13 @@
       "orderOutsideHoursMessage": "سفارش شما پس از باز شدن، در ساعت {{time}} آماده و ارائه خواهد شد.",
       "whenWeOpen": "پس از باز شدن",
       "checkoutBlockedTitle": "ثبت سفارش در حال حاضر امکان‌پذیر نیست",
-      "backToCart": "بازگشت به سبد خرید" }
+      "backToCart": "بازگشت به سبد خرید" 
+    }
   },
   "appStatus": {
-    "bannerLabel": "Current app status",
-    "retry": "Please try again later.",
-    "loading": "Checking availability...",
+    "bannerLabel": "وضعیت فعلی اپلیکیشن",
+    "retry": "لطفاً دوباره تلاش کنید.",
+    "loading": "در حال بررسی دسترسی...",
     "states": {
       "live": {
         "label": "فعال",
@@ -834,12 +838,7 @@
       "confirm": "تأیید تغییر زمان",
       "success": "زمان سفارش با موفقیت تغییر کرد.",
       "error": "تغییر زمان سفارش ناموفق بود"
-    },
-    "noScheduledOrders": "هیچ سفارش زمان‌بندی‌شده‌ای وجود ندارد",
-    "noScheduledOrdersDescription": "هیچ سفارش زمان‌بندی‌شده‌ای ندارید. می‌توانید هنگام پرداخت یکی را زمان‌بندی کنید.",
-    "servingBranch": "شعبه ارائه‌دهنده",
-    "extraDetails": "جزئیات بیشتر",
-    "taxCalculatedForBranch": "مالیات بر اساس نرخ‌های شعبه محاسبه می‌شود"
+    }
   },
   "reservations": {
     "statuses": {
@@ -892,7 +891,7 @@
     "fullName": "نام کامل *",
     "fullNamePlaceholder": "نام کامل شما",
     "email": "ایمیل *",
-    "emailPlaceholder": "your.email@example.com",
+    "emailPlaceholder": "email.shoma@example.com",
     "phone": "شماره تماس *",
     "phonePlaceholder": "+1 (555) 123-4567",
     "specialRequests": "درخواست‌های ویژه (اختیاری)",
@@ -1945,7 +1944,8 @@
        "excludedBranches": "شعبه‌های حذف‌شده",
        "excludedBranchesDescription": "شعبه‌هایی را انتخاب کنید که این اعلامیه در آن‌ها در دسترس نباشد",
        "noBranchesAvailable": "هیچ شعبه‌ای موجود نیست",
-       "branchesExcluded": "{{count}} شعبه حذف شد"},
+       "branchesExcluded": "{{count}} شعبه حذف شد"
+      },
     "reservationManagement": {
       "title": "مدیریت رزروها",
       "description": "مدیریت تمام رزروهای رستوران",
@@ -2243,7 +2243,8 @@
       "oldestFirst": "قدیمی‌ترین",
       "noZonesFound": "هیچ ناحیه‌ای یافت نشد",
       "showingZones": "نمایش {{count}} از {{total}} ناحیه",
-      "pageOf": "صفحه {{current}} از {{total}}"},
+      "pageOf": "صفحه {{current}} از {{total}}"
+    },
     "tableManagement": {
       "title": "مدیریت میزها",
       "description": "مدیریت میزها و ظرفیت نشستن رستوران",
@@ -2748,29 +2749,30 @@
         "allowSameDayBooking": "اجازه رزرو در همان روز",
         "allowSameDayBookingDescription": "به مشتریان اجازه رزرو در همان روز داده شود",
         "allowCancellation": "اجازه لغو رزرو",
-        "allowCancellationDescription": "به مشتریان اجازه لغو رزرو داده شود"    },
-            "preOrderSettings": {
-        "title": "تنظیمات پیش‌سفارش",
-    "description": "گزینه‌های پیش‌سفارش برای رزرو را پیکربندی کنید",
-    "enablePreOrder": "فعال‌سازی پیش‌سفارش رزرو",
-    "enablePreOrderDescription": "به مشتریان اجازه دهید همراه با رزرو، پیش‌سفارش غذا ثبت کنند",
-    "minimumOrderAmount": "حداقل مبلغ سفارش (اختیاری)",
-    "minimumOrderAmountPlaceholder": "0.00",
-    "depositAndPayment": "بیعانه و پرداخت",
-    "depositPercentage": "درصد بیعانه",
-    "depositPercentageDescription": "درصدی از مبلغ کل سفارش که به عنوان پرداخت اولیه دریافت می‌شود (0 تا 100٪). باقی‌مانده بعداً دریافت خواهد شد.",
-    "allowedPaymentMethods": "روش‌های پرداخت مجاز",
-    "allowedPaymentMethodsDescription": "روش‌هایی که مشتری می‌تواند برای پرداخت بیعانه استفاده کند را انتخاب کنید",
-    "paymentMethodOnlineCard": "پرداخت آنلاین کارت (Stripe)",
-    "paymentMethodPayPal": "PayPal",
-    "paymentMethodNone": "بدون پرداخت (پرداخت در محل)",
-    "cancellationRefundPolicy": "قوانین لغو و بازپرداخت",
-    "fullRefundHoursBefore": "بازپرداخت کامل (ساعت قبل)",
-    "fullRefundPlaceholder": "مثلاً 24",
-    "partialRefundHoursBefore": "بازپرداخت جزئی (ساعت قبل)",
-    "partialRefundPlaceholder": "مثلاً 4",
-    "noRefundHoursBefore": "بدون بازپرداخت (ساعت قبل)",
-    "noRefundPlaceholder": "مثلاً 1"
+        "allowCancellationDescription": "به مشتریان اجازه لغو رزرو داده شود"   
+        },
+        "preOrderSettings": {
+          "title": "تنظیمات پیش‌سفارش",
+          "description": "گزینه‌های پیش‌سفارش برای رزرو را پیکربندی کنید",
+          "enablePreOrder": "فعال‌سازی پیش‌سفارش رزرو",
+          "enablePreOrderDescription": "به مشتریان اجازه دهید همراه با رزرو، پیش‌سفارش غذا ثبت کنند",
+          "minimumOrderAmount": "حداقل مبلغ سفارش (اختیاری)",
+          "minimumOrderAmountPlaceholder": "0.00",
+          "depositAndPayment": "بیعانه و پرداخت",
+          "depositPercentage": "درصد بیعانه",
+          "depositPercentageDescription": "درصدی از مبلغ کل سفارش که به عنوان پرداخت اولیه دریافت می‌شود (0 تا 100٪). باقی‌مانده بعداً دریافت خواهد شد.",
+          "allowedPaymentMethods": "روش‌های پرداخت مجاز",
+          "allowedPaymentMethodsDescription": "روش‌هایی که مشتری می‌تواند برای پرداخت بیعانه استفاده کند را انتخاب کنید",
+          "paymentMethodOnlineCard": "پرداخت آنلاین کارت (Stripe)",
+          "paymentMethodPayPal": "پی‌پال",
+          "paymentMethodNone": "بدون پرداخت (پرداخت در محل)",
+          "cancellationRefundPolicy": "قوانین لغو و بازپرداخت",
+          "fullRefundHoursBefore": "بازپرداخت کامل (ساعت قبل)",
+          "fullRefundPlaceholder": "مثلاً 24",
+          "partialRefundHoursBefore": "بازپرداخت جزئی (ساعت قبل)",
+          "partialRefundPlaceholder": "مثلاً 4",
+          "noRefundHoursBefore": "بدون بازپرداخت (ساعت قبل)",
+          "noRefundPlaceholder": "مثلاً 1"
 },
       "advancedSettings": {
         "title": "تنظیمات پیشرفته",
@@ -3186,7 +3188,8 @@
         "freeDeliveryThresholdPlaceholder": "50.00",
         "enableFreeDelivery": "فعال‌سازی آستانه تحویل رایگان",
         "takeawayServiceFee": "هزینه خدمات بیرون‌بر",
-        "takeawayServiceFeeDescription": "هزینه اضافی برای سفارش‌های بیرون‌بر"    },
+        "takeawayServiceFeeDescription": "هزینه اضافی برای سفارش‌های بیرون‌بر"    
+      },
       "paymentSettings": {
         "title": "تنظیمات پرداخت",
         "description": "روش‌های پرداخت قابل قبول را پیکربندی کنید",

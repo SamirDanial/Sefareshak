@@ -548,8 +548,8 @@
         "phoneTooLong": "Phone number cannot exceed 15 digits",
         "invalidPhoneNumber": "Please enter a valid phone number",
         "addressGeocodingFailed": "Failed to geocode address. Please check the address and try again."
-      }
-    },
+    }
+     },
     "step2": {
       "title": "Payment",
       "description": "Choose payment method",
