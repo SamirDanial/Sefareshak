@@ -43,7 +43,19 @@ export const addonController = {
             },
           },
           {
+            nameFa: {
+              contains: search as string,
+              mode: "insensitive" as const,
+            },
+          },
+          {
             description: {
+              contains: search as string,
+              mode: "insensitive" as const,
+            },
+          },
+          {
+            descriptionFa: {
               contains: search as string,
               mode: "insensitive" as const,
             },
@@ -266,7 +278,9 @@ export const addonController = {
 
       const {
         name,
+        nameFa,
         description,
+        descriptionFa,
         sku,
         price, // Base price
         sizes = [],
@@ -377,7 +391,9 @@ export const addonController = {
           data: {
             organizationId,
             name: name.trim(),
+            nameFa: nameFa?.trim() || null,
             description: description?.trim() || null,
+            descriptionFa: descriptionFa?.trim() || null,
             sku: trimmedSku, // Store SKU
             price: basePrice, // Store base price
             taxPercentage:
@@ -459,7 +475,7 @@ export const addonController = {
       }
 
       const { id } = req.params;
-      const { name, description, sku, price, sizes, taxPercentage, image, type, excludedBranches, isActive, categoryIds } =
+      const { name, nameFa, description, descriptionFa, sku, price, sizes, taxPercentage, image, type, excludedBranches, isActive, categoryIds } =
         req.body;
 
       // Check if addon exists
@@ -577,8 +593,11 @@ export const addonController = {
           updateData.organizationId = organizationId;
         }
         if (name !== undefined) updateData.name = name.trim();
+        if (nameFa !== undefined) updateData.nameFa = nameFa?.trim() || null;
         if (description !== undefined)
           updateData.description = description?.trim() || null;
+        if (descriptionFa !== undefined)
+          updateData.descriptionFa = descriptionFa?.trim() || null;
         if (trimmedSku !== undefined) updateData.sku = trimmedSku;
         if (price !== undefined) {
           if (price < 0) {

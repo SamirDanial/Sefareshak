@@ -85,7 +85,19 @@ export const categoryController = {
             },
           },
           {
+            nameFa: {
+              contains: search as string,
+              mode: "insensitive" as const,
+            },
+          },
+          {
             description: {
+              contains: search as string,
+              mode: "insensitive" as const,
+            },
+          },
+          {
+            descriptionFa: {
               contains: search as string,
               mode: "insensitive" as const,
             },
@@ -239,7 +251,9 @@ export const categoryController = {
 
       const {
         name,
+        nameFa,
         description,
+        descriptionFa,
         taxPercentage,
         image,
         excludedBranches = [],
@@ -298,7 +312,9 @@ export const categoryController = {
         data: {
           organizationId,
           name: name.trim(),
+          nameFa: nameFa?.trim() || null,
           description: description?.trim() || null,
+          descriptionFa: descriptionFa?.trim() || null,
           taxPercentage:
             taxPercentage !== undefined ? parseFloat(taxPercentage) : null,
           image: image?.trim() || null,
@@ -346,7 +362,9 @@ export const categoryController = {
       const { id } = req.params;
       const {
         name,
+        nameFa,
         description,
+        descriptionFa,
         taxPercentage,
         image,
         excludedBranches,
@@ -382,8 +400,11 @@ export const categoryController = {
 
       const updateData: any = {};
       if (name !== undefined) updateData.name = name.trim();
+      if (nameFa !== undefined) updateData.nameFa = nameFa?.trim() || null;
       if (description !== undefined)
         updateData.description = description?.trim() || null;
+      if (descriptionFa !== undefined)
+        updateData.descriptionFa = descriptionFa?.trim() || null;
       if (taxPercentage !== undefined)
         updateData.taxPercentage =
           taxPercentage !== null ? parseFloat(taxPercentage) : null;
@@ -867,7 +888,9 @@ export const categoryController = {
         select: {
           id: true,
           name: true,
+          nameFa: true,
           description: true,
+          descriptionFa: true,
           taxPercentage: true,
           image: true,
           isActive: true,
@@ -917,7 +940,9 @@ export const categoryController = {
             data: {
               organizationId: targetOrgId,
               name: c.name,
+              nameFa: c.nameFa,
               description: c.description,
+              descriptionFa: c.descriptionFa,
               taxPercentage: c.taxPercentage,
               image: c.image,
               isActive: c.isActive,

@@ -1822,10 +1822,10 @@ const MealManagement: React.FC = () => {
 
             {/* Persian Fields Section */}
             <div className="border-t border-border pt-4 mt-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Persian (فارسی)</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t("admin.mealManagement.persianSectionTitle")}</h3>
               <div className="space-y-2">
                 <Label htmlFor="nameFa" className="text-foreground font-medium">
-                  Persian Name (نام فارسی)
+                  {t("admin.mealManagement.mealNameFa")}
                 </Label>
                 <Input
                   id="nameFa"
@@ -1833,14 +1833,14 @@ const MealManagement: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, nameFa: e.target.value })
                   }
-                  placeholder="نام فارسی"
+                  placeholder={t("admin.mealManagement.mealNameFaPlaceholder")}
                   dir="rtl"
                   className="text-foreground bg-card border-border"
                 />
               </div>
               <div className="space-y-2 mt-4">
                 <Label htmlFor="descriptionFa" className="text-foreground font-medium">
-                  Persian Description (توضیحات فارسی)
+                  {t("admin.mealManagement.mealDescriptionFa")}
                 </Label>
                 <Textarea
                   id="descriptionFa"
@@ -1848,7 +1848,7 @@ const MealManagement: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setFormData({ ...formData, descriptionFa: e.target.value })
                   }
-                  placeholder="توضیحات فارسی"
+                  placeholder={t("admin.mealManagement.mealDescriptionFaPlaceholder")}
                   rows={3}
                   dir="rtl"
                   className="bg-transparent text-foreground border-border"
@@ -2988,10 +2988,10 @@ const MealManagement: React.FC = () => {
 
             {/* Persian Fields Section */}
             <div className="border-t border-border pt-4 mt-4">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Persian (فارسی)</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t("admin.mealManagement.persianSectionTitle")}</h3>
               <div className="space-y-2">
                 <Label htmlFor="edit-nameFa" className="text-foreground font-medium">
-                  Persian Name (نام فارسی)
+                  {t("admin.mealManagement.mealNameFa")}
                 </Label>
                 <Input
                   id="edit-nameFa"
@@ -2999,14 +2999,14 @@ const MealManagement: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData({ ...formData, nameFa: e.target.value })
                   }
-                  placeholder="نام فارسی"
+                  placeholder={t("admin.mealManagement.mealNameFaPlaceholder")}
                   dir="rtl"
                   className="text-foreground bg-card border-border"
                 />
               </div>
               <div className="space-y-2 mt-4">
                 <Label htmlFor="edit-descriptionFa" className="text-foreground font-medium">
-                  Persian Description (توضیحات فارسی)
+                  {t("admin.mealManagement.mealDescriptionFa")}
                 </Label>
                 <Textarea
                   id="edit-descriptionFa"
@@ -3014,7 +3014,7 @@ const MealManagement: React.FC = () => {
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setFormData({ ...formData, descriptionFa: e.target.value })
                   }
-                  placeholder="توضیحات فارسی"
+                  placeholder={t("admin.mealManagement.mealDescriptionFaPlaceholder")}
                   rows={3}
                   dir="rtl"
                   className="bg-transparent text-foreground border-border"

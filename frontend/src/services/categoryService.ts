@@ -4,7 +4,9 @@ export interface Category {
   id: string;
   organizationId?: string | null;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   image: string | null;
   taxPercentage: number | null;
   isActive: boolean;
@@ -22,7 +24,9 @@ export interface Category {
 
 export interface CategoryFormData {
   name: string;
+  nameFa?: string | null;
   description?: string;
+  descriptionFa?: string | null;
   image?: string;
   taxPercentage?: number | null;
   excludedBranches?: string[];

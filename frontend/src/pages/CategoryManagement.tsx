@@ -242,7 +242,9 @@ const CategoryManagement: React.FC = () => {
   // Form states
   const [formData, setFormData] = useState<CategoryFormData>({
     name: "",
+    nameFa: "",
     description: "",
+    descriptionFa: "",
     image: "",
     taxPercentage: null,
     excludedBranches: [],
@@ -343,7 +345,9 @@ const CategoryManagement: React.FC = () => {
     setSelectedCategory(category);
     setFormData({
       name: category.name,
+      nameFa: category.nameFa || "",
       description: category.description || "",
+      descriptionFa: category.descriptionFa || "",
       image: category.image || "",
       taxPercentage: category.taxPercentage,
       excludedBranches: category.excludedBranches || [],
@@ -431,7 +435,9 @@ const CategoryManagement: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: "",
+      nameFa: "",
       description: "",
+      descriptionFa: "",
       image: "",
       taxPercentage: null,
       excludedBranches: [],
@@ -1072,6 +1078,43 @@ const CategoryManagement: React.FC = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="nameFa" className="text-sm font-medium">
+                {t("admin.categoryManagement.categoryNameFa")}
+              </Label>
+              <Input
+                id="nameFa"
+                value={formData.nameFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, nameFa: e.target.value })
+                }
+                placeholder={t(
+                  "admin.categoryManagement.categoryNameFaPlaceholder"
+                )}
+                className="bg-transparent text-foreground border-border"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="descriptionFa" className="text-sm font-medium">
+                {t("admin.categoryManagement.descriptionLabelFa")}
+              </Label>
+              <Textarea
+                id="descriptionFa"
+                value={formData.descriptionFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, descriptionFa: e.target.value })
+                }
+                placeholder={t(
+                  "admin.categoryManagement.descriptionPlaceholderFa"
+                )}
+                rows={3}
+                className="bg-transparent text-foreground border-border resize-none"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="taxPercentage" className="text-sm font-medium">
                 {t("admin.categoryManagement.taxPercentage")}
               </Label>
@@ -1340,6 +1383,43 @@ const CategoryManagement: React.FC = () => {
                 )}
                 rows={3}
                 className="bg-transparent text-foreground border-border resize-none"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="edit-nameFa" className="text-sm font-medium">
+                {t("admin.categoryManagement.categoryNameFa")}
+              </Label>
+              <Input
+                id="edit-nameFa"
+                value={formData.nameFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, nameFa: e.target.value })
+                }
+                placeholder={t(
+                  "admin.categoryManagement.categoryNameFaPlaceholder"
+                )}
+                className="bg-transparent text-foreground border-border"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="edit-descriptionFa" className="text-sm font-medium">
+                {t("admin.categoryManagement.descriptionLabelFa")}
+              </Label>
+              <Textarea
+                id="edit-descriptionFa"
+                value={formData.descriptionFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, descriptionFa: e.target.value })
+                }
+                placeholder={t(
+                  "admin.categoryManagement.descriptionPlaceholderFa"
+                )}
+                rows={3}
+                className="bg-transparent text-foreground border-border resize-none"
+                dir="rtl"
               />
             </div>
 

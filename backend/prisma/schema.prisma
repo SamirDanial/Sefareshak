@@ -164,7 +164,9 @@ model Category {
   id               String          @id @default(cuid())
   organizationId   String?
   name             String
+  nameFa           String?
   description      String?
+  descriptionFa    String?
   taxPercentage    Decimal?        @db.Decimal(5, 2)
   image            String?
   isActive         Boolean         @default(true)
@@ -464,7 +466,9 @@ model AddOn {
   id                         String                      @id @default(cuid())
   organizationId             String?
   name                       String
+  nameFa                     String?
   description                String?
+  descriptionFa              String?
   sku                        String?                     // Article number for DSFinV-K export
   price                      Decimal?                    @db.Decimal(10, 2)
   taxPercentage              Decimal?                    @db.Decimal(5, 2)

@@ -10,7 +10,9 @@ export interface AddonSize {
 export interface Addon {
   id: string;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   price?: string; // DEPRECATED: Use addonSizes instead. Kept for backward compatibility
   taxPercentage: number | null;
   effectiveBasePrice?: number; // Branch-specific base price if available
@@ -58,7 +60,9 @@ export interface AddonSizeFormData {
 
 export interface AddonFormData {
   name: string;
+  nameFa?: string | null;
   description?: string;
+  descriptionFa?: string | null;
   price: number; // Base price (like meals have basePrice)
   sizes: AddonSizeFormData[]; // Additional prices for each size
   taxPercentage?: number | null;

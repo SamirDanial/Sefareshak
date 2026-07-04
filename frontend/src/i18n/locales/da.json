@@ -263,7 +263,7 @@
     "noBranchesForScope": {
       "title": "هیچ شعبه‌ای در دسترس نیست",
       "subtitle": "هیچ شعبه‌ای مطابق با انتخاب فعلی شما ({{service}} • {{mode}}) یافت نشد. لطفاً نوع خدمت، روش سفارش یا موقعیت خود را تغییر دهید."
- },
+    },
     "changeServiceOrAddress": "تغییر خدمت / آدرس",
     "chooseBranchWithServiceType": "یک شعبه برای {{serviceType}} انتخاب کنید",
     "serviceTypes": {
@@ -300,7 +300,7 @@
       "step3Title": "مرحله ۳: انتخاب موقعیت",
       "step3Description": "موقعیت خود را تنظیم کنید تا شعبه‌های مناسب را نمایش دهیم.",
       "noBranches": "هیچ شعبه‌ای برای این خدمت در این موقعیت قابل دسترس نیست",
-  "services": {
+      "services": {
         "restaurant": "رستورانت",
         "restaurantHint": "غذاها و نوشیدنی‌ها",
         "restaurantSubText": "خدمات تحویل",
@@ -319,7 +319,7 @@
       "address": "آدرس",
       "email": "ایمیل",
       "noContactInfo": "هیچ اطلاعات تماسی موجود نیست",
-      "freeVersionNotice": "این شعبه از نسخه رایگان استفاده می‌کند. برای دسترسی به منوی کامل و امکانات سفارش، لطفاً مستقیماً با ما تماس بگیرید."  
+      "freeVersionNotice": "این شعبه از نسخه رایگان استفاده می‌کند. برای دسترسی به منوی کامل و امکانات سفارش، لطفاً مستقیماً با ما تماس بگیرید."
     }
   },
   "serviceType": {
@@ -421,7 +421,7 @@
     "pickup": {
       "title": "اطلاعات دریافت حضوری",
       "phone": "شماره تماس",
-      "phonePlaceholder": "شماره تماس خود را وارد کنید",
+      "phonePlaceholder": "شماره تماس خوhuyuhuد را وارد کنید",
       "phoneRequired": "برای سفارش‌های دریافت حضوری، وارد کردن شماره تماس الزامی است",
       "notes": "یادداشت برای دریافت حضوری (اختیاری)",
       "notesPlaceholder": "اگر دستور یا توضیح خاصی برای دریافت حضوری دارید، بنویسید",
@@ -430,7 +430,8 @@
       "estimatedReadyTime": "زمان تقریبی آماده شدن",
       "readyIn": "حدود {{time}} دقیقه دیگر آماده خواهد شد",
       "branchNotAvailable": "شعبه دریافت حضوری در دسترس نیست. لطفاً دوباره تلاش کنید.",
-      "phoneRequiredShort": "شماره تماس الزامی است"},
+      "phoneRequiredShort": "شماره تماس الزامی است"
+    },
     "scheduledOrder": {
       "title": "چه زمانی مایل هستید سفارش خود را دریافت کنید؟",
       "asap": "امروز (در اولین فرصت)",
@@ -458,7 +459,7 @@
       "morning": "صبح",
       "afternoon": "بعدازظهر",
       "evening": "شب",
-      "noSlotsInPeriod": "در این بازه زمانی، زمانی موجود نیست" 
+      "noSlotsInPeriod": "در این بازه زمانی، زمانی موجود نیست"
     },
     "step1": {
       "title": "آدرس تحویل",
@@ -500,7 +501,7 @@
         "deliveryNotAvailable": "تحویل امکان‌پذیر نیست. شما {{distance}} کیلومتر فاصله دارید، در حالی که محدوده خدمات ما تا {{radius}} کیلومتر است.",
         "failedToGetLocation": "دریافت موقعیت مکانی ناموفق بود: {{error}}",
         "confirmAvailabilityFirst": "لطفاً ابتدا امکان تحویل را تأیید کنید"
-   },
+      },
       "scheduledOrderMinimumNotMet": "حداقل مبلغ سفارش برای سفارش‌های زمان‌بندی‌شده {{minimum}} است. مجموع فعلی سفارش شما {{current}} می‌باشد. لطفاً موارد بیشتری به سبد خرید خود اضافه کنید.",
       "addressSelector": {
         "title": "آدرس تحویل",
@@ -547,8 +548,8 @@
         "phoneTooLong": "شماره تماس نباید بیشتر از ۱۵ رقم باشد",
         "invalidPhoneNumber": "لطفاً یک شماره تماس معتبر وارد کنید",
         "addressGeocodingFailed": "تبدیل آدرس به موقعیت جغرافیایی ناموفق بود. لطفاً آدرس را بررسی کرده و دوباره تلاش کنید."
-   }
-    },
+    }
+      },
     "step2": {
       "title": "پرداخت",
       "description": "روش پرداخت را انتخاب کنید",
@@ -612,9 +613,9 @@
       "paymentMethodMismatchCash": "باید از همان روش پرداخت سفارش قبلی خود (پرداخت نقدی هنگام تحویل) استفاده کنید.",
       "paymentMethodDisabledReason": "این روش پرداخت در دسترس نیست، زیرا سفارش فعلی شما از {{existingMethod}} استفاده می‌کند. {{reason}}",
       "paymentMethodMustMatchExisting": "هنگام ادغام سفارش‌ها، هر دو سفارش باید از یک روش پرداخت یکسان استفاده کنند.",
-"paymentMethodNotAvailable": {
+      "paymentMethodNotAvailable": {
         "pickup": "این روش پرداخت برای سفارش‌های دریافت حضوری در دسترس نیست",
-        "delivery": "این روش پرداخت برای سفارش‌های تحویلی در دسترس نیست" 
+        "delivery": "این روش پرداخت برای سفارش‌های تحویلی در دسترس نیست"
       },
       "completePreOrderReservation": "تکمیل رزرو سفارش از پیش ثبت‌شده - {{amount}}",
       "completePreOrderReservationCash": "تکمیل رزرو سفارش از پیش ثبت‌شده (پرداخت نقدی)",
@@ -667,7 +668,7 @@
       "orderOutsideHoursMessage": "سفارش شما پس از باز شدن، در ساعت {{time}} آماده و ارائه خواهد شد.",
       "whenWeOpen": "پس از باز شدن",
       "checkoutBlockedTitle": "ثبت سفارش در حال حاضر امکان‌پذیر نیست",
-      "backToCart": "بازگشت به سبد خرید" 
+      "backToCart": "بازگشت به سبد خرید"
     }
   },
   "appStatus": {
@@ -680,24 +681,25 @@
         "title": "در حال پذیرش سفارش هستیم",
         "description": "همه‌چیز به‌طور عادی در حال انجام است. منو را مشاهده کنید و هر زمان که خواستید سفارش خود را ثبت کنید.",
         "adminDescription": "مشتریان می‌توانند به‌طور عادی منو را مشاهده کرده و سفارش ثبت کنند."
-},
+      },
       "comingSoon": {
         "label": "به‌زودی",
         "title": "به‌زودی آغاز می‌کنیم",
         "description": "در حال انجام آخرین آماده‌سازی‌ها پیش از شروع فعالیت هستیم. از اشتیاق شما سپاسگزاریم!",
-        "adminDescription": "نمایش پیام معرفی قبل از راه‌اندازی رسمی سیستم." },
+        "adminDescription": "نمایش پیام معرفی قبل از راه‌اندازی رسمی سیستم."
+      },
       "maintenance": {
         "label": "در حال نگهداری",
         "title": "در حال انجام نگهداری برنامه‌ریزی‌شده هستیم",
         "description": "در حال به‌روزرسانی و بهبود سیستم هستیم و به‌زودی دوباره در دسترس خواهیم بود.",
         "adminDescription": "در زمان انتشار به‌روزرسانی‌ها یا رفع مشکلات، فروشگاه را مخفی می‌کند."
- },
+      },
       "outOfService": {
         "label": "موقتاً غیرفعال",
         "title": "در حال حاضر در دسترس نیست",
         "description": "سرویس در حال حاضر موقتاً متوقف شده است. لطفاً کمی بعد دوباره مراجعه کنید.",
         "adminDescription": "در زمانی استفاده می‌شود که عملیات به‌طور غیرمنتظره متوقف شده باشد."
- }
+      }
     }
   },
   "orders": {
@@ -827,7 +829,8 @@
       "paypalRefundTiming": "بازپرداخت‌های PayPal معمولاً ۳ تا ۵ روز کاری زمان می‌برد.",
       "cancelling": "در حال لغو...",
       "confirm": "تأیید لغو",
-      "success": "سفارش با موفقیت لغو شد."},
+      "success": "سفارش با موفقیت لغو شد."
+    },
     "reschedule": {
       "button": "تغییر زمان سفارش",
       "title": "تغییر زمان سفارش",
@@ -838,7 +841,12 @@
       "confirm": "تأیید تغییر زمان",
       "success": "زمان سفارش با موفقیت تغییر کرد.",
       "error": "تغییر زمان سفارش ناموفق بود"
-    }
+    },
+    "noScheduledOrders": "هیچ سفارش برنامه‌ریزی‌شده‌ای وجود ندارد",
+    "noScheduledOrdersDescription": "هیچ سفارش برنامه‌ریزی‌شده‌ای وجود ندارد. هنگام پرداخت، یک سفارش برنامه‌ریزی کنید.",
+    "servingBranch": "شعبه ارائه‌دهنده خدمات",
+    "extraDetails": "جزئیات اضافی",
+    "taxCalculatedForBranch": "مالیات بر اساس نرخ‌های شعبه محاسبه شده است"
   },
   "reservations": {
     "statuses": {
@@ -852,132 +860,132 @@
     "statusUpdatedTitle": "به‌روزرسانی وضعیت رزرو",
     "statusUpdatedMessage": "وضعیت رزرو #{{reservationNumber}} به {{status}} تغییر کرد",
     "statusUpdatedToast": "وضعیت رزرو #{{reservationNumber}} به {{status}} به‌روزرسانی شد",
-  "booking": {
-    "title": "ایجاد رزرو",
-    "back": "بازگشت",
-    "selectBranch": "انتخاب شعبه",
-    "branch": "شعبه",
-    "selectBranchPlaceholder": "شعبه را انتخاب کنید",
-    "selectBranchDescription": "شعبه‌ای را انتخاب کنید که می‌خواهید در آن رزرو انجام دهید",
-    "loadingBranches": "در حال بارگذاری شعبه‌ها...",
-    "noBranchesAvailable": "هیچ شعبه‌ای برای رزرو در دسترس نیست.",
-    "selectBranchFirst": "لطفاً ابتدا یک شعبه انتخاب کنید",
-    "findingNearestBranch": "در حال یافتن نزدیک‌ترین شعبه...",
-    "nearestBranchSelected": "نزدیک‌ترین شعبه بر اساس موقعیت شما انتخاب شد",
-    "locationError": "امکان تعیین موقعیت شما وجود نداشت. لطفاً شعبه را به‌صورت دستی انتخاب کنید.",
-    "chooseType": "نوع رزرو را انتخاب کنید",
-    "simpleReservation": "رزرو ساده",
-    "simpleDescription": "فقط میز رزرو کنید. نیازی به پرداخت نیست.",
-    "preOrderReservation": "رزرو همراه با پیش‌سفارش",
-    "paymentRequired": "پرداخت الزامی است",
-    "preOrderDescription": "رزرو میز همراه با پیش‌سفارش غذا که در زمان رزرو آماده می‌شود. پرداخت از قبل الزامی است.",
-    "bookingDetails": "جزئیات رزرو",
-    "selectDate": "انتخاب تاریخ *",
-    "chooseDate": "یک تاریخ انتخاب کنید",
-    "selectTime": "انتخاب زمان *",
-    "noTimeSlots": "هیچ بازه زمانی در دسترس نیست",
-    "noTimeSlotsDescription": "متأسفیم، اما برای این مورد هیچ بازه زمانی در دسترس نیست",
-    "pleaseTry": "لطفاً امتحان کنید:",
-    "tryDifferentDate": "انتخاب یک تاریخ دیگر",
-    "bookInAdvance": "رزرو حداقل {{hours}} ساعت قبل انجام شود",
-    "contactUs": "برای راهنمایی با ما تماس بگیرید",
-    "numberOfGuests": "تعداد مهمان‌ها *",
-    "guestsPlaceholder": "مثلاً 2، 4، 6",
-    "guestsHint": "عددی بین 1 تا {{max}} وارد کنید",
-    "preferredZone": "منطقه دلخواه (اختیاری)",
-    "zonePlaceholder": "مثلاً فضای بیرون، کنار پنجره، منطقه آرام",
-    "zoneHint": "ما تلاش می‌کنیم ترجیح شما را در نظر بگیریم",
-    "contactInformation": "اطلاعات تماس",
-    "fullName": "نام کامل *",
-    "fullNamePlaceholder": "نام کامل شما",
-    "email": "ایمیل *",
-    "emailPlaceholder": "email.shoma@example.com",
-    "phone": "شماره تماس *",
-    "phonePlaceholder": "+1 (555) 123-4567",
-    "specialRequests": "درخواست‌های ویژه (اختیاری)",
-    "specialRequestsPlaceholder": "هرگونه درخواست خاص یا محدودیت غذایی...",
-    "cancel": "لغو",
-    "creating": "در حال ایجاد...",
-    "completePayment": "تکمیل پرداخت",
-    "continueToMenu": "ادامه به منو",
-    "bookReservation": "ثبت رزرو",
-    "disabled": "رزروها در حال حاضر غیرفعال هستند",
-    "loadSettingsError": "بارگذاری تنظیمات رزرو ناموفق بود",
-    "loadTimeSlotsError": "بارگذاری بازه‌های زمانی ناموفق بود",
-    "selectDateAndTime": "لطفاً تاریخ و زمان را انتخاب کنید",
-    "saveDataError": "ذخیره اطلاعات رزرو ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "errorOccurred": "خطایی رخ داد. لطفاً دوباره تلاش کنید.",
-    "createdSuccess": "رزرو با موفقیت ایجاد شد!",
-    "createError": "ایجاد رزرو ناموفق بود",
-    "selectTable": "انتخاب میز",
-    "selectTimeFirst": "ابتدا زمان را انتخاب کنید",
-    "selectTimeFirstDescription": "لطفاً ابتدا یک بازه زمانی انتخاب کنید تا میزهای موجود نمایش داده شوند.",
-    "loadingTables": "در حال بارگذاری میزها...",
-    "noTablesAvailable": "هیچ میزی در دسترس نیست",
-    "noTablesDescription": "برای این بازه زمانی هیچ میزی در دسترس نیست. لطفاً زمان دیگری را امتحان کنید.",
-    "unassignedZone": "نامشخص",
-    "selectZone": "انتخاب منطقه",
-    "selectZoneDescription": "برای مشاهده میزها یک منطقه انتخاب کنید",
-    "noZonesAvailable": "هیچ منطقه‌ای برای این شعبه وجود ندارد.",
-    "noZonesDescription": "برای این شعبه هیچ منطقه‌ای تعریف نشده است.",
-    "table": "میز",
-    "tables": "میزها",
-    "backToZones": "بازگشت به مناطق",
-    "capacityMetCheck": "ظرفیت تکمیل شد ✓",
-    "needMoreSeats": "به {{count}} صندلی دیگر نیاز است",
-    "needMoreSeatsSimple": "به {{count}} صندلی دیگر نیاز است",
-    "needOneMoreSeat": "به 1 صندلی دیگر نیاز است",
-    "needMoreSeatsCount": "به {{count}} صندلی دیگر نیاز است",
-    "selectMoreTables": "برای تکمیل ظرفیت میزهای بیشتری انتخاب کنید",
-    "availableTables": "میزهای موجود",
-    "seats": "صندلی",
-    "seat": "صندلی",
-    "reservedTables": "میزهای رزروشده",
-    "tableCleaning": "در حال نظافت",
-    "tableReserved": "رزرو شده",
-    "selectedTables": "{{count}} میز انتخاب شد",
-    "oneTableSelected": "1 میز انتخاب شد",
-    "multipleTablesSelected": "{{count}} میز انتخاب شد",
-    "capacityMet": "ظرفیت تکمیل شد",
-    "totalCapacity": "ظرفیت کل: {{capacity}} صندلی (مورد نیاز: {{required}})",
-    "insufficientCapacity": "میزهای انتخاب‌شده {{capacity}} صندلی دارند، اما {{required}} مهمان نیاز است. لطفاً میزهای بیشتری انتخاب کنید.",
-    "geolocationNotSupported": "مرورگر شما از موقعیت‌یابی پشتیبانی نمی‌کند",
-    "couldNotGetLocation": "امکان دریافت موقعیت شما وجود نداشت",
-    "failedToLoadBranches": "بارگذاری شعبه‌ها ناموفق بود",
-    "failedToLoadZones": "بارگذاری مناطق ناموفق بود",
-    "am": "قبل از ظهر",
-    "pm": "بعد از ظهر",
-    "zone": "منطقه",
-    "floorPlan": "نقشه سالن",
-    "viewFloorPlan": "مشاهده نقشه سالن",
-    "selectFromFloorPlan": "میزها را از روی نقشه انتخاب کنید",
-    "tapToSelect": "برای انتخاب روی میزهای موجود ضربه بزنید",
-    "available": "موجود",
-    "reserved": "رزرو شده",
-    "selected": "انتخاب شده",
-    "selectTimeSlot": "انتخاب بازه زمانی",
-    "tapToSelectTime": "برای انتخاب زمان ضربه بزنید",
-    "tapToSelectZone": "برای انتخاب منطقه ضربه بزنید",
-    "tapToChange": "برای تغییر ضربه بزنید",
-    "morning": "صبح",
-    "afternoon": "بعدازظهر",
-    "evening": "شب",
-    "allTimes": "همه",
-    "noSlotsInPeriod": "در این بازه زمانی هیچ ظرفیتی موجود نیست",
-    "slotsAvailable": "{{count}} بازه زمانی موجود است",
-    "zonesAvailable": "{{count}} منطقه موجود است",
-    "hasFloorPlan": "نقشه سالن",
-    "yourSelection": "انتخاب شما",
-    "addTime": "افزودن زمان",
-    "addZone": "افزودن منطقه",
-    "guest": "مهمان",
-    "guests": "مهمان",
-    "loadingTimeSlots": "در حال بارگذاری بازه‌های زمانی...",
-    "tablesInZone": "{{count}} میز",
-    "tablesSelected": "انتخاب شده",
-    "done": "تمام",
-    "addTable": "افزودن میز"
-},
+    "booking": {
+      "title": "ایجاد رزرو",
+      "back": "بازگشت",
+      "selectBranch": "انتخاب شعبه",
+      "branch": "شعبه",
+      "selectBranchPlaceholder": "شعبه را انتخاب کنید",
+      "selectBranchDescription": "شعبه‌ای را انتخاب کنید که می‌خواهید در آن رزرو انجام دهید",
+      "loadingBranches": "در حال بارگذاری شعبه‌ها...",
+      "noBranchesAvailable": "هیچ شعبه‌ای برای رزرو در دسترس نیست.",
+      "selectBranchFirst": "لطفاً ابتدا یک شعبه انتخاب کنید",
+      "findingNearestBranch": "در حال یافتن نزدیک‌ترین شعبه...",
+      "nearestBranchSelected": "نزدیک‌ترین شعبه بر اساس موقعیت شما انتخاب شد",
+      "locationError": "امکان تعیین موقعیت شما وجود نداشت. لطفاً شعبه را به‌صورت دستی انتخاب کنید.",
+      "chooseType": "نوع رزرو را انتخاب کنید",
+      "simpleReservation": "رزرو ساده",
+      "simpleDescription": "فقط میز رزرو کنید. نیازی به پرداخت نیست.",
+      "preOrderReservation": "رزرو همراه با پیش‌سفارش",
+      "paymentRequired": "پرداخت الزامی است",
+      "preOrderDescription": "رزرو میز همراه با پیش‌سفارش غذا که در زمان رزرو آماده می‌شود. پرداخت از قبل الزامی است.",
+      "bookingDetails": "جزئیات رزرو",
+      "selectDate": "انتخاب تاریخ *",
+      "chooseDate": "یک تاریخ انتخاب کنید",
+      "selectTime": "انتخاب زمان *",
+      "noTimeSlots": "هیچ بازه زمانی در دسترس نیست",
+      "noTimeSlotsDescription": "متأسفیم، اما برای این مورد هیچ بازه زمانی در دسترس نیست",
+      "pleaseTry": "لطفاً امتحان کنید:",
+      "tryDifferentDate": "انتخاب یک تاریخ دیگر",
+      "bookInAdvance": "رزرو حداقل {{hours}} ساعت قبل انجام شود",
+      "contactUs": "برای راهنمایی با ما تماس بگیرید",
+      "numberOfGuests": "تعداد مهمان‌ها *",
+      "guestsPlaceholder": "مثلاً 2، 4، 6",
+      "guestsHint": "عددی بین 1 تا {{max}} وارد کنید",
+      "preferredZone": "منطقه دلخواه (اختیاری)",
+      "zonePlaceholder": "مثلاً فضای بیرون، کنار پنجره، منطقه آرام",
+      "zoneHint": "ما تلاش می‌کنیم ترجیح شما را در نظر بگیریم",
+      "contactInformation": "اطلاعات تماس",
+      "fullName": "نام کامل *",
+      "fullNamePlaceholder": "نام کامل شما",
+      "email": "ایمیل *",
+      "emailPlaceholder": "email.shoma@example.com",
+      "phone": "شماره تماس *",
+      "phonePlaceholder": "+1 (555) 123-4567",
+      "specialRequests": "درخواست‌های ویژه (اختیاری)",
+      "specialRequestsPlaceholder": "هرگونه درخواست خاص یا محدودیت غذایی...",
+      "cancel": "لغو",
+      "creating": "در حال ایجاد...",
+      "completePayment": "تکمیل پرداخت",
+      "continueToMenu": "ادامه به منو",
+      "bookReservation": "ثبت رزرو",
+      "disabled": "رزروها در حال حاضر غیرفعال هستند",
+      "loadSettingsError": "بارگذاری تنظیمات رزرو ناموفق بود",
+      "loadTimeSlotsError": "بارگذاری بازه‌های زمانی ناموفق بود",
+      "selectDateAndTime": "لطفاً تاریخ و زمان را انتخاب کنید",
+      "saveDataError": "ذخیره اطلاعات رزرو ناموفق بود. لطفاً دوباره تلاش کنید.",
+      "errorOccurred": "خطایی رخ داد. لطفاً دوباره تلاش کنید.",
+      "createdSuccess": "رزرو با موفقیت ایجاد شد!",
+      "createError": "ایجاد رزرو ناموفق بود",
+      "selectTable": "انتخاب میز",
+      "selectTimeFirst": "ابتدا زمان را انتخاب کنید",
+      "selectTimeFirstDescription": "لطفاً ابتدا یک بازه زمانی انتخاب کنید تا میزهای موجود نمایش داده شوند.",
+      "loadingTables": "در حال بارگذاری میزها...",
+      "noTablesAvailable": "هیچ میزی در دسترس نیست",
+      "noTablesDescription": "برای این بازه زمانی هیچ میزی در دسترس نیست. لطفاً زمان دیگری را امتحان کنید.",
+      "unassignedZone": "نامشخص",
+      "selectZone": "انتخاب منطقه",
+      "selectZoneDescription": "برای مشاهده میزها یک منطقه انتخاب کنید",
+      "noZonesAvailable": "هیچ منطقه‌ای برای این شعبه وجود ندارد.",
+      "noZonesDescription": "برای این شعبه هیچ منطقه‌ای تعریف نشده است.",
+      "table": "میز",
+      "tables": "میزها",
+      "backToZones": "بازگشت به مناطق",
+      "capacityMetCheck": "ظرفیت تکمیل شد ✓",
+      "needMoreSeats": "به {{count}} صندلی دیگر نیاز است",
+      "needMoreSeatsSimple": "به {{count}} صندلی دیگر نیاز است",
+      "needOneMoreSeat": "به 1 صندلی دیگر نیاز است",
+      "needMoreSeatsCount": "به {{count}} صندلی دیگر نیاز است",
+      "selectMoreTables": "برای تکمیل ظرفیت میزهای بیشتری انتخاب کنید",
+      "availableTables": "میزهای موجود",
+      "seats": "صندلی",
+      "seat": "صندلی",
+      "reservedTables": "میزهای رزروشده",
+      "tableCleaning": "در حال نظافت",
+      "tableReserved": "رزرو شده",
+      "selectedTables": "{{count}} میز انتخاب شد",
+      "oneTableSelected": "1 میز انتخاب شد",
+      "multipleTablesSelected": "{{count}} میز انتخاب شد",
+      "capacityMet": "ظرفیت تکمیل شد",
+      "totalCapacity": "ظرفیت کل: {{capacity}} صندلی (مورد نیاز: {{required}})",
+      "insufficientCapacity": "میزهای انتخاب‌شده {{capacity}} صندلی دارند، اما {{required}} مهمان نیاز است. لطفاً میزهای بیشتری انتخاب کنید.",
+      "geolocationNotSupported": "مرورگر شما از موقعیت‌یابی پشتیبانی نمی‌کند",
+      "couldNotGetLocation": "امکان دریافت موقعیت شما وجود نداشت",
+      "failedToLoadBranches": "بارگذاری شعبه‌ها ناموفق بود",
+      "failedToLoadZones": "بارگذاری مناطق ناموفق بود",
+      "am": "قبل از ظهر",
+      "pm": "بعد از ظهر",
+      "zone": "منطقه",
+      "floorPlan": "نقشه سالن",
+      "viewFloorPlan": "مشاهده نقشه سالن",
+      "selectFromFloorPlan": "میزها را از روی نقشه انتخاب کنید",
+      "tapToSelect": "برای انتخاب روی میزهای موجود ضربه بزنید",
+      "available": "موجود",
+      "reserved": "رزرو شده",
+      "selected": "انتخاب شده",
+      "selectTimeSlot": "انتخاب بازه زمانی",
+      "tapToSelectTime": "برای انتخاب زمان ضربه بزنید",
+      "tapToSelectZone": "برای انتخاب منطقه ضربه بزنید",
+      "tapToChange": "برای تغییر ضربه بزنید",
+      "morning": "صبح",
+      "afternoon": "بعدازظهر",
+      "evening": "شب",
+      "allTimes": "همه",
+      "noSlotsInPeriod": "در این بازه زمانی هیچ ظرفیتی موجود نیست",
+      "slotsAvailable": "{{count}} بازه زمانی موجود است",
+      "zonesAvailable": "{{count}} منطقه موجود است",
+      "hasFloorPlan": "نقشه سالن",
+      "yourSelection": "انتخاب شما",
+      "addTime": "افزودن زمان",
+      "addZone": "افزودن منطقه",
+      "guest": "مهمان",
+      "guests": "مهمان",
+      "loadingTimeSlots": "در حال بارگذاری بازه‌های زمانی...",
+      "tablesInZone": "{{count}} میز",
+      "tablesSelected": "انتخاب شده",
+      "done": "تمام",
+      "addTable": "افزودن میز"
+    },
     "myReservations": {
       "title": "رزروهای من",
       "back": "بازگشت",
@@ -1068,7 +1076,7 @@
         "modifiedSuccess": "✓ رزرو با موفقیت ویرایش شد!",
         "refundAmount": "مبلغ بازپرداخت:",
         "refundDescription": "مبلغ بازپرداخت به‌صورت خودکار به همان روش پرداخت اولیه شما برگشت داده می‌شود. این مبلغ ممکن است طی ۵ تا ۱۰ روز کاری در حساب شما قابل مشاهده باشد."
-},
+      },
       "modification": {
         "exit": "لغو ویرایش",
         "exited": "ویرایش رزرو لغو شد. سبد خرید پاک شد."
@@ -1134,7 +1142,7 @@
       "amountPaid": "مبلغ پرداخت‌شده:",
       "paymentAdvanceRequired": "برای رزروهای همراه با پیش‌سفارش، پرداخت از پیش الزامی است.",
       "notSet": "تنظیم نشده"
-},
+    },
     "confirmation": {
       "title": "رزرو شما تأیید شد!",
       "description": "رزرو شما با موفقیت ثبت شد.",
@@ -1173,9 +1181,9 @@
     "fixValidationErrors": "لطفاً خطاهای اعتبارسنجی را برطرف کنید.",
     "failedToSaveProfile": "ذخیره پروفایل ناموفق بود",
     "unexpectedError": "خطای غیرمنتظره‌ای رخ داد. لطفاً دوباره تلاش کنید."
-},
+  },
   "admin": {
-     "panel": "پنل مدیریت",
+    "panel": "پنل مدیریت",
     "serviceType": {
       "label": "نوع خدمات",
       "useSettings": "استفاده از تنظیمات ({{value}})",
@@ -1265,7 +1273,7 @@
       "hireAlreadyInThisOrg": "این کاربر از قبل عضو این سازمان است",
       "savedSuccess": "با موفقیت ذخیره شد",
       "noStaffFound": "هیچ کارمندی یافت نشد."
-},
+    },
     "myStaff": {
       "title": "کارکنان من"
     },
@@ -1367,7 +1375,7 @@
           "validationUpdated": "اعتبارسنجی با موفقیت به‌روزرسانی شد",
           "validationFailed": "ایجاد اعتبارسنجی ناموفق بود",
           "updateFailed": "به‌روزرسانی اعتبارسنجی ناموفق بود"
-  },
+        },
         "usd": "USD - دالر امریکایی",
         "eur": "EUR - یورو",
         "gbp": "GBP - پوند بریتانوی",
@@ -1387,14 +1395,15 @@
           "confirmUnvalidate": "غیرفعال‌سازی موقت",
           "unvalidating": "در حال غیرفعال‌سازی...",
           "unvalidated": "سازمان به‌صورت موقت غیرفعال شد",
-  "unvalidateFailed": "غیرفعال‌سازی ناموفق بود"},
+          "unvalidateFailed": "غیرفعال‌سازی ناموفق بود"
+        },
         "reactivated": "اعتبارسنجی با موفقیت دوباره فعال شد",
         "reactivateFailed": "فعال‌سازی مجدد اعتبارسنجی ناموفق بود",
         "noValidationFound": "هیچ اعتبارسنجی یافت نشد",
         "noValidationToRevoke": "هیچ اعتبارسنجی برای لغو یافت نشد",
         "noValidationToUnvalidate": "هیچ اعتبارسنجی برای غیرفعال‌سازی یافت نشد",
         "noValidationToReactivate": "هیچ اعتبارسنجی برای فعال‌سازی مجدد یافت نشد"
- }
+      }
     },
     "reservations": {
       "zone": "منطقه"
@@ -1443,7 +1452,7 @@
       "taxTotal": "مجموع مالیات",
       "byPaymentMethod": "بر اساس روش پرداخت",
       "rawReportData": "داده خام گزارش",
-"toasts": {
+      "toasts": {
         "readyToClose": "آماده برای بستن",
         "cannotCloseYet": "هنوز امکان بستن وجود ندارد",
         "closed": "روز کاری بسته شد"
@@ -1526,7 +1535,7 @@
       "item": "آیتم",
       "oneItem": "1 آیتم",
       "itemsCount": "{{count}} آیتم"
-},
+    },
     "heroSection": {
       "title": "مدیریت بخش هیرو",
       "titleLabel": "عنوان",
@@ -1549,7 +1558,7 @@
       "preview": "پیش‌نمایش",
       "save": "ذخیره",
       "saving": "در حال ذخیره...",
-   "success": {
+      "success": {
         "created": "بخش هیرو با موفقیت ایجاد شد",
         "updated": "بخش هیرو با موفقیت به‌روزرسانی شد"
       },
@@ -1608,6 +1617,13 @@
       "categoryNamePlaceholder": "نام دسته‌بندی را وارد کنید",
       "descriptionLabel": "توضیحات",
       "descriptionPlaceholder": "توضیحات دسته‌بندی را وارد کنید",
+      "persianSectionTitle": "فارسی (Persian)",
+      "categoryNameFa": "نام فارسی",
+      "categoryNameFaPlaceholder": "نام فارسی",
+      "descriptionLabelFa": "توضیحات فارسی",
+      "descriptionLabelFaPlaceholder": "توضیحات فارسی",
+      "moved": "دسته‌بندی منتقل شد",
+      "moveOrganization": "انتقال به سازمان",
       "taxPercentage": "درصد مالیات (%)",
       "taxPercentagePlaceholder": "مثلاً 8.5 (اختیاری)",
       "taxPercentageHint": "اختیاری: مالیات پیش‌فرض این دسته‌بندی را تغییر می‌دهد",
@@ -1625,7 +1641,7 @@
       "excludedBranchesDescription": "شعبه‌هایی را انتخاب کنید که این دسته‌بندی در آن‌ها نمایش داده نشود",
       "noBranchesAvailable": "هیچ شعبه‌ای موجود نیست",
       "branchesExcluded": "{{count}} شعبه حذف شد",
- "ordering": {
+      "ordering": {
         "title": "ترتیب‌دهی و اولویت نمایش",
         "description": "با کشیدن و رها کردن (Drag & Drop) دسته‌بندی‌ها ترتیب نمایش آن‌ها در صفحه اصلی و لیست دسته‌بندی‌ها را تنظیم کنید.",
         "featuredTitle": "دسته‌بندی‌های ویژه (صفحه اصلی)",
@@ -1645,19 +1661,19 @@
         "listSaved": "ترتیب دسته‌بندی‌ها به‌روزرسانی شد",
         "featuredSaveError": "به‌روزرسانی ترتیب ویژه‌ها ناموفق بود. لطفاً دوباره تلاش کنید.",
         "listSaveError": "به‌روزرسانی ترتیب دسته‌بندی‌ها ناموفق بود. لطفاً دوباره تلاش کنید."
-}
+      }
     },
     "dealManagement": {
       "title": "مدیریت پیشنهادها",
       "subtitle": "مدیریت پیشنهادها و بسته‌ها",
       "subtitleWithCount": "مدیریت پیشنهادها و بسته‌ها ({{count}} مجموع)",
-
+      
       "backToCategories": "بازگشت به دسته‌بندی‌ها",
       "searchCategoriesPlaceholder": "جستجوی دسته‌بندی‌ها...",
       "showEmptyCategories": "نمایش دسته‌بندی‌های خالی",
       "noCategoriesFound": "هیچ دسته‌بندی یافت نشد",
       "dealCount": "{{count}} پیشنهاد",
-
+      
       "createDeal": "ایجاد پیشنهاد",
       "createNewDeal": "ایجاد پیشنهاد جدید",
       "createDealDescription": "یک پیشنهاد جدید با چندین آیتم ایجاد کنید",
@@ -1665,25 +1681,26 @@
       "updateDeal": "به‌روزرسانی پیشنهاد",
       "editDeal": "ویرایش پیشنهاد",
       "editDealDescription": "جزئیات و آیتم‌های پیشنهاد را به‌روزرسانی کنید",
-
+      
       "searchPlaceholder": "جستجوی پیشنهادها...",
       "sortBy": "مرتب‌سازی بر اساس",
       "nameAZ": "نام (A تا Z)",
       "newestFirst": "جدیدترین",
       "oldestFirst": "قدیمی‌ترین",
-
+      
       "featured": "ویژه",
       "activate": "فعال‌سازی",
       "deactivate": "غیرفعال‌سازی",
-
+     
       "noDealsFound": "هیچ پیشنهادی یافت نشد",
+      
       "tabs": {
         "basics": "اصول",
         "components": "اجزا",
         "availability": "در دسترس بودن",
         "addons": "افزودنی‌ها"
       },
-
+      
       "fields": {
         "name": "نام پیشنهاد",
         "namePlaceholder": "مثلاً: پیشنهاد غذای خانوادگی",
@@ -1695,46 +1712,46 @@
         "price": "قیمت",
         "taxPercent": "درصد مالیات"
       },
-
+      
       "addComponent": "افزودن جزء",
       "componentNumber": "جزء {{index}}",
       "noComponents": "هیچ جزئی اضافه نشده است. برای افزودن آیتم‌ها به این پیشنهاد روی «افزودن جزء» کلیک کنید.",
       "total": "مجموع",
-
+      
       "excludedBranches": "شعبه‌های حذف‌شده",
       "excludedBranchesHint": "شعبه‌هایی را انتخاب کنید که این پیشنهاد در آن‌ها در دسترس نباشد",
       "noBranches": "هیچ شعبه‌ای موجود نیست",
-
+      
       "addonsOptional": "افزودنی‌ها (اختیاری)",
       "noAddons": "هیچ افزودنی موجود نیست",
-
+      
       "declarations": "اعلامیه‌ها",
       "optionalIngredients": "مواد اولیه اختیاری",
       "selectedCount": "{{count}} انتخاب شده",
-
+      
       "componentsCount": "{{count}} جزء",
       "excludedBranchesCount": "{{count}} شعبه حذف‌شده",
       "allBranches": "همه شعبه‌ها",
-
+      
       "deleteDealTitle": "حذف پیشنهاد",
       "deleteDealConfirm": "آیا مطمئن هستید که می‌خواهید «{{name}}» را حذف کنید؟ این عمل غیرقابل بازگشت است.",
-
+      
       "dealDeclarationsTitle": "اعلامیه‌های پیشنهاد",
       "searchDeclarations": "جستجوی اعلامیه‌ها...",
       "noDeclarations": "هیچ اعلامیه‌ای یافت نشد",
-
+      
       "dealOptionalIngredientsTitle": "مواد اولیه اختیاری پیشنهاد",
       "searchOptionalIngredients": "جستجوی مواد اولیه اختیاری...",
       "noOptionalIngredients": "هیچ ماده اولیه اختیاری یافت نشد",
-
+      
       "pagination": "صفحه {{currentPage}} از {{totalPages}}",
-
+      
       "validation": {
         "nameAndCategoryRequired": "نام و دسته‌بندی الزامی است",
         "atLeastOneComponentRequired": "حداقل یک جزء الزامی است"
- },
-
-       "done": "انجام شد"
+      },
+      
+      "done": "انجام شد"
     },
     "dealCategoryOrdering": {
       "title": "ترتیب‌دهی دسته‌بندی پیشنهادها",
@@ -1756,7 +1773,7 @@
       "listSaved": "ترتیب دسته‌بندی‌های پیشنهادها به‌روزرسانی شد",
       "featuredSaveError": "به‌روزرسانی ترتیب دسته‌بندی‌های ویژه پیشنهادها ناموفق بود.",
       "listSaveError": "به‌روزرسانی ترتیب دسته‌بندی‌های پیشنهادها ناموفق بود."
-},
+    },
     "categoryDealOrdering": {
       "cta": "ترتیب‌دهی پیشنهادها",
       "title": "ترتیب‌دهی پیشنهادها: {{category}}",
@@ -1770,6 +1787,13 @@
       "manageDeals": "مدیریت پیشنهادها",
       "listTitle": "پیشنهادها ({{count}})",
       "helper": "برای تغییر ترتیب از دستگیره کشیدن استفاده کنید."
+    },
+    "mealManagement": {
+      "persianSectionTitle": "Persian (فارسی)",
+      "mealNameFa": "Persian Name (نام فارسی)",
+      "mealNameFaPlaceholder": "نام فارسی",
+      "mealDescriptionFa": "Persian Description (توضیحات فارسی)",
+      "mealDescriptionFaPlaceholder": "توضیحات فارسی"
     },
     "addonManagement": {
       "title": "مدیریت افزودنی‌ها",
@@ -1829,6 +1853,11 @@
       "addonNamePlaceholder": "نام افزودنی را وارد کنید",
       "descriptionLabel": "توضیحات",
       "descriptionPlaceholder": "توضیحات افزودنی را وارد کنید",
+      "persianSectionTitle": "فارسی (Persian)",
+      "addonNameFa": "نام فارسی",
+      "addonNameFaPlaceholder": "نام فارسی",
+      "addonDescriptionFa": "توضیحات فارسی",
+      "addonDescriptionFaPlaceholder": "توضیحات فارسی",
       "price": "قیمت",
       "pricePlaceholder": "2.50",
       "taxPercentage": "درصد مالیات (%)",
@@ -1928,24 +1957,24 @@
       "create": "ایجاد",
       "update": "به‌روزرسانی",
       "cancel": "لغو",
-       "required": "*",
-       "optional": "(اختیاری)",
-       "meals": "غذا",
-       "usedInMeals": "در {{count}} غذا استفاده شده است",
-       "nameRequired": "نام اعلامیه الزامی است",
-       "createdSuccess": "اعلامیه با موفقیت ایجاد شد",
-       "updatedSuccess": "اعلامیه با موفقیت به‌روزرسانی شد",
-       "deletedSuccess": "اعلامیه با موفقیت حذف شد",
-       "failedToLoad": "بارگذاری اعلامیه‌ها ناموفق بود",
-       "failedToSave": "ذخیره اعلامیه ناموفق بود",
-       "failedToDelete": "حذف اعلامیه ناموفق بود",
-       "showInFilter": "نمایش در فیلتر",
-       "showInFilterDescription": "این اعلامیه در بخش فیلتر منو نمایش داده شود",
-       "excludedBranches": "شعبه‌های حذف‌شده",
-       "excludedBranchesDescription": "شعبه‌هایی را انتخاب کنید که این اعلامیه در آن‌ها در دسترس نباشد",
-       "noBranchesAvailable": "هیچ شعبه‌ای موجود نیست",
-       "branchesExcluded": "{{count}} شعبه حذف شد"
-      },
+      "required": "*",
+      "optional": "(اختیاری)",
+      "meals": "غذا",
+      "usedInMeals": "در {{count}} غذا استفاده شده است",
+      "nameRequired": "نام اعلامیه الزامی است",
+      "createdSuccess": "اعلامیه با موفقیت ایجاد شد",
+      "updatedSuccess": "اعلامیه با موفقیت به‌روزرسانی شد",
+      "deletedSuccess": "اعلامیه با موفقیت حذف شد",
+      "failedToLoad": "بارگذاری اعلامیه‌ها ناموفق بود",
+      "failedToSave": "ذخیره اعلامیه ناموفق بود",
+      "failedToDelete": "حذف اعلامیه ناموفق بود",
+      "showInFilter": "نمایش در فیلتر",
+      "showInFilterDescription": "این اعلامیه در بخش فیلتر منو نمایش داده شود",
+      "excludedBranches": "شعبه‌های حذف‌شده",
+      "excludedBranchesDescription": "شعبه‌هایی را انتخاب کنید که این اعلامیه در آن‌ها در دسترس نباشد",
+      "noBranchesAvailable": "هیچ شعبه‌ای موجود نیست",
+      "branchesExcluded": "{{count}} شعبه حذف شد"
+    },
     "reservationManagement": {
       "title": "مدیریت رزروها",
       "description": "مدیریت تمام رزروهای رستوران",
@@ -1964,7 +1993,7 @@
       },
       "selectBranchToView": "لطفاً برای مشاهده رزروها یک شعبه انتخاب کنید",
       "selectBranchToViewSubtext": "برای مشاهده رزروهای شعبه، آن را از فیلتر بالا انتخاب کنید",
-  "statuses": {
+      "statuses": {
         "pending": "در انتظار",
         "confirmed": "تأیید شده",
         "seated": "نشسته",
@@ -2006,6 +2035,7 @@
       "paid": "پرداخت‌شده",
       "deposit": "بیعانه",
       "details": {
+        "title": "جزئیات رزرو",
         "date": "تاریخ:",
         "time": "زمان:",
         "guests": "مهمان:",
@@ -2117,9 +2147,9 @@
         "cancel": "لغو",
         "assigning": "در حال اختصاص...",
         "contactCustomerButton": "تماس با مشتری",
-       "waitForTable": "انتظار برای میز",
-       "assignTable": "اختصاص {{count}} میز"
-},
+        "waitForTable": "انتظار برای میز",
+        "assignTable": "اختصاص {{count}} میز"
+      },
       "assignConfirmation": {
         "title": "تأیید اختصاص میز",
         "description": "این میز از قبل اختصاص داده شده است. آیا مطمئن هستید که می‌خواهید همچنان این میز را اختصاص دهید؟",
@@ -2150,7 +2180,8 @@
         "loadTablesError": "بارگذاری میزهای موجود ناموفق بود",
         "loadHistoryError": "بارگذاری تاریخچه رزرو ناموفق بود",
         "contactCustomer": "لطفاً قبل از ادامه با مشتری تماس بگیرید",
-        "waitForTable": "بهتر است منتظر یک میز بزرگ‌تر بمانید"}
+        "waitForTable": "بهتر است منتظر یک میز بزرگ‌تر بمانید"
+      }
     },
     "tableStatusGrid": {
       "title": "شبکه وضعیت میزها",
@@ -2313,7 +2344,7 @@
         "createNewZone": "+ ایجاد ناحیه جدید",
         "notes": "یادداشت‌ها (اختیاری)",
         "notesPlaceholder": "یادداشت داخلی درباره این میز"
-},
+      },
       "actions": {
         "cancel": "لغو",
         "save": "ذخیره",
@@ -2379,7 +2410,7 @@
         "selectElement": "برای ویرایش ویژگی‌ها یک میز یا عنصر را انتخاب کنید",
         "addLabel": "افزودن برچسب",
         "addLabelDescription": "یک متن به نقشه سالن اضافه کنید.",
-   "elements": {
+        "elements": {
           "window": "پنجره",
           "door": "در",
           "stairs": "پله‌ها",
@@ -2471,7 +2502,7 @@
           "longitudePlaceholder": "مثلاً 55.296249",
           "fullAddress": "آدرس کامل",
           "fullAddressPlaceholder": "آدرس کامل به‌صورت خودکار از بخش‌های آدرس ساخته می‌شود"
-},
+        },
         "financialSettings": {
           "title": "تنظیمات مالی",
           "description": "مالیات‌ها، حداقل سفارش، ارز و حالت قیمت‌گذاری.",
@@ -2509,7 +2540,7 @@
           "orderMergeTimeframe": "بازه ادغام سفارش (دقیقه)",
           "orderMergeTimeframePlaceholder": "از تنظیمات کلی به ارث می‌رسد",
           "orderMergeTimeframeDescription": "اگر خالی باشد مقدار کلی استفاده می‌شود. برای نادیده گرفتن، مقدار وارد کنید. برای غیرفعال کردن ادغام، 0 قرار دهید.",
-"scheduledOrderTimeSlotInterval": {
+          "scheduledOrderTimeSlotInterval": {
             "title": "فاصله زمانی بازه‌های سفارش زمان‌بندی‌شده",
             "description": "تنظیم کنید که بازه‌های زمانی سفارش‌های زمان‌بندی‌شده با چه فاصله‌ای نمایش داده شوند",
             "label": "فاصله بازه زمانی",
@@ -2530,7 +2561,7 @@
             "maxOrders": "حداکثر سفارش‌ها",
             "unlimited": "نامحدود",
             "hint": "اگر خالی بگذارید، تعداد سفارش‌های زمان‌بندی‌شده در هر بازه نامحدود خواهد بود"
-},
+          },
           "futureOrders": {
             "title": "زمان‌بندی سفارش‌های آینده",
             "description": "تنظیم کنید که آیا مشتریان می‌توانند سفارش‌های خود را برای تاریخ‌های آینده ثبت کنند یا نه",
@@ -2557,7 +2588,7 @@
             "enable": "اجازه ادغام سفارش‌های زمان‌بندی‌شده",
             "cutoffHours": "زمان قطع ادغام (ساعت)",
             "cutoffHoursDescription": "تا چند ساعت قبل از زمان سفارش، امکان ادغام سفارش‌ها وجود دارد"
-},
+          },
           "scheduledOrderManagement": {
             "title": "مدیریت سفارش‌های زمان‌بندی‌شده",
             "description": "تنظیم قوانین لغو، ویرایش و بازگشت وجه برای سفارش‌های زمان‌بندی‌شده",
@@ -2570,7 +2601,7 @@
               "enable": "اجازه لغو سفارش‌های زمان‌بندی‌شده",
               "windowHours": "بازه لغو (ساعت قبل از زمان سفارش)",
               "windowHoursDescription": "تا چند ساعت قبل از زمان سفارش امکان لغو سفارش وجود دارد"
-},
+            },
             "refund": {
               "fullHoursBefore": "بازپرداخت کامل (ساعت قبل از زمان سفارش)",
               "partialHoursBefore": "بازپرداخت جزئی (ساعت قبل از زمان سفارش)",
@@ -2579,7 +2610,7 @@
               "noRefundHoursBeforeDescription": "اگر در این بازه لغو شود، هیچ بازپرداختی انجام نمی‌شود",
               "partialPercentage": "درصد بازپرداخت جزئی (%)",
               "reducedPercentage": "درصد بازپرداخت کاهش‌یافته (%)"
-},
+            },
             "modification": {
               "title": "ویرایش و پرداخت",
               "enable": "اجازه ویرایش سفارش‌های زمان‌بندی‌شده",
@@ -2592,11 +2623,11 @@
             "autoConfirm": {
               "label": "تأیید خودکار سفارش‌های زمان‌بندی‌شده",
               "description": "اگر غیرفعال باشد، سفارش‌های زمان‌بندی‌شده به‌صورت در انتظار ثبت می‌شوند و نیاز به تأیید مدیر دارند"
-},
+            },
             "minimumAmount": {
               "label": "حداقل مبلغ سفارش",
               "description": "حداقل مبلغ سفارش برای سفارش‌های زمان‌بندی‌شده را تعیین کنید (0 = بدون حداقل). این مورد برای سفارش‌های ادغام‌شده اعمال نمی‌شود."
- }
+            }
           }
         },
         "deliverySettings": {
@@ -2623,7 +2654,7 @@
           "deliveryTimeEstimate": "زمان تقریبی تحویل (دقیقه)",
           "freeDeliveryThreshold": "آستانه تحویل رایگان",
           "enableFreeDelivery": "فعال‌سازی تحویل رایگان"
-},
+        },
         "servingHours": {
           "title": "ساعات سرویس‌دهی",
           "description": "برنامه‌های روزانه؛ در صورت خالی بودن از تنظیمات پیش‌فرض استفاده می‌شود.",
@@ -2642,7 +2673,7 @@
           "openTime": "زمان باز شدن",
           "closeTime": "زمان بسته شدن",
           "addPeriod": "افزودن بازه"
- },
+        },
         "paymentSettings": {
           "title": "تنظیمات پرداخت",
           "description": "روش‌های پرداخت قابل قبول برای این شعبه.",
@@ -2663,8 +2694,9 @@
             "disabledLabel": "غیرفعال",
             "overridden": "برای این شعبه بازنویسی شده",
             "takeawayServiceFee": "هزینه سرویس سفارش حضوری",
-            "takeawayServiceFeeInheritHint": "برای استفاده از تنظیمات کلی، خالی بگذارید"}
-                  },
+            "takeawayServiceFeeInheritHint": "برای استفاده از تنظیمات کلی، خالی بگذارید"
+          }
+        },
         "socialMedia": {
           "title": "شبکه‌های اجتماعی و اطلاعات تماس",
           "description": "لینک‌های شبکه‌های اجتماعی و اطلاعات وب‌سایت.",
@@ -2676,7 +2708,7 @@
           "twitterUrlPlaceholder": "https://twitter.com/...",
           "websiteUrl": "آدرس وب‌سایت",
           "websiteUrlPlaceholder": "https://your-site.com"
-                }
+        }
       },
       "reservationSettings": {
         "back": "بازگشت",
@@ -2713,7 +2745,7 @@
         "tierComplex": "پیشرفته (به‌زودی)",
         "tierSimpleDescription": "سیستم رزرو با مدیریت میزها",
         "tierComplexDescription": "سیستم کامل با قابلیت‌های پیشرفته"
-},
+      },
       "operatingHours": {
         "title": "ساعات کاری",
         "description": "ساعات کاری رستوران را برای هر روز تنظیم کنید",
@@ -2749,31 +2781,31 @@
         "allowSameDayBooking": "اجازه رزرو در همان روز",
         "allowSameDayBookingDescription": "به مشتریان اجازه رزرو در همان روز داده شود",
         "allowCancellation": "اجازه لغو رزرو",
-        "allowCancellationDescription": "به مشتریان اجازه لغو رزرو داده شود"   
-        },
-        "preOrderSettings": {
-          "title": "تنظیمات پیش‌سفارش",
-          "description": "گزینه‌های پیش‌سفارش برای رزرو را پیکربندی کنید",
-          "enablePreOrder": "فعال‌سازی پیش‌سفارش رزرو",
-          "enablePreOrderDescription": "به مشتریان اجازه دهید همراه با رزرو، پیش‌سفارش غذا ثبت کنند",
-          "minimumOrderAmount": "حداقل مبلغ سفارش (اختیاری)",
-          "minimumOrderAmountPlaceholder": "0.00",
-          "depositAndPayment": "بیعانه و پرداخت",
-          "depositPercentage": "درصد بیعانه",
-          "depositPercentageDescription": "درصدی از مبلغ کل سفارش که به عنوان پرداخت اولیه دریافت می‌شود (0 تا 100٪). باقی‌مانده بعداً دریافت خواهد شد.",
-          "allowedPaymentMethods": "روش‌های پرداخت مجاز",
-          "allowedPaymentMethodsDescription": "روش‌هایی که مشتری می‌تواند برای پرداخت بیعانه استفاده کند را انتخاب کنید",
-          "paymentMethodOnlineCard": "پرداخت آنلاین کارت (Stripe)",
-          "paymentMethodPayPal": "پی‌پال",
-          "paymentMethodNone": "بدون پرداخت (پرداخت در محل)",
-          "cancellationRefundPolicy": "قوانین لغو و بازپرداخت",
-          "fullRefundHoursBefore": "بازپرداخت کامل (ساعت قبل)",
-          "fullRefundPlaceholder": "مثلاً 24",
-          "partialRefundHoursBefore": "بازپرداخت جزئی (ساعت قبل)",
-          "partialRefundPlaceholder": "مثلاً 4",
-          "noRefundHoursBefore": "بدون بازپرداخت (ساعت قبل)",
-          "noRefundPlaceholder": "مثلاً 1"
-},
+        "allowCancellationDescription": "به مشتریان اجازه لغو رزرو داده شود"
+      },
+      "preOrderSettings": {
+        "title": "تنظیمات پیش‌سفارش",
+        "description": "گزینه‌های پیش‌سفارش برای رزرو را پیکربندی کنید",
+        "enablePreOrder": "فعال‌سازی پیش‌سفارش رزرو",
+        "enablePreOrderDescription": "به مشتریان اجازه دهید همراه با رزرو، پیش‌سفارش غذا ثبت کنند",
+        "minimumOrderAmount": "حداقل مبلغ سفارش (اختیاری)",
+        "minimumOrderAmountPlaceholder": "0.00",
+        "depositAndPayment": "بیعانه و پرداخت",
+        "depositPercentage": "درصد بیعانه",
+        "depositPercentageDescription": "درصدی از مبلغ کل سفارش که به عنوان پرداخت اولیه دریافت می‌شود (0 تا 100٪). باقی‌مانده بعداً دریافت خواهد شد.",
+        "allowedPaymentMethods": "روش‌های پرداخت مجاز",
+        "allowedPaymentMethodsDescription": "روش‌هایی که مشتری می‌تواند برای پرداخت بیعانه استفاده کند را انتخاب کنید",
+        "paymentMethodOnlineCard": "پرداخت آنلاین کارت (Stripe)",
+        "paymentMethodPayPal": "پی‌پال",
+        "paymentMethodNone": "بدون پرداخت (پرداخت در محل)",
+        "cancellationRefundPolicy": "قوانین لغو و بازپرداخت",
+        "fullRefundHoursBefore": "بازپرداخت کامل (ساعت قبل)",
+        "fullRefundPlaceholder": "مثلاً 24",
+        "partialRefundHoursBefore": "بازپرداخت جزئی (ساعت قبل)",
+        "partialRefundPlaceholder": "مثلاً 4",
+        "noRefundHoursBefore": "بدون بازپرداخت (ساعت قبل)",
+        "noRefundPlaceholder": "مثلاً 1"
+      },
       "advancedSettings": {
         "title": "تنظیمات پیشرفته",
         "description": "تنظیمات اضافی مدیریت رزرو",
@@ -2782,7 +2814,7 @@
         "maxCapacityDescription": "حداکثر تعداد مهمان مجاز در هر بازه زمانی",
         "bufferTimeMinutes": "زمان فاصله بین رزروها (دقیقه)",
         "bufferTimeDescription": "زمان فاصله برای آماده‌سازی میز بین رزروها"
-},
+      },
       "excludedDates": {
         "title": "تاریخ‌های استثنا",
         "description": "تاریخ‌ها یا بازه‌هایی را مشخص کنید که در آن‌ها رزرو پذیرفته نمی‌شود",
@@ -2801,7 +2833,7 @@
       "description": "بینش‌های جامع از سیستم رزرو شما",
       "loading": "در حال بارگذاری تحلیل‌ها",
       "loadingDescription": "در حال دریافت داده‌ها و شاخص‌های رزرو...",
-  "summary": {
+      "summary": {
         "totalReservations": "کل رزروها",
         "totalGuests": "کل مهمان‌ها",
         "avgGuests": "میانگین مهمان‌ها",
@@ -2833,7 +2865,7 @@
         "reservations": "رزروها",
         "guests": "مهمان‌ها",
         "branchReservations": "رزروها بر اساس شعبه"
-            },
+      },
       "metrics": {
         "completionRate": "نرخ تکمیل",
         "completionRateDescription": "رزروهایی که با موفقیت تکمیل شده‌اند",
@@ -2898,7 +2930,7 @@
       "failedToFetch": "بارگذاری مواد اختیاری ناموفق بود",
       "failedToSave": "ذخیره ماده اختیاری ناموفق بود",
       "failedToDelete": "حذف ماده اختیاری ناموفق بود"
-  },
+    },
     "analytics": {
       "title": "تحلیل درآمد",
       "description": "داشبورد جامع تحلیل درآمد و بازپرداخت",
@@ -2991,7 +3023,7 @@
       "noSalesData": "هیچ داده فروشی موجود نیست",
       "noMenuItemsData": "هیچ داده آیتم منو موجود نیست",
       "noAddonsData": "هیچ داده افزودنی موجود نیست",
-    "periods": {
+      "periods": {
         "today": "امروز",
         "thisWeek": "این هفته",
         "thisMonth": "این ماه",
@@ -3057,7 +3089,7 @@
         "longitudePlaceholder": "-74.0060",
         "fullAddress": "آدرس کامل (به‌صورت خودکار تکمیل می‌شود)",
         "fullAddressPlaceholder": "آدرس کامل در اینجا نمایش داده خواهد شد"
-},
+      },
       "financialSettings": {
         "title": "تنظیمات مالی",
         "description": "قیمت‌گذاری، مالیات و سایر تنظیمات مالی را پیکربندی کنید",
@@ -3077,7 +3109,7 @@
         "enableMinimumOrder": "فعال‌سازی حداقل مبلغ سفارش",
         "currency": "واحد پول",
         "selectCurrency": "انتخاب واحد پول"
- },
+      },
       "orderSettings": {
         "title": "تنظیمات سفارش",
         "description": "تنظیمات پردازش و آماده‌سازی سفارش‌ها را پیکربندی کنید",
@@ -3093,10 +3125,10 @@
         "allowExcludeOptionalIngredientsDescription": "در صورت فعال بودن، کاربران می‌توانند مواد اختیاری را حذف کنند. در صورت غیرفعال بودن، این مواد الزامی بوده و قابل حذف نخواهند بود.",
         "orderMergeTimeframe": "بازه زمانی ادغام سفارش (دقیقه)",
         "orderMergeTimeframeDescription": "مدتی که مشتری پس از ثبت سفارش می‌تواند سفارش جدیدی را با آن ادغام کند. برای غیرفعال کردن کامل ادغام سفارش، مقدار ۰ را وارد کنید.",
-"scheduledOrderTimeSlotInterval": {
+        "scheduledOrderTimeSlotInterval": {
           "label": "فاصله زمانی بازه‌های سفارش زمان‌بندی‌شده (دقیقه)",
           "description": "فاصله زمانی بین بازه‌های قابل انتخاب برای سفارش‌های زمان‌بندی‌شده را بر حسب دقیقه تعیین کنید."
-},
+        },
         "scheduledOrderMaxOrdersPerSlot": {
           "label": "حداکثر تعداد سفارش‌های زمان‌بندی‌شده در هر بازه زمانی",
           "description": "حداکثر تعداد سفارش‌های زمان‌بندی‌شده مجاز در یک بازه زمانی. برای نامحدود بودن، این قسمت را خالی بگذارید.",
@@ -3114,7 +3146,7 @@
           "maxDaysPickup": "حداکثر روزهای قابل رزرو از پیش (سفارش حضوری)",
           "maxDaysDelivery": "حداکثر روزهای قابل رزرو از پیش (سفارش تحویل)",
           "maxDaysDescription": "تعداد روزهایی که مشتریان می‌توانند از قبل سفارش خود را زمان‌بندی کنند (۰ = فقط امروز)"
-},
+        },
         "scheduledOrderMerge": {
           "title": "ادغام سفارش‌های زمان‌بندی‌شده",
           "description": "تنظیم کنید که آیا مشتریان بتوانند سفارش‌های زمان‌بندی‌شده را با هم ادغام کنند یا خیر",
@@ -3122,14 +3154,15 @@
           "enableDescription": "به مشتریان اجازه دهید سفارش‌هایی را که برای یک بازه زمانی یکسان زمان‌بندی شده‌اند با هم ادغام کنند",
           "cutoffHours": "مهلت ادغام (ساعت قبل از زمان برنامه‌ریزی‌شده)",
           "cutoffHoursDescription": "تعداد ساعت‌هایی که پیش از زمان برنامه‌ریزی‌شده، ادغام سفارش‌ها همچنان مجاز است (۱ تا ۴۸ ساعت)"
-},
+        },
         "scheduledOrderManagement": {
           "title": "مدیریت سفارش‌های زمان‌بندی‌شده",
           "description": "تنظیم قوانین لغو، ویرایش و بازپرداخت برای سفارش‌های زمان‌بندی‌شده",
-  "cancellation": {
+          "cancellation": {
             "enable": "اجازه لغو سفارش‌های زمان‌بندی‌شده",
             "enableDescription": "به مشتریان اجازه دهید سفارش‌های زمان‌بندی‌شده خود را لغو کنند",
-            "windowHours": "مهلت لغو (ساعت قبل از زمان برنامه‌ریزی‌شده)"},
+            "windowHours": "مهلت لغو (ساعت قبل از زمان برنامه‌ریزی‌شده)"
+          },
           "refund": {
             "fullHoursBefore": "بازپرداخت کامل (ساعت قبل از زمان برنامه‌ریزی‌شده)",
             "partialHoursBefore": "بازپرداخت جزئی (ساعت قبل از زمان برنامه‌ریزی‌شده)",
@@ -3143,11 +3176,11 @@
             "windowHours": "مهلت ویرایش (ساعت قبل از زمان برنامه‌ریزی‌شده)",
             "shallowEnable": "اجازه تغییر زمان‌بندی (فقط تاریخ و ساعت)",
             "shallowEnableDescription": "به مشتریان اجازه دهید فقط تاریخ و ساعت سفارش زمان‌بندی‌شده را بدون لغو و ثبت دوباره سفارش تغییر دهند"
-},
+          },
           "autoConfirm": {
             "label": "تأیید خودکار سفارش‌های زمان‌بندی‌شده",
             "description": "اگر غیرفعال باشد، سفارش‌های زمان‌بندی‌شده ابتدا با وضعیت «در انتظار» ثبت شده و نیاز به تأیید مدیر خواهند داشت."
-},
+          },
           "minimumAmount": {
             "label": "حداقل مبلغ سفارش",
             "description": "حداقل مبلغ سفارش را برای سفارش‌های زمان‌بندی‌شده تعیین کنید (۰ = بدون حداقل مبلغ). این تنظیم هنگام ادغام سفارش‌ها اعمال نمی‌شود."
@@ -3188,7 +3221,7 @@
         "freeDeliveryThresholdPlaceholder": "50.00",
         "enableFreeDelivery": "فعال‌سازی آستانه تحویل رایگان",
         "takeawayServiceFee": "هزینه خدمات بیرون‌بر",
-        "takeawayServiceFeeDescription": "هزینه اضافی برای سفارش‌های بیرون‌بر"    
+        "takeawayServiceFeeDescription": "هزینه اضافی برای سفارش‌های بیرون‌بر"
       },
       "paymentSettings": {
         "title": "تنظیمات پرداخت",
@@ -3226,7 +3259,6 @@
         "previewLabel": "پیش‌نمایش برای بازدیدکنندگان"
       },
       "servingHours": {
-        
         "title": "ساعات ارائه خدمات تحویل",
         "description": "ساعت‌هایی را که برای هر روز سفارش‌های تحویل را می‌پذیرید تنظیم کنید",
         "allowOrdersOutsideHours": "اجازه ثبت سفارش خارج از ساعات ارائه خدمات",
@@ -3299,7 +3331,16 @@
       "requiredLabel": "الزامی",
       "saving": "در حال ذخیره...",
       "updatePolicy": "به‌روزرسانی سیاست",
-      "createPolicy": "ایجاد سیاست"
+      "createPolicy": "ایجاد سیاست",
+      "policyTypeLabels": {
+        "TERMS_OF_SERVICE": "شرایط استفاده از خدمات",
+        "PRIVACY_POLICY": "سیاست حفظ حریم خصوصی",
+        "COOKIE_POLICY": "سیاست کوکی‌ها",
+        "REFUND_POLICY": "سیاست بازپرداخت",
+        "DELIVERY_POLICY": "سیاست تحویل",
+        "DATA_PROTECTION_POLICY": "سیاست حفاظت از داده‌ها",
+        "USER_AGREEMENT": "توافق‌نامه کاربر",
+        "OTHER": "سایر"
       },
       "consentModal": {
         "title": "شرایط و سیاست‌ها",
@@ -3362,13 +3403,13 @@
         "sendSuccess": "اعلان با موفقیت برای {{count}} مشترک ارسال شد!",
         "sendError": "ارسال اعلان ناموفق بود",
         "loadHistoryError": "بارگذاری تاریخچه اعلان ناموفق بود"
-},
+      },
       "history": {
         "title": "تاریخچه اعلان‌ها",
         "description": "مشاهده اعلان‌های قبلی و عملکرد آن‌ها",
         "loading": "در حال بارگذاری تاریخچه...",
         "empty": "هنوز هیچ اعلانی ارسال نشده است",
-        "table": {
+          "table": {
           "title": "عنوان",
           "date": "تاریخ",
           "recipients": "گیرندگان",
@@ -3456,7 +3497,7 @@
       "validationUnvalidatedMessage": "اعتبارسنجی سازمان «{{organizationName}}» به‌صورت دستی غیرفعال شده است.",
       "validationTemporarilyInvalidTitle": "اعتبارسنجی موقتاً غیرفعال است",
       "validationTemporarilyInvalidMessage": "اعتبارسنجی سازمان «{{organizationName}}» موقتاً غیرفعال است.",
-"periods": {
+      "periods": {
         "today": "امروز",
         "thisWeek": "این هفته",
         "thisMonth": "این ماه",
@@ -3479,7 +3520,7 @@
         "past3Months": "۳ ماه اخیر",
         "past6Months": "۶ ماه اخیر",
         "past12Months": "۱۲ ماه اخیر"
-}
+      }
     },
     "userManagement": {
       "title": "مدیریت کاربران",
@@ -3520,7 +3561,7 @@
       "showingUsers": "نمایش {{count}} از {{total}} کاربر",
       "pageOf": "صفحه {{current}} از {{total}}",
       "searchingUsers": "در حال جستجوی کاربران..."
-},
+    },
     "orderManagement": {
       "title": "مدیریت سفارشات",
       "description": "مدیریت سفارش‌ها، پیگیری وضعیت و رسیدگی به پرداخت‌ها",
@@ -3652,7 +3693,7 @@
       "refundSummary": "خلاصه بازپرداخت",
       "processing": "در حال پردازش...",
       "statuses": {
-        "pending": "در انتظار",
+      "pending": "در انتظار",
         "confirmed": "تأیید شده",
         "preparing": "در حال آماده‌سازی",
         "ready": "آماده",
@@ -3677,7 +3718,7 @@
       "invalidStatusTransition": "تغییر وضعیت نامعتبر برای سفارش {{orderType}}",
       "cannotMergeDifferentTypes": "ادغام سفارش‌های با نوع متفاوت (تحویل و دریافت حضوری) امکان‌پذیر نیست",
       "notAvailable": "موجود نیست",
-      "errors": {
+        "errors": {
         "businessDayClosed": "این سفارش مربوط به یک روز بسته است و قابل ویرایش نیست.",
         "posDeviceRequired": "برای به‌روزرسانی سفارش، یک دستگاه POS فعال برای این شعبه انتخاب کنید.",
         "orderCancelledReadOnly": "سفارش‌های لغو شده قابل ویرایش نیستند.",
@@ -3875,6 +3916,8 @@
       "deleteBranchPriceDescription": "آیا مطمئن هستید که می‌خواهید قیمت اختصاصی شعبه {{branchName}} را حذف کنید؟",
       "selectBranch": "انتخاب شعبه",
       "branch": "شعبه",
+      "basePrice": "Base Price",
+      "taxPercentageOptional": "Tax Percentage (Optional)",
       "leaveEmptyForDefault": "برای استفاده از مقدار پیش‌فرض خالی بگذارید",
       "save": "ذخیره",
       "reorderMeals": "مرتب‌سازی غذاها",
@@ -3892,7 +3935,6 @@
         "selectedFile": "انتخاب شده: {{fileName}} ({{size}} مگابایت)",
         "externalImageUrl": "آدرس تصویر خارجی - بدون بهینه‌سازی استفاده خواهد شد",
         "helpText": "یک فایل تصویر انتخاب کنید (حداکثر ۱۰ مگابایت) یا آدرس تصویر را وارد کنید. تصاویر آپلود شده به‌صورت خودکار برای وب بهینه می‌شوند."
-
       }
     },
     "featuredMealsOrdering": {
@@ -3925,7 +3967,7 @@
       "manageMeals": "مدیریت غذاها",
       "backToCategory": "بازگشت به دسته‌بندی",
       "categoryNotFound": "دسته‌بندی یافت نشد."
-    
+    }  
   },
   "categories": {
     "appetizers": "پیش‌غذاها",
@@ -3945,7 +3987,7 @@
     "beef": "گوشت گاو",
     "vegetarian": "گیاهی",
     "vegan": "وگان"
-    },
+  },
   "mealCustomization": {
     "loadingDetails": "در حال بارگذاری جزئیات غذا...",
     "loadingTitle": "در حال بارگذاری جزئیات غذا",
@@ -4068,13 +4110,12 @@
     "addressFound": "آدرس پیدا شد",
     "addressNotFound": "این آدرس پیدا نشد"
   },
- 
   "favorites": {
     "title": "شعبه‌های مورد علاقه من",
     "empty": {
-    "title": "هنوز هیچ مورد علاقه‌ای ندارید",
-    "description": "با پسندیدن شعبه‌ها، آن‌ها را اینجا مشاهده کنید!",
-    "cta": "مشاهده شعبه‌ها"
+      "title": "هنوز هیچ مورد علاقه‌ای ندارید",
+      "description": "با پسندیدن شعبه‌ها، آن‌ها را اینجا مشاهده کنید!",
+      "cta": "مشاهده شعبه‌ها"
     },
     "loading": {
       "title": "در حال بارگذاری علاقه‌مندی‌ها...",

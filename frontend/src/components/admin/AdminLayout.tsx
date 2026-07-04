@@ -6,7 +6,7 @@ import { usePermissions } from "@/contexts/PermissionContext";
 import { RESOURCES, ACTIONS } from "@/lib/permissions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import NotificationBell from "@/components/NotificationBell";
-// import LanguageSwitcher from "@/components/LanguageSwitcher";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Toaster } from "@/components/ui/sonner";
 import { AdminWebSocketProvider } from "@/contexts/AdminWebSocketContext";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ const AdminHeaderActions: React.FC<{ isSidebarOpen: boolean; user?: any }> = ({
         isSidebarOpen ? "opacity-50 blur-sm" : ""
       }`}
     >
-      {/* <LanguageSwitcher /> */}
+      <LanguageSwitcher />
       {canViewNotifications ? <NotificationBell /> : null}
       <Avatar className="h-8 w-8">
         <AvatarImage src={user?.imageUrl} />

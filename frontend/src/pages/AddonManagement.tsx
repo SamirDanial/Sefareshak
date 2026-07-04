@@ -301,7 +301,9 @@ const AddonManagement: React.FC = () => {
   const [sizeTaxInputs, setSizeTaxInputs] = useState<Record<number, string>>({});
   const [formData, setFormData] = useState<AddonFormData>({
     name: "",
+    nameFa: "",
     description: "",
+    descriptionFa: "",
     price: 0, // Base price
     sizes: [], // Additional prices for each size
     taxPercentage: null,
@@ -511,7 +513,9 @@ const AddonManagement: React.FC = () => {
       
       setFormData({
         name: fullAddon.name,
+        nameFa: fullAddon.nameFa || "",
         description: fullAddon.description || "",
+        descriptionFa: fullAddon.descriptionFa || "",
         price: basePrice, // Base price
         sizes: sizes,
         taxPercentage: fullAddon.taxPercentage,
@@ -668,7 +672,9 @@ const AddonManagement: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: "",
+      nameFa: "",
       description: "",
+      descriptionFa: "",
       price: 0, // Base price
       sizes: [], // Additional prices
       taxPercentage: null,
@@ -1396,6 +1402,39 @@ const AddonManagement: React.FC = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="nameFa" className="text-sm font-medium">
+                {t("admin.addonManagement.addonNameFa")}
+              </Label>
+              <Input
+                id="nameFa"
+                value={formData.nameFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, nameFa: e.target.value })
+                }
+                placeholder={t("admin.addonManagement.addonNameFaPlaceholder")}
+                className="bg-card border-border focus:border-pink-500 focus:ring-pink-500"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="descriptionFa" className="text-sm font-medium">
+                {t("admin.addonManagement.descriptionLabelFa")}
+              </Label>
+              <Textarea
+                id="descriptionFa"
+                value={formData.descriptionFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, descriptionFa: e.target.value })
+                }
+                placeholder={t("admin.addonManagement.descriptionPlaceholderFa")}
+                rows={3}
+                className="bg-transparent text-foreground border-border resize-none"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="basePrice" className="text-sm font-medium">
                 {t("admin.addonManagement.basePrice")}{" "}
                 <span className="text-red-500">
@@ -1791,6 +1830,39 @@ const AddonManagement: React.FC = () => {
                 placeholder={t("admin.addonManagement.descriptionPlaceholder")}
                 rows={3}
                 className="bg-transparent text-foreground border-border resize-none"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="edit-nameFa" className="text-sm font-medium">
+                {t("admin.addonManagement.addonNameFa")}
+              </Label>
+              <Input
+                id="edit-nameFa"
+                value={formData.nameFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, nameFa: e.target.value })
+                }
+                placeholder={t("admin.addonManagement.addonNameFaPlaceholder")}
+                className="bg-card border-border focus:border-pink-500 focus:ring-pink-500"
+                dir="rtl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="edit-descriptionFa" className="text-sm font-medium">
+                {t("admin.addonManagement.descriptionLabelFa")}
+              </Label>
+              <Textarea
+                id="edit-descriptionFa"
+                value={formData.descriptionFa || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, descriptionFa: e.target.value })
+                }
+                placeholder={t("admin.addonManagement.descriptionPlaceholderFa")}
+                rows={3}
+                className="bg-transparent text-foreground border-border resize-none"
+                dir="rtl"
               />
             </div>
 
