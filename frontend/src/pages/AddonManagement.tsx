@@ -1401,7 +1401,10 @@ const AddonManagement: React.FC = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            {/* Persian Fields Section */}
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t("admin.addonManagement.persianSectionTitle")}</h3>
+              <div className="space-y-2">
               <Label htmlFor="nameFa" className="text-sm font-medium">
                 {t("admin.addonManagement.addonNameFa")}
               </Label>
@@ -1432,6 +1435,7 @@ const AddonManagement: React.FC = () => {
                 className="bg-transparent text-foreground border-border resize-none"
                 dir="rtl"
               />
+            </div>
             </div>
 
             <div className="space-y-2">
@@ -1833,7 +1837,10 @@ const AddonManagement: React.FC = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            {/* Persian Fields Section */}
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t("admin.addonManagement.persianSectionTitle")}</h3>
+              <div className="space-y-2">
               <Label htmlFor="edit-nameFa" className="text-sm font-medium">
                 {t("admin.addonManagement.addonNameFa")}
               </Label>
@@ -1864,6 +1871,7 @@ const AddonManagement: React.FC = () => {
                 className="bg-transparent text-foreground border-border resize-none"
                 dir="rtl"
               />
+            </div>
             </div>
 
             <div className="space-y-2">
