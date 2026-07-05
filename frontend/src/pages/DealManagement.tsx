@@ -1177,15 +1177,55 @@ const DealManagement: React.FC = () => {
                         dir="rtl"
                       />
                     </div>
+                    <div className="space-y-2 mt-4">
+                      <Label className="text-sm font-medium">
+                        {t("admin.dealManagement.fields.category")} (فارسی) <span className="text-red-500">*</span>
+                      </Label>
+                      <Select
+                        value={formData.categoryId}
+                        onValueChange={(value) => {
+                          setFormData({ ...formData, categoryId: value });
+                          const selectedCategory = categories.find(c => c.id === value);
+                          if (selectedCategory) {
+                            setFormData(prev => ({ ...prev, categoryId: value, categoryNameFa: selectedCategory.nameFa || "" }));
+                          }
+                        }}
+                      >
+                        <SelectTrigger className="bg-card border-border">
+                          <SelectValue placeholder={t("admin.dealManagement.fields.categoryPlaceholder")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categoriesLoading ? (
+                            <SelectItem value="" disabled>
+                              {t("common.loading")}
+                            </SelectItem>
+                          ) : (
+                            categories
+                              .filter((c) => c.isActive && c.nameFa)
+                              .map((category) => (
+                                <SelectItem key={category.id} value={category.id}>
+                                  {category.nameFa}
+                                </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      {t("admin.dealManagement.fields.category")} <span className="text-red-500">*</span>
+                      {t("admin.dealManagement.fields.category")} (English) <span className="text-red-500">*</span>
                     </Label>
                     <Select
                       value={formData.categoryId}
-                      onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                      onValueChange={(value) => {
+                        setFormData({ ...formData, categoryId: value });
+                        const selectedCategory = categories.find(c => c.id === value);
+                        if (selectedCategory) {
+                          setFormData(prev => ({ ...prev, categoryId: value, categoryNameFa: selectedCategory.nameFa || "" }));
+                        }
+                      }}
                     >
                       <SelectTrigger className="bg-card border-border">
                         <SelectValue placeholder={t("admin.dealManagement.fields.categoryPlaceholder")} />
@@ -1200,24 +1240,12 @@ const DealManagement: React.FC = () => {
                             .filter((c) => c.isActive)
                             .map((category) => (
                               <SelectItem key={category.id} value={category.id}>
-                                {category.name}{category.nameFa ? ` (${category.nameFa})` : ''}
+                                {category.name}
                               </SelectItem>
                             ))
                         )}
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">
-                      {t("admin.dealManagement.fields.categoryNameFa")}
-                    </Label>
-                    <Input
-                      value={formData.categoryNameFa}
-                      onChange={(e) => setFormData({ ...formData, categoryNameFa: e.target.value })}
-                      placeholder={t("admin.dealManagement.fields.categoryNameFaPlaceholder")}
-                      className="bg-card border-border"
-                    />
                   </div>
 
                   <div className="space-y-2">
