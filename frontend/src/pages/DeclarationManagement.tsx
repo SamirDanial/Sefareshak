@@ -275,8 +275,10 @@ const DeclarationManagement: React.FC = () => {
   // Form states
   const [formData, setFormData] = useState<DeclarationFormData>({
     name: "",
+    nameFa: "",
     type: null,
     description: "",
+    descriptionFa: "",
     icon: "",
     shownInFilter: true,
     excludedBranches: [],
@@ -395,8 +397,10 @@ const DeclarationManagement: React.FC = () => {
     setSelectedDeclaration(declaration);
     setFormData({
       name: declaration.name,
+      nameFa: declaration.nameFa || "",
       type: declaration.type || null,
       description: declaration.description || "",
+      descriptionFa: declaration.descriptionFa || "",
       icon: declaration.icon || "",
       shownInFilter:
         declaration.shownInFilter !== undefined
@@ -439,8 +443,10 @@ const DeclarationManagement: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: "",
+      nameFa: "",
       type: null,
       description: "",
+      descriptionFa: "",
       icon: "",
       shownInFilter: true,
       excludedBranches: [],
@@ -1184,6 +1190,47 @@ const DeclarationManagement: React.FC = () => {
               />
             </div>
 
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
+                {t("admin.declarationManagement.persianSectionTitle")}
+              </h3>
+              <div className="space-y-2">
+                <Label htmlFor="nameFa" className="text-sm font-medium">
+                  {t("admin.declarationManagement.declarationNameFa")}
+                </Label>
+                <Input
+                  id="nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.declarationManagement.declarationNameFaPlaceholder"
+                  )}
+                  className="bg-transparent text-foreground border-border"
+                  dir="rtl"
+                />
+              </div>
+              <div className="space-y-2 mt-3">
+                <Label htmlFor="descriptionFa" className="text-sm font-medium">
+                  {t("admin.declarationManagement.descriptionLabelFa")}
+                </Label>
+                <Textarea
+                  id="descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.declarationManagement.descriptionPlaceholderFa"
+                  )}
+                  rows={3}
+                  className="bg-transparent text-foreground border-border resize-none"
+                  dir="rtl"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="icon" className="text-sm font-medium">
                 {t("admin.declarationManagement.iconLabel")}
@@ -1371,6 +1418,47 @@ const DeclarationManagement: React.FC = () => {
                 rows={3}
                 className="bg-transparent text-foreground border-border resize-none"
               />
+            </div>
+
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
+                {t("admin.declarationManagement.persianSectionTitle")}
+              </h3>
+              <div className="space-y-2">
+                <Label htmlFor="edit-nameFa" className="text-sm font-medium">
+                  {t("admin.declarationManagement.declarationNameFa")}
+                </Label>
+                <Input
+                  id="edit-nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.declarationManagement.declarationNameFaPlaceholder"
+                  )}
+                  className="bg-transparent text-foreground border-border"
+                  dir="rtl"
+                />
+              </div>
+              <div className="space-y-2 mt-3">
+                <Label htmlFor="edit-descriptionFa" className="text-sm font-medium">
+                  {t("admin.declarationManagement.descriptionLabelFa")}
+                </Label>
+                <Textarea
+                  id="edit-descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.declarationManagement.descriptionPlaceholderFa"
+                  )}
+                  rows={3}
+                  className="bg-transparent text-foreground border-border resize-none"
+                  dir="rtl"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

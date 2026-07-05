@@ -113,9 +113,11 @@ const DealManagement: React.FC = () => {
   // Form state
   const [formData, setFormData] = useState<DealFormData>({
     name: "",
+    nameFa: "",
     description: "",
     image: "",
     categoryId: "",
+    categoryNameFa: "",
     excludedBranches: [],
     isActive: true,
     isFeatured: false,
@@ -290,9 +292,11 @@ const DealManagement: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: "",
+      nameFa: "",
       description: "",
       image: "",
       categoryId: "",
+      categoryNameFa: "",
       excludedBranches: [],
       isActive: true,
       isFeatured: false,
@@ -330,9 +334,11 @@ const DealManagement: React.FC = () => {
     setComponentTaxInputs(taxInputs);
     setFormData({
       name: deal.name,
+      nameFa: (deal as any).nameFa || "",
       description: deal.description || "",
       image: deal.image || "",
       categoryId: deal.categoryId,
+      categoryNameFa: (deal as any).categoryNameFa || "",
       excludedBranches: deal.excludedBranches || [],
       isActive: deal.isActive,
       isFeatured: deal.isFeatured || false,
@@ -629,7 +635,7 @@ const DealManagement: React.FC = () => {
           ) : null}
 
           <h2 className="text-lg font-semibold text-pink-500">
-            {selectedCategory?.name || t("admin.dealManagement.title")}
+            {selectedCategory?.nameFa || selectedCategory?.name || t("admin.dealManagement.title")}
           </h2>
           <p className="text-sm text-muted-foreground">
             {selectedCategoryId
@@ -755,10 +761,10 @@ const DealManagement: React.FC = () => {
                   )}
                   <CardContent className="p-3">
                     <CardTitle className="text-base font-bold text-foreground mb-1.5 line-clamp-1">
-                      {category.name}
+                      {category.nameFa || category.name}
                     </CardTitle>
                     <p className="text-xs text-muted-foreground line-clamp-2 mb-3 leading-4">
-                      {category.description || t("admin.menuCategories.noDescription")}
+                      {category.descriptionFa || category.description || t("admin.menuCategories.noDescription")}
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">
@@ -1153,6 +1159,26 @@ const DealManagement: React.FC = () => {
                     />
                   </div>
 
+                  {/* Persian Fields Section */}
+                  <div className="border-t border-border pt-4 mt-4">
+                    <h3 className="text-sm font-semibold text-foreground mb-3">{t("admin.dealManagement.persianSectionTitle")}</h3>
+                    <div className="space-y-2">
+                      <Label htmlFor="nameFa" className="text-sm font-medium">
+                        {t("admin.dealManagement.nameFa")}
+                      </Label>
+                      <Input
+                        id="nameFa"
+                        value={formData.nameFa || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, nameFa: e.target.value })
+                        }
+                        placeholder={t("admin.dealManagement.nameFaPlaceholder")}
+                        className="bg-card border-border"
+                        dir="rtl"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
                       {t("admin.dealManagement.fields.category")} <span className="text-red-500">*</span>
@@ -1174,12 +1200,24 @@ const DealManagement: React.FC = () => {
                             .filter((c) => c.isActive)
                             .map((category) => (
                               <SelectItem key={category.id} value={category.id}>
-                                {category.name}
+                                {category.name}{category.nameFa ? ` (${category.nameFa})` : ''}
                               </SelectItem>
                             ))
                         )}
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">
+                      {t("admin.dealManagement.fields.categoryNameFa")}
+                    </Label>
+                    <Input
+                      value={formData.categoryNameFa}
+                      onChange={(e) => setFormData({ ...formData, categoryNameFa: e.target.value })}
+                      placeholder={t("admin.dealManagement.fields.categoryNameFaPlaceholder")}
+                      className="bg-card border-border"
+                    />
                   </div>
 
                   <div className="space-y-2">

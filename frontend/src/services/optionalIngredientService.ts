@@ -3,7 +3,9 @@ import ApiService from "./apiService";
 export interface OptionalIngredient {
   id: string;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   organizationId?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -14,7 +16,9 @@ export interface OptionalIngredient {
 
 export interface OptionalIngredientFormData {
   name: string;
+  nameFa?: string | null;
   description?: string;
+  descriptionFa?: string | null;
 }
 
 export interface OptionalIngredientsResponse {

@@ -3,8 +3,10 @@ import ApiService from "./apiService";
 export interface Declaration {
   id: string;
   name: string;
+  nameFa?: string | null;
   type: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   icon: string | null;
   shownInFilter: boolean;
   excludedBranches?: string[];
@@ -18,8 +20,10 @@ export interface Declaration {
 
 export interface DeclarationFormData {
   name: string;
+  nameFa?: string | null;
   type?: string | null;
   description?: string | null;
+  descriptionFa?: string | null;
   icon?: string | null;
   shownInFilter?: boolean;
   excludedBranches?: string[];

@@ -121,7 +121,9 @@ const OptionalIngredientsManagement: React.FC = () => {
   // Form states
   const [formData, setFormData] = useState<OptionalIngredientFormData>({
     name: "",
+    nameFa: "",
     description: "",
+    descriptionFa: "",
   });
 
   // Fetch optional ingredients
@@ -337,7 +339,9 @@ const OptionalIngredientsManagement: React.FC = () => {
     setSelectedOptionalIngredient(optionalIngredient);
     setFormData({
       name: optionalIngredient.name,
+      nameFa: optionalIngredient.nameFa || "",
       description: optionalIngredient.description || "",
+      descriptionFa: optionalIngredient.descriptionFa || "",
     });
     setIsEditDialogOpen(true);
   };
@@ -373,7 +377,9 @@ const OptionalIngredientsManagement: React.FC = () => {
   const resetForm = () => {
     setFormData({
       name: "",
+      nameFa: "",
       description: "",
+      descriptionFa: "",
     });
     setSelectedOptionalIngredient(null);
   };
@@ -995,6 +1001,47 @@ const OptionalIngredientsManagement: React.FC = () => {
               />
             </div>
 
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
+                {t("admin.optionalIngredientManagement.persianSectionTitle")}
+              </h3>
+              <div className="space-y-2">
+                <Label htmlFor="nameFa" className="text-sm font-medium">
+                  {t("admin.optionalIngredientManagement.ingredientNameFa")}
+                </Label>
+                <Input
+                  id="nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.optionalIngredientManagement.ingredientNameFaPlaceholder"
+                  )}
+                  className="bg-transparent text-foreground border-border"
+                  dir="rtl"
+                />
+              </div>
+              <div className="space-y-2 mt-3">
+                <Label htmlFor="descriptionFa" className="text-sm font-medium">
+                  {t("admin.optionalIngredientManagement.descriptionLabelFa")}
+                </Label>
+                <Textarea
+                  id="descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.optionalIngredientManagement.descriptionPlaceholderFa"
+                  )}
+                  rows={3}
+                  className="bg-transparent text-foreground border-border resize-none"
+                  dir="rtl"
+                />
+              </div>
+            </div>
+
             <div className="flex justify-end gap-2 pt-4 border-t border-border">
               <Button
                 type="button"
@@ -1073,6 +1120,47 @@ const OptionalIngredientsManagement: React.FC = () => {
                 rows={3}
                 className="bg-transparent text-foreground border-border resize-none"
               />
+            </div>
+
+            <div className="border-t border-border pt-4 mt-4">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
+                {t("admin.optionalIngredientManagement.persianSectionTitle")}
+              </h3>
+              <div className="space-y-2">
+                <Label htmlFor="edit-nameFa" className="text-sm font-medium">
+                  {t("admin.optionalIngredientManagement.ingredientNameFa")}
+                </Label>
+                <Input
+                  id="edit-nameFa"
+                  value={formData.nameFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nameFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.optionalIngredientManagement.ingredientNameFaPlaceholder"
+                  )}
+                  className="bg-transparent text-foreground border-border"
+                  dir="rtl"
+                />
+              </div>
+              <div className="space-y-2 mt-3">
+                <Label htmlFor="edit-descriptionFa" className="text-sm font-medium">
+                  {t("admin.optionalIngredientManagement.descriptionLabelFa")}
+                </Label>
+                <Textarea
+                  id="edit-descriptionFa"
+                  value={formData.descriptionFa || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, descriptionFa: e.target.value })
+                  }
+                  placeholder={t(
+                    "admin.optionalIngredientManagement.descriptionPlaceholderFa"
+                  )}
+                  rows={3}
+                  className="bg-transparent text-foreground border-border resize-none"
+                  dir="rtl"
+                />
+              </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-4 border-t border-border">

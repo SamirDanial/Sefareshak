@@ -40,9 +40,11 @@ export interface Deal {
 
 export interface DealFormData {
   name: string;
+  nameFa?: string;
   description?: string;
   image?: string;
   categoryId: string;
+  categoryNameFa?: string;
   excludedBranches?: string[];
   isActive?: boolean;
   isFeatured?: boolean;
