@@ -27,6 +27,7 @@ export interface CartItem {
 export interface AddOn {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: number;
   type: "BOOLEAN" | "QUANTITY"; // Addon type
   quantity?: number; // Optional quantity for quantity-based addons

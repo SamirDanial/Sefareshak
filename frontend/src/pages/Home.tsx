@@ -874,6 +874,7 @@ export default function Home() {
       return {
         id: meal.id,
         name: meal.name,
+        nameFa: (meal as any).nameFa || null,
         price: meal.effectiveBasePrice ?? parseFloat(meal.basePrice),
         compareAt: (meal.effectiveBasePrice ?? parseFloat(meal.basePrice)) * 1.2, // 20% markup for comparison
         img: meal.image

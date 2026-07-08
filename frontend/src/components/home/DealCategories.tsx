@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import type { DealCategory } from "@/hooks/useApi";
 import { getOptimizedImageUrl, isExternalImage } from "@/utils/imageUtils";
 import { useTranslation } from "react-i18next";
+import { getLocalizedName } from "@/utils/localization";
 
 export function DealCategories({
   items,
@@ -10,7 +11,7 @@ export function DealCategories({
   items: DealCategory[];
   onClick?: (c: DealCategory) => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const FALLBACK_IMG = "https://placehold.co/800x800?text=Deals";
 
@@ -19,14 +20,12 @@ export function DealCategories({
     onClick?.(category);
   };
 
-  const getCategoryName = (categoryName: string): string => {
-    const translationKey = `categories.${categoryName.toLowerCase().replace(/\s+/g, "")}`;
-    const translated = t(translationKey, { defaultValue: categoryName });
-    return translated !== translationKey ? translated : categoryName;
+  const getCategoryName = (category: DealCategory): string => {
+    return getLocalizedName(category.name, category.nameFa, i18n.language);
   };
 
-  const truncateCategoryName = (name: string): string => {
-    const translatedName = getCategoryName(name);
+  const truncateCategoryName = (category: DealCategory): string => {
+    const translatedName = getCategoryName(category);
     if (translatedName.length <= 12) {
       return translatedName;
     }
@@ -79,7 +78,7 @@ export function DealCategories({
                             : getOptimizedImageUrl(c.image)
                           : FALLBACK_IMG
                       }
-                      alt={c.name}
+                      alt={getCategoryName(c)}
                       className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                       style={{ width: "120px", height: "90px" }}
                       onError={(e) => {
@@ -89,7 +88,7 @@ export function DealCategories({
                     />
                   </div>
                   <div className="text-center text-sm font-semibold text-white p-3">
-                    {truncateCategoryName(c.name)}
+                    {truncateCategoryName(c)}
                   </div>
                 </div>
               ))}

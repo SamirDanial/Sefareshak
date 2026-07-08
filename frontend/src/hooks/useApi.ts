@@ -4,7 +4,9 @@ import ApiService from "@/services/apiService";
 export interface Category {
   id: string;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   image: string | null;
   isActive: boolean;
   isFeatured: boolean;
@@ -17,6 +19,7 @@ export interface Category {
 export interface DealComponent {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: string;
   taxPercentage: string;
   effectivePrice?: number;
@@ -26,7 +29,9 @@ export interface DealComponent {
 export interface Deal {
   id: string;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   image: string | null;
   isActive: boolean;
   isFeatured?: boolean;
@@ -51,10 +56,12 @@ export interface MealAddOn {
   addOn: {
     id: string;
     name: string;
+    nameFa?: string | null;
     price: string;
     type: string;
     image: string | null;
     description: string | null;
+    descriptionFa?: string | null;
   };
 }
 
@@ -65,8 +72,10 @@ export interface MealDeclaration {
   declaration: {
     id: string;
     name: string;
+    nameFa?: string | null;
     type: string | null;
     description: string | null;
+    descriptionFa?: string | null;
     icon: string | null;
   };
 }
@@ -74,7 +83,9 @@ export interface MealDeclaration {
 export interface Meal {
   id: string;
   name: string;
+  nameFa?: string | null;
   description: string | null;
+  descriptionFa?: string | null;
   basePrice: string;
   image: string | null;
   isActive: boolean;
@@ -95,10 +106,20 @@ export interface Meal {
 export interface MealSize {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: string;
   mealId: string;
 }
 
+export interface OptionalIngredient {
+  id: string;
+  name: string;
+  nameFa?: string | null;
+  description: string | null;
+  descriptionFa?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 const sortCategoriesByOrder = (data: Category[], featured?: boolean) => {
   return [...data].sort((a, b) => {
     const orderAValue = featured ? a.featuredOrder : a.listOrder;

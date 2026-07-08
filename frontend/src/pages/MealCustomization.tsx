@@ -32,6 +32,7 @@ import { getAddonPriceForMealSize, getNearestSmallerAddonSize, type SizeType } f
 import { deliverableQuantityService, type PublicAvailableWeight } from "@/services/deliverableQuantityService";
 import { formatInTimeZone } from "date-fns-tz";
 import { getEffectiveTimezone, getMealAvailabilityNow } from "@/utils/mealAvailability";
+import { getLocalizedName, getLocalizedDescription } from "@/utils/localization";
 
 export default function MealCustomization() {
   const { mealId } = useParams<{ mealId: string }>();
@@ -46,7 +47,15 @@ export default function MealCustomization() {
   const [meal, setMeal] = useState<Meal | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const getAddonName = (addOn: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(addOn.name, addOn.nameFa, i18n.language);
+  };
+
+  const getAddonDescription = (addOn: { description: string | null; descriptionFa?: string | null }): string | null => {
+    return getLocalizedDescription(addOn.description, addOn.descriptionFa, i18n.language);
+  };
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedAddOns, setSelectedAddOns] = useState<AddOn[]>([]);
@@ -394,6 +403,7 @@ export default function MealCustomization() {
   const handleAddOnToggle = (addOn: {
     id: string;
     name: string;
+    nameFa?: string | null;
     price?: string;
     effectiveBasePrice?: number;
     type: "BOOLEAN" | "QUANTITY";
@@ -406,6 +416,7 @@ export default function MealCustomization() {
     const addOnObj: AddOn = {
       id: addOn.id,
       name: addOn.name,
+      nameFa: (addOn as any).nameFa || null,
       price: addOnPrice,
       type: addOn.type,
       sizeType: sizeType,
@@ -428,6 +439,7 @@ export default function MealCustomization() {
     const addOnObj: AddOn = {
       id: addOn.id,
       name: addOn.name,
+      nameFa: ('nameFa' in addOn ? (addOn as any).nameFa : null),
       price: addOnPrice,
       type: addOn.type as "BOOLEAN" | "QUANTITY",
       quantity: newQuantity,
@@ -624,7 +636,7 @@ export default function MealCustomization() {
           <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
         </button>
         <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-          {meal.name}
+          {getLocalizedName(meal.name, meal.nameFa, i18n.language)}
         </h1>
       </div>
 
@@ -640,7 +652,7 @@ export default function MealCustomization() {
                   : getOptimizedImageUrl(meal.image)
                 : "https://placehold.co/800x800?text=Food"
             }
-            alt={meal.name}
+            alt={getLocalizedName(meal.name, meal.nameFa, i18n.language)}
             className="h-full w-full object-cover"
             style={!isAvailableByBranchTiming ? { filter: "grayscale(1)", opacity: 0.85 } : undefined}
           />
@@ -666,7 +678,7 @@ export default function MealCustomization() {
           )}
           <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4">
             <p className="text-base font-semibold text-pink-400">
-              {meal.description}
+              {getLocalizedDescription(meal.description, meal.descriptionFa, i18n.language)}
             </p>
           </div>
         </div>
@@ -683,7 +695,7 @@ export default function MealCustomization() {
                     : getOptimizedImageUrl(meal.image)
                   : "https://placehold.co/800x800?text=Food"
               }
-              alt={meal.name}
+              alt={getLocalizedName(meal.name, meal.nameFa, i18n.language)}
               className="h-full w-full object-cover"
               style={!isAvailableByBranchTiming ? { filter: "grayscale(1)", opacity: 0.85 } : undefined}
             />
@@ -709,7 +721,7 @@ export default function MealCustomization() {
             )}
             <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4">
               <p className="text-base font-semibold text-pink-400">
-                {meal.description}
+                {getLocalizedDescription(meal.description, meal.descriptionFa, i18n.language)}
               </p>
             </div>
           </div>
@@ -1108,7 +1120,7 @@ export default function MealCustomization() {
                                   ? addOn.image
                                   : getOptimizedImageUrl(addOn.image)
                               }
-                              alt={addOn.name}
+                              alt={getAddonName(addOn)}
                               className="w-full h-full object-cover"
                               loading="lazy"
                               onError={(e) => {
@@ -1123,11 +1135,11 @@ export default function MealCustomization() {
                       <div className="flex-1 min-w-0 flex items-center justify-between gap-3">
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-sm text-foreground">
-                            {addOn.name}
+                            {getAddonName(addOn)}
                           </h3>
-                          {addOn.description && (
+                          {getAddonDescription(addOn) && (
                             <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                              {addOn.description}
+                              {getAddonDescription(addOn)}
                             </p>
                           )}
                           <span className="text-xs font-bold text-pink-600 dark:text-pink-400 mt-0.5 block">
@@ -1277,7 +1289,7 @@ export default function MealCustomization() {
                                 ? addOn.image
                                 : getOptimizedImageUrl(addOn.image)
                             }
-                            alt={addOn.name}
+                            alt={getAddonName(addOn)}
                             className="w-full h-full object-cover"
                             loading="lazy"
                             onError={(e) => {

@@ -25,6 +25,7 @@ import {
   type Declaration,
 } from "@/services/declarationService";
 import { getEffectiveTimezone, getMealAvailabilityNow } from "@/utils/mealAvailability";
+import { getLocalizedName, getLocalizedDescription } from "@/utils/localization";
 
 const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
 
@@ -45,15 +46,11 @@ const CategoryFilter = memo(
       [key: string]: HTMLButtonElement | null;
     }>;
   }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // Function to get translated category name
-    const getCategoryName = (categoryName: string): string => {
-      const translationKey = `categories.${categoryName
-        .toLowerCase()
-        .replace(/\s+/g, "")}`;
-      const translated = t(translationKey, { defaultValue: categoryName });
-      return translated !== translationKey ? translated : categoryName;
+    const getCategoryName = (category: any): string => {
+      return getLocalizedName(category.name, category.nameFa, i18n.language);
     };
 
     return (
@@ -98,7 +95,7 @@ const CategoryFilter = memo(
               letterSpacing: selectedCategoryId === category.id ? "0.3px" : "0.2px",
             }}
           >
-            {getCategoryName(category.name)}
+            {getCategoryName(category)}
           </button>
         ))}
       </div>
@@ -128,7 +125,7 @@ const DeclarationFilter = memo(
       [key: string]: HTMLButtonElement | null;
     }>;
   }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // Filter declarations that should be shown in filter
     const visibleDeclarations = declarations.filter(
@@ -166,14 +163,14 @@ const DeclarationFilter = memo(
                     ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/30 hover:from-pink-400 hover:to-rose-400"
                     : "border-pink-300 dark:border-pink-700 text-foreground hover:bg-pink-50 dark:hover:bg-pink-950/30 hover:border-pink-400 dark:hover:border-pink-600"
                 }`}
-                title={declaration.description || declaration.name}
+                title={getLocalizedDescription(declaration.description, declaration.descriptionFa, i18n.language) || getLocalizedName(declaration.name, declaration.nameFa, i18n.language)}
               >
                 {declaration.icon && (
                   <span className="text-sm flex-shrink-0">
                     {declaration.icon}
                   </span>
                 )}
-                <span>{declaration.name}</span>
+                <span>{getLocalizedName(declaration.name, declaration.nameFa, i18n.language)}</span>
               </Button>
             );
           })}
@@ -190,8 +187,13 @@ const MemoizedDeclarationFilter = memo(DeclarationFilter);
 const MENU_SCROLL_KEY = "bellami:menuScroll";
 
 export default function Menu() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currency, settings } = useSettings();
+
+  const getMealName = (meal: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(meal.name, meal.nameFa, i18n.language);
+  };
+
   const { branch, branches } = useBranch();
   const [searchParams] = useSearchParams();
   const isPreOrderReservation = searchParams.get("reservation") === "pre-order";
@@ -1029,7 +1031,7 @@ export default function Menu() {
                                 : getOptimizedImageUrl(meal.image)
                               : FALLBACK_IMG
                           }
-                          alt={meal.name}
+                          alt={getMealName(meal)}
                           className="h-full w-full object-cover"
                           style={!isAvailableNow ? { filter: "grayscale(1)", opacity: 0.85 } : undefined}
                           onError={(e) => {
@@ -1041,7 +1043,7 @@ export default function Menu() {
                     })()}
                   </div>
                   <div className="space-y-1 p-3">
-                    <div className="text-sm font-medium">{meal.name}</div>
+                    <div className="text-sm font-medium">{getMealName(meal)}</div>
                     <div className="text-base font-semibold">
                       {formatPrice(meal.effectiveBasePrice ?? parseFloat(meal.basePrice), currency)}
                     </div>
@@ -1091,7 +1093,7 @@ export default function Menu() {
                           : getOptimizedImageUrl(meal.image)
                         : FALLBACK_IMG
                     }
-                    alt={meal.name}
+                    alt={getMealName(meal)}
                     style={{
                       width: "160px",
                       height: "160px",

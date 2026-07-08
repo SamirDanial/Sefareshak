@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import Icon from "@mdi/react";
 import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
+import { getLocalizedName } from "@/utils/localization";
 
 export function Categories({
   items,
@@ -15,7 +16,7 @@ export function Categories({
   onClick?: (c: Category) => void;
   getPath?: (c: Category) => string;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -27,17 +28,12 @@ export function Categories({
     navigate(getPath ? getPath(category) : `/category/${category.id}`);
     onClick?.(category);
   };
-
-  const getCategoryName = (categoryName: string): string => {
-    const translationKey = `categories.${categoryName
-      .toLowerCase()
-      .replace(/\s+/g, "")}`;
-    const translated = t(translationKey, { defaultValue: categoryName });
-    return translated !== translationKey ? translated : categoryName;
+const getCategoryName = (category: Category): string => {
+    return getLocalizedName(category.name, category.nameFa, i18n.language);
   };
 
-  const truncateCategoryName = (name: string): string => {
-    const translatedName = getCategoryName(name);
+  const truncateCategoryName = (category: Category): string => {
+    const translatedName = getCategoryName(category);
     if (translatedName.length <= 12) {
       return translatedName;
     }
@@ -121,7 +117,7 @@ export function Categories({
                           : getOptimizedImageUrl(c.image)
                         : FALLBACK_IMG
                     }
-                    alt={c.name}
+                    alt={getCategoryName(c)}
                     className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                     style={{ width: "120px", height: "90px" }}
                     onError={(e) => {
@@ -131,7 +127,7 @@ export function Categories({
                   />
                 </div>
                 <div className="text-center text-sm font-semibold text-white p-3">
-                  {truncateCategoryName(c.name)}
+                  {truncateCategoryName(c)}
                 </div>
               </div>
             ))}

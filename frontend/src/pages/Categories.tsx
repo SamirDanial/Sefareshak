@@ -6,27 +6,28 @@ import { getOptimizedImageUrl, isExternalImage } from "@/utils/imageUtils";
 import Icon from "@mdi/react";
 import { mdiArrowLeft } from "@mdi/js";
 import { CategoriesSkeleton } from "@/components/ui/skeleton";
+import { getLocalizedName, getLocalizedDescription } from "@/utils/localization";
 
 const FALLBACK_IMG = "https://placehold.co/800x600?text=Food";
 
 export default function Categories() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { branch } = useBranch();
   const { categories, loading, error } = useCategories(undefined, branch?.id); // Get all categories, not just featured
 
   // Function to get translated category name
-  const getCategoryName = (categoryName: string): string => {
-    const translationKey = `categories.${categoryName
-      .toLowerCase()
-      .replace(/\s+/g, "")}`;
-    const translated = t(translationKey, { defaultValue: categoryName });
-    return translated !== translationKey ? translated : categoryName;
+  const getCategoryName = (category: any): string => {
+    return getLocalizedName(category.name, category.nameFa, i18n.language);
+  };
+
+  const getCategoryDescription = (category: any): string | null => {
+    return getLocalizedDescription(category.description, category.descriptionFa, i18n.language);
   };
 
   // Function to truncate category name
-  const truncateCategoryName = (name: string): string => {
-    const translatedName = getCategoryName(name);
+  const truncateCategoryName = (category: any): string => {
+    const translatedName = getCategoryName(category);
     if (translatedName.length <= 12) {
       return translatedName;
     }
@@ -94,7 +95,7 @@ export default function Categories() {
                           : getOptimizedImageUrl(category.image)
                         : FALLBACK_IMG
                     }
-                    alt={category.name}
+                    alt={getCategoryName(category)}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
@@ -115,11 +116,11 @@ export default function Categories() {
                       fontWeight: 700,
                       letterSpacing: 0.2,
                     }}
-                    title={getCategoryName(category.name)}
+                    title={getCategoryName(category)}
                   >
-                    {truncateCategoryName(category.name)}
+                    {truncateCategoryName(category)}
                   </h3>
-                  {category.description && (
+                  {getCategoryDescription(category) && (
                     <p
                       className="leading-5 overflow-hidden"
                       style={{
@@ -129,9 +130,9 @@ export default function Categories() {
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
                       }}
-                      title={category.description}
+                      title={getCategoryDescription(category) || ""}
                     >
-                      {category.description}
+                      {getCategoryDescription(category)}
                     </p>
                   )}
                 </div>

@@ -2,16 +2,21 @@ import { Link } from "react-router-dom";
 import { useSettings } from "@/contexts/SettingsContext";
 import { formatPrice } from "@/utils/currency";
 import { useTranslation } from "react-i18next";
+import { getLocalizedName } from "@/utils/localization";
 
 type Meal = {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: number;
   img: string;
 };
-
 export function MostOrdered({ items }: { items: Meal[] }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const getMealName = (meal: Meal): string => {
+    return getLocalizedName(meal.name, meal.nameFa, i18n.language);
+  };
   const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
   const { currency } = useSettings();
   return (
@@ -45,7 +50,7 @@ export function MostOrdered({ items }: { items: Meal[] }) {
               <div className="w-full h-[120px] overflow-hidden">
                 <img
                   src={m.img}
-                  alt={m.name}
+                  alt={getMealName(m)}
                   className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
@@ -62,9 +67,9 @@ export function MostOrdered({ items }: { items: Meal[] }) {
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap"
                   }}
-                  title={m.name}
+                  title={getMealName(m)}
                 >
-                  {m.name}
+                  {getMealName(m)}
                 </div>
                 <div
                   className="text-base font-bold"

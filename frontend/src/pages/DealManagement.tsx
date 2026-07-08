@@ -1146,6 +1146,41 @@ const DealManagement: React.FC = () => {
                   </div>
 
                   <div className="space-y-2">
+                    <Label className="text-sm font-medium">
+                      {t("admin.dealManagement.fields.category")} (English) <span className="text-red-500">*</span>
+                    </Label>
+                    <Select
+                      value={formData.categoryId}
+                      onValueChange={(value) => {
+                        setFormData({ ...formData, categoryId: value });
+                        const selectedCategory = categories.find(c => c.id === value);
+                        if (selectedCategory) {
+                          setFormData(prev => ({ ...prev, categoryId: value, categoryNameFa: selectedCategory.nameFa || "" }));
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="bg-card border-border">
+                        <SelectValue placeholder={t("admin.dealManagement.fields.categoryPlaceholder")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categoriesLoading ? (
+                          <SelectItem value="" disabled>
+                            {t("common.loading")}
+                          </SelectItem>
+                        ) : (
+                          categories
+                            .filter((c) => c.isActive)
+                            .map((category) => (
+                              <SelectItem key={category.id} value={category.id}>
+                                {category.name}
+                              </SelectItem>
+                            ))
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="description" className="text-sm font-medium">
                       {t("common.description")}
                     </Label>
@@ -1211,41 +1246,6 @@ const DealManagement: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">
-                      {t("admin.dealManagement.fields.category")} (English) <span className="text-red-500">*</span>
-                    </Label>
-                    <Select
-                      value={formData.categoryId}
-                      onValueChange={(value) => {
-                        setFormData({ ...formData, categoryId: value });
-                        const selectedCategory = categories.find(c => c.id === value);
-                        if (selectedCategory) {
-                          setFormData(prev => ({ ...prev, categoryId: value, categoryNameFa: selectedCategory.nameFa || "" }));
-                        }
-                      }}
-                    >
-                      <SelectTrigger className="bg-card border-border">
-                        <SelectValue placeholder={t("admin.dealManagement.fields.categoryPlaceholder")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categoriesLoading ? (
-                          <SelectItem value="" disabled>
-                            {t("common.loading")}
-                          </SelectItem>
-                        ) : (
-                          categories
-                            .filter((c) => c.isActive)
-                            .map((category) => (
-                              <SelectItem key={category.id} value={category.id}>
-                                {category.name}
-                              </SelectItem>
-                            ))
-                        )}
-                      </SelectContent>
-                    </Select>
                   </div>
 
                   <div className="space-y-2">

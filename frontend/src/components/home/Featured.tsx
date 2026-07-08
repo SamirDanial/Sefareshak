@@ -5,10 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import Icon from "@mdi/react";
 import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
+import { getLocalizedName } from "@/utils/localization";
 
 type Meal = {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: number;
   compareAt?: number;
   img: string;
@@ -21,9 +23,13 @@ export function Featured({
   items: Meal[];
   onAdd?: (m: Meal) => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
   const { currency } = useSettings();
+
+  const getMealName = (meal: Meal): string => {
+    return getLocalizedName(meal.name, meal.nameFa, i18n.language);
+  };
 
   const rows: Meal[][] = [];
   for (let i = 0; i < items.length; i += 5) {
@@ -112,7 +118,7 @@ export function Featured({
                     <div className="w-full h-[120px] overflow-hidden">
                       <img
                         src={m.img}
-                        alt={m.name}
+                        alt={getMealName(m)}
                         className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                         style={!m.isAvailableNow ? { filter: "grayscale(1)", opacity: 0.85 } : undefined}
                         onError={(e) => {
@@ -130,9 +136,9 @@ export function Featured({
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap"
                         }}
-                        title={m.name}
+                        title={getMealName(m)}
                       >
-                        {m.name}
+                        {getMealName(m)}
                       </div>
                       <div
                         className="text-base font-bold"

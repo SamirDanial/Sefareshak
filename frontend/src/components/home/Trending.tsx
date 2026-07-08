@@ -2,18 +2,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSettings } from "@/contexts/SettingsContext";
 import { formatPrice } from "@/utils/currency";
 import { useTranslation } from "react-i18next";
+import { getLocalizedName } from "@/utils/localization";
 
 type Meal = {
   id: string;
   name: string;
+  nameFa?: string | null;
   price: number;
   compareAt?: number;
   img: string;
 };
-
 export function Trending({ items }: { items: Meal[] }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+
+  const getMealName = (meal: Meal): string => {
+    return getLocalizedName(meal.name, meal.nameFa, i18n.language);
+  };
   const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
   const { currency } = useSettings();
   return (
@@ -58,7 +63,7 @@ export function Trending({ items }: { items: Meal[] }) {
                 <span className="text-xs font-bold text-white">
                   {t("home.trending.hot") || "HOT"}
                 </span>
-              </div>
+              </div>getMealN(m)
               
               {/* Image */}
               <div className="w-full h-[120px] overflow-hidden">
@@ -77,15 +82,15 @@ export function Trending({ items }: { items: Meal[] }) {
               <div className="p-3">
                 <div
                   className="text-sm font-semibold mb-1.5"
-                  style={{ 
+                  style={{
                     color: "#fff",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap"
                   }}
-                  title={m.name}
+                  title={getMealName(m)}
                 >
-                  {m.name}
+                  {getMealName(m)}
                 </div>
                 <div className="flex items-center gap-2">
                   <div

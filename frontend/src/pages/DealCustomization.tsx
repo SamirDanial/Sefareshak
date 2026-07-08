@@ -27,13 +27,14 @@ import { toast } from "sonner";
 import { useCartStore } from "@/store/cartStore";
 import type { AddOn as CartAddOn, CartItem, OptionalIngredient as CartOptionalIngredient } from "@/store/cartStore";
 import ApiService from "@/services/apiService";
+import { getLocalizedName, getLocalizedDescription } from "@/utils/localization";
 
 const FALLBACK_IMG = "https://placehold.co/800x800?text=Deals";
 
 export default function DealCustomization() {
   const { dealId } = useParams<{ dealId: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currency } = useSettings();
   const { branch } = useBranch();
   const [searchParams] = useSearchParams();
@@ -46,6 +47,18 @@ export default function DealCustomization() {
   const [deal, setDeal] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const getAddonName = (addOn: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(addOn.name, addOn.nameFa, i18n.language);
+  };
+
+  const getAddonDescription = (addOn: { description: string | null; descriptionFa?: string | null }): string | null => {
+    return getLocalizedDescription(addOn.description, addOn.descriptionFa, i18n.language);
+  };
+
+  const getOptionalIngredientName = (ing: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(ing.name, ing.nameFa, i18n.language);
+  };
 
   const [selectedAddOns, setSelectedAddOns] = useState<CartAddOn[]>([]);
   const [selectedOptionalIngredients, setSelectedOptionalIngredients] = useState<CartOptionalIngredient[]>([]);
@@ -313,7 +326,7 @@ export default function DealCustomization() {
           <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
         </button>
         <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-          {deal.name}
+          {getLocalizedName(deal.name, deal.nameFa, i18n.language)}
         </h1>
       </div>
 
@@ -327,11 +340,11 @@ export default function DealCustomization() {
                   : getOptimizedImageUrl(deal.image)
                 : FALLBACK_IMG
             }
-            alt={deal.name}
+            alt={getLocalizedName(deal.name, deal.nameFa, i18n.language)}
             className="h-full w-full object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4">
-            <p className="text-base font-semibold text-pink-400">{deal.description}</p>
+            <p className="text-base font-semibold text-pink-400">{getLocalizedDescription(deal.description, deal.descriptionFa, i18n.language)}</p>
           </div>
         </div>
       </div>
@@ -347,11 +360,11 @@ export default function DealCustomization() {
                     : getOptimizedImageUrl(deal.image)
                   : FALLBACK_IMG
               }
-              alt={deal.name}
+              alt={getLocalizedName(deal.name, deal.nameFa, i18n.language)}
               className="h-full w-full object-cover"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4">
-              <p className="text-base font-semibold text-pink-400">{deal.description}</p>
+              <p className="text-base font-semibold text-pink-400">{getLocalizedDescription(deal.description, deal.descriptionFa, i18n.language)}</p>
             </div>
           </div>
         </CardContent>
@@ -417,9 +430,9 @@ export default function DealCustomization() {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="font-semibold text-foreground">{addOn.name}</p>
-                        {addOn.description && (
-                          <p className="text-sm text-muted-foreground">{addOn.description}</p>
+                        <p className="font-semibold text-foreground">{getAddonName(addOn)}</p>
+                        {getAddonDescription(addOn) && (
+                          <p className="text-sm text-muted-foreground">{getAddonDescription(addOn)}</p>
                         )}
                         <p className="text-sm font-semibold text-pink-600 mt-1">
                           {formatPrice(isNaN(p) ? 0 : p, currency)}

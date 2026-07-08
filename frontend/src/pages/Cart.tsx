@@ -12,18 +12,23 @@ import { ServingHoursService, type ServingHoursStatus } from "@/services/serving
 import { toast } from "sonner";
 import { formatPrice } from "@/utils/currency";
 import { useTranslation } from "react-i18next";
+import { getLocalizedName } from "@/utils/localization";
 
 export default function Cart() {
   const { items, updateQuantity, removeItem, getTotalPrice, clearCart } =
     useCartStore();
   const navigate = useNavigate();
   const { isSignedIn, signIn } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { branch, branches } = useBranch();
   const [servingHoursStatus, setServingHoursStatus] = useState<ServingHoursStatus | null>(null);
   const [allowOrdersOutsideHours, setAllowOrdersOutsideHours] = useState(false);
 
   const { maxOrderQuantity, settings, currency } = useSettings();
+
+  const getAddonName = (addOn: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(addOn.name, addOn.nameFa, i18n.language);
+  };
 
   // Check if this is a pre-order reservation (new or modifying)
   const isPreOrderReservation = React.useMemo(() => {
@@ -229,8 +234,8 @@ export default function Cart() {
                           .map((addOn) => {
                             const quantity = addOn.quantity || 1;
                             return quantity > 1
-                              ? `${addOn.name} ×${quantity}`
-                              : addOn.name;
+                              ? `${getAddonName(addOn)} ×${quantity}`
+                              : getAddonName(addOn);
                           })
                           .join(", ")}
                       </p>

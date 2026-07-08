@@ -12,13 +12,14 @@ import { useSettings } from "@/contexts/SettingsContext";
 import { useBranch } from "@/contexts/BranchContext";
 import { formatPrice } from "@/utils/currency";
 import { getEffectiveTimezone, getMealAvailabilityNow } from "@/utils/mealAvailability";
+import { getLocalizedName, getLocalizedDescription } from "@/utils/localization";
 
 const FALLBACK_IMG = "https://placehold.co/800x800?text=Food";
 
 export default function CategoryPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { branch, branches } = useBranch();
   const { category, meals, loading, error } = useCategory(categoryId || "", branch?.id);
   const {
@@ -178,15 +179,15 @@ export default function CategoryPage() {
             <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
           </button>
           <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-            {dealCategory.name}
+            {getLocalizedName(dealCategory.name, dealCategory.nameFa, i18n.language)}
           </h1>
         </div>
 
-        {dealCategory.description && (
+        {getLocalizedDescription(dealCategory.description, dealCategory.descriptionFa, i18n.language) && (
           <Card className="bg-[#1a1a1a] border-[#262626]">
             <CardContent className="p-4">
               <p className="text-sm text-[#9CA3AF] leading-relaxed whitespace-pre-wrap line-clamp-2">
-                {dealCategory.description}
+                {getLocalizedDescription(dealCategory.description, dealCategory.descriptionFa, i18n.language)}
               </p>
             </CardContent>
           </Card>
@@ -211,7 +212,7 @@ export default function CategoryPage() {
                               : getOptimizedImageUrl(deal.image)
                             : FALLBACK_IMG
                         }
-                        alt={deal.name}
+                        alt={getLocalizedName(deal.name, deal.nameFa, i18n.language)}
                         className="h-full w-full object-cover"
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
@@ -220,9 +221,9 @@ export default function CategoryPage() {
                       />
                     </div>
                     <div className="flex-1 p-4 space-y-2">
-                      <h3 className="font-semibold">{deal.name}</h3>
+                      <h3 className="font-semibold">{getLocalizedName(deal.name, deal.nameFa, i18n.language)}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-2">
-                        {deal.description}
+                        {getLocalizedDescription(deal.description, deal.descriptionFa, i18n.language)}
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-bold">
@@ -306,15 +307,15 @@ export default function CategoryPage() {
           <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
         </button>
         <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-          {category.name}
+          {getLocalizedName(category.name, category.nameFa, i18n.language)}
         </h1>
       </div>
 
-      {category.description && (
+      {getLocalizedDescription(category.description, category.descriptionFa, i18n.language) && (
         <Card className="bg-[#1a1a1a] border-[#262626]">
           <CardContent className="p-4">
             <p className="text-sm text-[#9CA3AF] leading-relaxed whitespace-pre-wrap line-clamp-2">
-              {category.description}
+              {getLocalizedDescription(category.description, category.descriptionFa, i18n.language)}
             </p>
           </CardContent>
         </Card>
@@ -344,7 +345,7 @@ export default function CategoryPage() {
                                 : getOptimizedImageUrl(meal.image)
                               : FALLBACK_IMG
                           }
-                          alt={meal.name}
+                          alt={getLocalizedName(meal.name, meal.nameFa, i18n.language)}
                           className="h-full w-full object-cover"
                           style={!isAvailableNow ? { filter: "grayscale(1)", opacity: 0.85 } : undefined}
                           onError={(e) => {
@@ -356,9 +357,9 @@ export default function CategoryPage() {
                     })()}
                   </div>
                   <div className="flex-1 min-w-0 p-4 space-y-2">
-                    <h3 className="font-semibold">{meal.name}</h3>
+                    <h3 className="font-semibold">{getLocalizedName(meal.name, meal.nameFa, i18n.language)}</h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">
-                      {meal.description}
+                      {getLocalizedDescription(meal.description, meal.descriptionFa, i18n.language)}
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold">
