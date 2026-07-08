@@ -91,6 +91,20 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onToggle }) => {
     }
   });
   const navRef = useRef<HTMLElement | null>(null);
+  const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
+
+  useEffect(() => {
+    const updateDirection = () => {
+      setDirection(document.documentElement.dir as 'ltr' | 'rtl');
+    };
+    
+    updateDirection();
+    
+    const observer = new MutationObserver(updateDirection);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+    
+    return () => observer.disconnect();
+  }, []);
 
   const canView = useCallback(
     (resource: keyof typeof RESOURCES) => {
@@ -811,22 +825,19 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onToggle }) => {
 
           {/* Drawer */}
           <div
-            className={`fixed inset-y-0 z-[60] w-80 max-w-[85vw] bg-neutral-900 border-r-0 border-neutral-700 shadow-2xl left-0`}
+            className={`fixed inset-y-0 z-[60] w-80 max-w-[85vw] bg-neutral-900 ${direction === 'rtl' ? 'border-l border-neutral-700' : 'border-r border-neutral-700'} shadow-2xl ${direction === 'rtl' ? 'right-0' : 'left-0'}`}
             style={{
               transform: isClosing
-                ? "translateX(-100%)"
+                ? direction === 'rtl' ? 'translateX(100%)' : 'translateX(-100%)'
                 : isOpening
-                ? "translateX(-100%)"
-                : "translateX(0)",
-              transition: isClosing
-                ? "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
-                : isOpening
-                ? undefined
-                : "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-              animation:
-                isOpening && !isClosing
-                  ? "slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards"
-                  : undefined,
+                ? direction === 'rtl' ? 'translateX(100%)' : 'translateX(-100%)'
+                : 'translateX(0)',
+              transition: isClosing || !isOpening
+                ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                : undefined,
+              animation: isOpening && !isClosing
+                ? direction === 'rtl' ? 'slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards' : 'slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards'
+                : undefined,
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -838,7 +849,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onToggle }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="absolute right-4 top-4 h-8 w-8 p-0 text-white hover:text-white/80 hover:bg-white/10 transition-opacity duration-200"
+              className={`absolute ${direction === 'rtl' ? 'left-4' : 'right-4'} top-4 h-8 w-8 p-0 text-white hover:text-white/80 hover:bg-white/10 transition-opacity duration-200`}
               onClick={() => {
                 handleClose();
               }}
@@ -854,6 +865,15 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onToggle }) => {
         @keyframes slideInFromLeft {
           from {
             transform: translateX(-100%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes slideInFromRight {
+          from {
+            transform: translateX(100%);
           }
           to {
             transform: translateX(0);
