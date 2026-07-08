@@ -84,7 +84,7 @@ export default function DealCustomization() {
           const optionalIngredients: CartOptionalIngredient[] =
             response.data.dealOptionalIngredients?.map((doi: any) => ({
               id: doi.optionalIngredient.id,
-              name: doi.optionalIngredient.name,
+              name: getOptionalIngredientName(doi.optionalIngredient),
               isIncluded: false,
             })) || [];
 

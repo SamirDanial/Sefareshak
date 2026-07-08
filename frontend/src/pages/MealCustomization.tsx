@@ -57,6 +57,14 @@ export default function MealCustomization() {
     return getLocalizedDescription(addOn.description, addOn.descriptionFa, i18n.language);
   };
 
+  const getOptionalIngredientName = (ingredient: { name: string; nameFa?: string | null }): string => {
+    return getLocalizedName(ingredient.name, ingredient.nameFa, i18n.language);
+  };
+
+  const getOptionalIngredientDescription = (ingredient: { description: string | null; descriptionFa?: string | null }): string | null => {
+    return getLocalizedDescription(ingredient.description, ingredient.descriptionFa, i18n.language);
+  };
+
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedAddOns, setSelectedAddOns] = useState<AddOn[]>([]);
   
@@ -102,11 +110,12 @@ export default function MealCustomization() {
                 optionalIngredient: {
                   id: string;
                   name: string;
+                  nameFa?: string | null;
                   description: string | null;
                 };
               }) => ({
                 id: moi.optionalIngredient.id,
-                name: moi.optionalIngredient.name,
+                name: getLocalizedName(moi.optionalIngredient.name, moi.optionalIngredient.nameFa, i18n.language),
                 isIncluded: false, // Default to unselected
               })
             ) || [];
@@ -853,7 +862,9 @@ export default function MealCustomization() {
                   optionalIngredient: {
                     id: string;
                     name: string;
+                    nameFa?: string | null;
                     description: string | null;
+                    descriptionFa?: string | null;
                   };
                 }) => {
                   const ingredient = moi.optionalIngredient;
@@ -877,11 +888,11 @@ export default function MealCustomization() {
                         <div className="flex-1 min-w-0 flex items-center justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-sm text-foreground">
-                              {ingredient.name}
+                              {getOptionalIngredientName(ingredient)}
                             </h3>
-                            {ingredient.description && (
+                            {getOptionalIngredientDescription(ingredient) && (
                               <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                                {ingredient.description}
+                                {getOptionalIngredientDescription(ingredient)}
                               </p>
                             )}
                           </div>
@@ -993,7 +1004,9 @@ export default function MealCustomization() {
                   optionalIngredient: {
                     id: string;
                     name: string;
+                    nameFa?: string | null;
                     description: string | null;
+                    descriptionFa?: string | null;
                   };
                 }) => {
                   const ingredient = moi.optionalIngredient;
@@ -1017,11 +1030,11 @@ export default function MealCustomization() {
                         <div className="flex-1 min-w-0 flex items-center justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-sm text-foreground">
-                              {ingredient.name}
+                              {getOptionalIngredientName(ingredient)}
                             </h3>
-                            {ingredient.description && (
+                            {getOptionalIngredientDescription(ingredient) && (
                               <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                                {ingredient.description}
+                                {getOptionalIngredientDescription(ingredient)}
                               </p>
                             )}
                           </div>
