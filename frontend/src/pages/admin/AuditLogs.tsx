@@ -193,6 +193,10 @@ const prettyJson = (value: any) => {
   }
 };
 
+const getActionLabel = (action: string, t: any) => {
+  return t(`admin.auditLogs.actions.${action}`, { defaultValue: action });
+};
+
 const AuditLogsPage: React.FC = () => {
   const { t } = useTranslation();
   const { getToken, orgRole, userType } = useAuth();
@@ -323,7 +327,7 @@ const AuditLogsPage: React.FC = () => {
                   <SelectItem value="__all__">{t("common.all", { defaultValue: "All" })}</SelectItem>
                   {actionOptions.map((a) => (
                     <SelectItem key={a} value={a}>
-                      {a}
+                      {getActionLabel(a, t)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -414,7 +418,7 @@ const AuditLogsPage: React.FC = () => {
                         <div className="flex items-start justify-between gap-3">
                           <div className="space-y-1 min-w-0">
                             <div className="text-sm font-medium truncate" title={row.action}>
-                              {row.action}
+                              {getActionLabel(row.action, t)}
                             </div>
                             <div className="text-xs text-muted-foreground truncate" title={entityLabel}>
                               {entityLabel}
@@ -505,7 +509,7 @@ const AuditLogsPage: React.FC = () => {
                             {branchLabel}
                           </div>
                           <div className="col-span-2 min-w-0 text-sm font-medium truncate whitespace-nowrap" title={row.action}>
-                            {row.action}
+                            {getActionLabel(row.action, t)}
                           </div>
                           <div className="col-span-2 min-w-0 text-sm truncate whitespace-nowrap" title={entityLabel}>
                             {entityLabel}
@@ -574,7 +578,7 @@ const AuditLogsPage: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-muted-foreground">{t("admin.auditLogs.fields.action", { defaultValue: "Action" })}</div>
-                    <div className="font-medium">{selected.action}</div>
+                    <div className="font-medium">{getActionLabel(selected.action, t)}</div>
                   </div>
                 </div>
               </div>

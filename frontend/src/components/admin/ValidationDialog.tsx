@@ -219,6 +219,7 @@ const ValidationDialog: React.FC<ValidationDialogProps> = ({
                       <SelectItem value="GBP">
                         {t("admin.organizations.validation.gbp")}
                       </SelectItem>
+                      <SelectItem value="AFN">AFN</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

@@ -1230,6 +1230,24 @@
       },
       "errors": {
         "load": "Failed to load audit logs"
+      },
+      "actions": {
+        "MEAL_CREATE": "Create Meal",
+        "MEAL_UPDATE": "Update Meal",
+        "MEAL_DELETE": "Delete Meal",
+        "CATEGORY_CREATE": "Create Category",
+        "CATEGORY_UPDATE": "Update Category",
+        "CATEGORY_DELETE": "Delete Category",
+        "ADDON_CREATE": "Create Add-on",
+        "ADDON_UPDATE": "Update Add-on",
+        "ADDON_DELETE": "Delete Add-on",
+        "ORDER_CREATE": "Create Order",
+        "ORDER_UPDATE": "Update Order",
+        "SETTINGS_UPDATE": "Update Settings",
+        "BRANCH_UPDATE": "Update Branch",
+        "ORG_UPDATE": "Update Organization",
+        "HEROSECTION_UPDATE": "Update Hero Section",
+        "HEROSECTION_UPSERT": "Upsert Hero Section"
       }
     },
     "roleManagement": {
@@ -2719,6 +2737,34 @@
           "twitterUrlPlaceholder": "https://twitter.com/...",
           "websiteUrl": "Website URL",
           "websiteUrlPlaceholder": "https://your-site.com"
+        },
+        "seo": {
+          "title": "SEO Customization",
+          "description": "Customize how your organization appears in search results and link previews.",
+          "seoTitle": "SEO Title",
+          "seoTitleHint": "Shown in the browser tab and often used as the headline in Google and link previews.",
+          "seoTitlePlaceholder": "e.g. Downtown Branch - Order Online",
+          "seoDescription": "SEO Description",
+          "seoDescriptionHint": "Short summary used for search results and link previews (aim for 1–2 sentences).",
+          "seoDescriptionPlaceholder": "Describe your restaurant for search and link previews",
+          "ogImage": "Share Image (OG)",
+          "ogImageHint": "Image used when your link is shared (WhatsApp, Facebook, etc.). Recommended: 1200×630.",
+          "ogImageRemove": "Remove",
+          "uploadImage": "Upload",
+          "cancel": "Cancel",
+          "chooseImage": "Choose image"
+        },
+        "qrCode": {
+          "title": "Organization QR Code",
+          "description": "Generate a QR code link customers can scan to open your branded ordering experience.",
+          "selectOrganizationHint": "Select an organization to generate its QR code.",
+          "link": "Link",
+          "generating": "Generating QR code...",
+          "print": "Print poster",
+          "download": "Download PNG",
+          "note": "Tip: print on A4 and place near the entrance or tables.",
+          "posterSubtitle": "Scan to Order",
+          "posterHint": "Customers can scan this QR code to view your menu and place orders."
         }
       },
       "reservationSettings": {
@@ -3267,6 +3313,34 @@
         "twitterUrlPlaceholder": "https://twitter.com/yourpage",
         "websiteUrl": "Website URL",
         "websiteUrlPlaceholder": "https://yourwebsite.com"
+      },
+      "seo": {
+        "title": "SEO Customization",
+        "description": "Customize how your organization appears in search results and link previews.",
+        "seoTitle": "SEO Title",
+        "seoTitleHint": "Shown in the browser tab and often used as the headline in Google and link previews.",
+        "seoTitlePlaceholder": "e.g. Downtown Branch - Order Online",
+        "seoDescription": "SEO Description",
+        "seoDescriptionHint": "Short summary used for search results and link previews (aim for 1–2 sentences).",
+        "seoDescriptionPlaceholder": "Describe your restaurant for search and link previews",
+        "ogImage": "Share Image (OG)",
+        "ogImageHint": "Image used when your link is shared (WhatsApp, Facebook, etc.). Recommended: 1200×630.",
+        "ogImageRemove": "Remove",
+        "uploadImage": "Upload",
+        "cancel": "Cancel",
+        "chooseImage": "Choose image"
+      },
+      "qrCode": {
+        "title": "Organization QR Code",
+        "description": "Generate a QR code link customers can scan to open your branded ordering experience.",
+        "selectOrganizationHint": "Select an organization to generate its QR code.",
+        "link": "Link",
+        "generating": "Generating QR code...",
+        "print": "Print poster",
+        "download": "Download PNG",
+        "note": "Tip: print on A4 and place near the entrance or tables.",
+        "posterSubtitle": "Scan to Order",
+        "posterHint": "Customers can scan this QR code to view your menu and place orders."
       },
       "appStatus": {
         "title": "Application Status",

@@ -1978,6 +1978,7 @@ const BranchCreate: React.FC = () => {
                   <SelectItem value="GBP">GBP</SelectItem>
                   <SelectItem value="INR">INR</SelectItem>
                   <SelectItem value="AED">AED</SelectItem>
+                  <SelectItem value="AFN">AFN</SelectItem>
                 </SelectContent>
               </Select>
             </div>

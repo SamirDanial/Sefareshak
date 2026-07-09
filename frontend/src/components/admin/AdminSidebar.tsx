@@ -442,7 +442,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onToggle }) => {
                 iconPath: mdiCog, // cog
               },
               {
-                title: "Audit Logs",
+                titleKey: "admin.auditLogs.title",
                 href: "/admin/audit-logs",
                 iconPath: mdiClipboardTextClockOutline,
               },

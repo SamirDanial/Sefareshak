@@ -1230,6 +1230,24 @@
       },
       "errors": {
         "load": "بارگذاری گزارش‌های حسابرسی ناموفق بود"
+      },
+      "actions": {
+        "MEAL_CREATE": "ایجاد غذا",
+        "MEAL_UPDATE": "بروزرسانی غذا",
+        "MEAL_DELETE": "حذف غذا",
+        "CATEGORY_CREATE": "ایجاد دسته‌بندی",
+        "CATEGORY_UPDATE": "بروزرسانی دسته‌بندی",
+        "CATEGORY_DELETE": "حذف دسته‌بندی",
+        "ADDON_CREATE": "ایجاد افزودنی",
+        "ADDON_UPDATE": "بروزرسانی افزودنی",
+        "ADDON_DELETE": "حذف افزودنی",
+        "ORDER_CREATE": "ایجاد سفارش",
+        "ORDER_UPDATE": "بروزرسانی سفارش",
+        "SETTINGS_UPDATE": "بروزرسانی تنظیمات",
+        "BRANCH_UPDATE": "بروزرسانی شعبه",
+        "ORG_UPDATE": "بروزرسانی سازمان",
+        "HEROSECTION_UPDATE": "بروزرسانی بخش قهرمان",
+        "HEROSECTION_UPSERT": "ایجاد/بروزرسانی بخش قهرمان"
       }
     },
     "roleManagement": {
@@ -2719,6 +2737,34 @@
           "twitterUrlPlaceholder": "https://twitter.com/...",
           "websiteUrl": "آدرس وب‌سایت",
           "websiteUrlPlaceholder": "https://your-site.com"
+        },
+        "seo": {
+          "title": "سفارشی‌سازی سئو",
+          "description": "نحوه نمایش سازمان شما در نتایج جستجو و پیش‌نمایش لینک‌ها را سفارشی کنید.",
+          "seoTitle": "عنوان سئو",
+          "seoTitleHint": "در تب مرورگر نمایش داده می‌شود و اغلب به عنوان عنوان در گوگل و پیش‌نمایش لینک‌ها استفاده می‌شود.",
+          "seoTitlePlaceholder": "مثال: شعبه مرکزی - سفارش آنلاین",
+          "seoDescription": "توضیحات سئو",
+          "seoDescriptionHint": "خلاصه کوتاه برای نتایج جستجو و پیش‌نمایش لینک‌ها (1 تا 2 جمله).",
+          "seoDescriptionPlaceholder": "رستوران خود را برای جستجو و پیش‌نمایش لینک‌ها توصیف کنید",
+          "ogImage": "تصویر اشتراک‌گذاری (OG)",
+          "ogImageHint": "تصویری که هنگام اشتراک‌گذاری لینک شما استفاده می‌شود (واتساپ، فیسبوک، و غیره). پیشنهادی: 1200×630.",
+          "ogImageRemove": "حذف",
+          "uploadImage": "آپلود",
+          "cancel": "لغو",
+          "chooseImage": "انتخاب تصویر"
+        },
+        "qrCode": {
+          "title": "کد QR سازمان",
+          "description": "یک کد QR ایجاد کنید که مشتریان می‌توانند آن را اسکن کرده و تجربه سفارشی شما را باز کنند.",
+          "selectOrganizationHint": "برای تولید کد QR، یک سازمان انتخاب کنید.",
+          "link": "لینک",
+          "generating": "در حال تولید کد QR...",
+          "print": "چاپ پوستر",
+          "download": "دانلود PNG",
+          "note": "نکته: روی A4 چاپ کرده و نزدیک ورودی یا میزها قرار دهید.",
+          "posterSubtitle": "اسکن برای سفارش",
+          "posterHint": "مشتریان می‌توانند این کد QR را اسکن کرده و منوی شما را مشاهده و سفارش دهند."
         }
       },
       "reservationSettings": {
@@ -3267,6 +3313,34 @@
         "twitterUrlPlaceholder": "https://twitter.com/yourpage",
         "websiteUrl": "آدرس وب‌سایت",
         "websiteUrlPlaceholder": "https://yourwebsite.com"
+      },
+      "seo": {
+        "title": "سفارشی‌سازی سئو",
+        "description": "نحوه نمایش سازمان شما در نتایج جستجو و پیش‌نمایش لینک‌ها را سفارشی کنید.",
+        "seoTitle": "عنوان سئو",
+        "seoTitleHint": "در تب مرورگر نمایش داده می‌شود و اغلب به عنوان عنوان در گوگل و پیش‌نمایش لینک‌ها استفاده می‌شود.",
+        "seoTitlePlaceholder": "مثال: شعبه مرکزی - سفارش آنلاین",
+        "seoDescription": "توضیحات سئو",
+        "seoDescriptionHint": "خلاصه کوتاه برای نتایج جستجو و پیش‌نمایش لینک‌ها (1 تا 2 جمله).",
+        "seoDescriptionPlaceholder": "رستوران خود را برای جستجو و پیش‌نمایش لینک‌ها توصیف کنید",
+        "ogImage": "تصویر اشتراک‌گذاری (OG)",
+        "ogImageHint": "تصویری که هنگام اشتراک‌گذاری لینک شما استفاده می‌شود (واتساپ، فیسبوک، و غیره). پیشنهادی: 1200×630.",
+        "ogImageRemove": "حذف",
+        "uploadImage": "آپلود",
+        "cancel": "لغو",
+        "chooseImage": "انتخاب تصویر"
+      },
+      "qrCode": {
+        "title": "کد QR سازمان",
+        "description": "یک کد QR ایجاد کنید که مشتریان می‌توانند آن را اسکن کرده و تجربه سفارشی شما را باز کنند.",
+        "selectOrganizationHint": "برای تولید کد QR، یک سازمان انتخاب کنید.",
+        "link": "لینک",
+        "generating": "در حال تولید کد QR...",
+        "print": "چاپ پوستر",
+        "download": "دانلود PNG",
+        "note": "نکته: روی A4 چاپ کرده و نزدیک ورودی یا میزها قرار دهید.",
+        "posterSubtitle": "اسکن برای سفارش",
+        "posterHint": "مشتریان می‌توانند این کد QR را اسکن کرده و منوی شما را مشاهده و سفارش دهند."
       },
       "appStatus": {
         "title": "وضعیت برنامه",

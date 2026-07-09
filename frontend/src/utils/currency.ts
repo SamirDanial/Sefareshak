@@ -11,6 +11,7 @@ const currencySymbols: Record<string, string> = {
   GBP: "£",
   INR: "₹",
   AED: "د.إ",
+  AFN: "؋",
 };
 
 /**
@@ -44,7 +45,7 @@ export const formatPrice = (
  */
 export const getCurrency = (currency?: string): string => {
   if (!currency) return "USD";
-  const validCurrencies = ["USD", "EUR", "GBP", "INR", "AED"];
+  const validCurrencies = ["USD", "EUR", "GBP", "INR", "AED", "AFN"];
   return validCurrencies.includes(currency.toUpperCase())
     ? currency.toUpperCase()
     : "USD";
