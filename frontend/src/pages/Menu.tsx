@@ -349,7 +349,7 @@ export default function Menu() {
     }
   }, [fromFavorites]);
 
-  const { categories: allCategories, loading: categoriesLoading } = useCategories(true, apiBranchId);
+  const { categories: allCategories, loading: categoriesLoading } = useCategories(false, apiBranchId);
   const { meals: allMeals, loading: mealsLoading, error: mealsError } = useMeals({
     branchId: apiBranchId,
   });

@@ -256,7 +256,7 @@ export default function Home() {
     categories: allCategories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = useCategories(false, branch?.id); // Fetch all categories for home page, filtered by branch
+  } = useCategories(true, branch?.id); // Fetch featured categories for home page, filtered by branch
 
   const {
     categories: allDealCategories,
