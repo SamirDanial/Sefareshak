@@ -202,6 +202,7 @@
     "branchSwitcher": {
       "urgentlyClosed": "Branch Temporarily Closed"
     },
+    "selected": "Selected",
     "servingHours": {
       "title": "Serving Hours",
       "today": "Today",
@@ -1293,7 +1294,8 @@
       "noStaffFound": "No staff users found."
     },
     "myStaff": {
-      "title": "My Staff"
+      "title": "My Staff",
+      "searchPlaceholder": "Search by name or email"
     },
     "deliverableQuantities": {
       "title": "Deliverable Quantities"
@@ -3285,6 +3287,10 @@
         "takeawayServiceFee": "Takeaway service fee",
         "takeawayServiceFeeDescription": "Additional fee for takeaway orders"
       },
+      "deliveryPaymentSettings": {
+        "title": "Delivery Payment Settings",
+        "description": "Configure payment methods available for delivery orders"
+      },
       "paymentSettings": {
         "title": "Payment Settings",
         "description": "Configure accepted payment methods",
@@ -3347,6 +3353,11 @@
         "description": "Control what visitors see when the storefront is paused or not yet live.",
         "label": "Current status",
         "previewLabel": "Visitor preview"
+      },
+      "mainBranch": {
+        "title": "Main Branch",
+        "description": "Select the main branch to display as the default option in the branch switcher",
+        "label": "Main Branch"
       },
       "servingHours": {
         "title": "Delivery Serving Hours",

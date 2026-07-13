@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import Icon from "@mdi/react";
-import { mdiArrowLeft, mdiContentSave, mdiAccount, mdiAlertCircle, mdiFileDocument, mdiChevronRight, mdiCalendar, mdiHeart, mdiStore } from "@mdi/js";
+import { mdiArrowLeft, mdiArrowRight, mdiContentSave, mdiAccount, mdiAlertCircle, mdiFileDocument, mdiChevronRight, mdiCalendar, mdiHeart, mdiStore } from "@mdi/js";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { profileSchema } from "@/validation/profileSchema";
@@ -45,7 +45,7 @@ export default function Profile() {
   const { getToken } = useClerkAuth();
   const apiService = ApiService.getInstance();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { branch } = useBranch();
   const { settings } = useSettings();
   const appStatus = (settings?.appStatus || "LIVE") as AppStatus;
@@ -299,7 +299,7 @@ export default function Profile() {
           to="/"
           className="flex items-center gap-2 text-pink-500 hover:text-pink-400 transition-colors"
         >
-          <Icon path={mdiArrowLeft} size={0.83} className="text-pink-500" />
+          <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.83} className="text-pink-500" />
           <span className="text-sm font-medium">{t("common.back")}</span>
         </Link>
         <h1 className="text-lg font-semibold text-white">{t("profile.title")}</h1>

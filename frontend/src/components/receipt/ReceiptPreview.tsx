@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Icon from "@mdi/react";
 import { mdiDownload, mdiPrinter } from "@mdi/js";
 import { formatPrice } from "@/utils/currency";
+import { getLocalizedName } from "@/utils/localization";
 
 type Props = {
   order: any;
@@ -24,7 +25,7 @@ export const ReceiptPreview: React.FC<Props> = ({
   showPrint = false,
   onClose,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const receiptCurrency = String(order?.currency || settings?.currency || "USD");
 
@@ -45,13 +46,15 @@ export const ReceiptPreview: React.FC<Props> = ({
 
   const headerName = useMemo(() => {
     const orgNameFromOrder = String((order as any)?.branch?.organization?.name || "").trim();
+    const orgNameFa = (order as any)?.branch?.organization?.nameFa as string | null | undefined;
     const settingsBusinessName = String(settings?.businessName || "").trim() || orgNameFromOrder;
+    const localizedBusinessName = getLocalizedName(settingsBusinessName, orgNameFa, i18n.language);
     const branchName = String(branchDetails?.name || order?.branch?.name || "").trim();
-    if (settingsBusinessName && branchName && settingsBusinessName !== branchName) {
-      return `${settingsBusinessName} - ${branchName}`;
+    if (localizedBusinessName && branchName && localizedBusinessName !== branchName) {
+      return `${localizedBusinessName} - ${branchName}`;
     }
-    return branchName || settingsBusinessName || "MISSED";
-  }, [branchDetails?.name, order?.branch?.name, settings?.businessName]);
+    return branchName || localizedBusinessName || "MISSED";
+  }, [branchDetails?.name, order?.branch?.name, settings?.businessName, order?.branch?.organization?.nameFa, i18n.language]);
 
   const businessPhone = String(settings?.businessPhone || "").trim();
 

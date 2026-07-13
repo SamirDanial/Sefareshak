@@ -6096,6 +6096,7 @@ class AdminRoutes {
         select: {
           id: true,
           name: true,
+          nameFa: true,
           slug: true,
           organizationNumber: true,
           isActive: true,

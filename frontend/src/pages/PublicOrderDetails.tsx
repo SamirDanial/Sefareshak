@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import ApiService from "@/services/apiService";
 import { getOptimizedImageUrl, isExternalImage } from "@/utils/imageUtils";
+import { getLocalizedName } from "@/utils/localization";
 
 type PublicOrderDetailsResponse = {
   success: boolean;
@@ -12,7 +13,7 @@ type PublicOrderDetailsResponse = {
 };
 
 const PublicOrderDetails: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { orderId } = useParams();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token") || "";
@@ -29,9 +30,10 @@ const PublicOrderDetails: React.FC = () => {
       | null
       | undefined;
     const orgName = (order as any)?.branch?.organization?.name as string | null | undefined;
+    const orgNameFa = (order as any)?.branch?.organization?.nameFa as string | null | undefined;
     const raw = String(businessName ?? orgName ?? "").trim();
-    return raw || "";
-  }, [order]);
+    return getLocalizedName(raw, orgNameFa, i18n.language);
+  }, [order, i18n.language]);
 
   const organizationLogo = useMemo(() => {
     const logo = (order as any)?.branch?.organization?.settings?.businessLogo as

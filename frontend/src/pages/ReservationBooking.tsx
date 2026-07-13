@@ -39,7 +39,7 @@ import AppStatusNotice from "@/components/AppStatusNotice";
 import type { AppStatus } from "@/services/settingsService";
 
 const ReservationBooking: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { getToken, user } = useAuth();
   const { branch } = useBranch();
@@ -870,7 +870,7 @@ const ReservationBooking: React.FC = () => {
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-pink-500 hover:text-pink-400 transition-colors"
         >
-          <Icon path={mdiArrowLeft} size={0.83} className="text-pink-500" />
+          <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.83} className="text-pink-500" />
           <span className="text-sm font-medium">{t("reservations.booking.back")}</span>
         </button>
         <h1 className="text-lg font-semibold text-white">{t("reservations.booking.title")}</h1>

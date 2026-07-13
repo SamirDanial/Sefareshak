@@ -279,7 +279,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/scope" replace />,
+        element: <Navigate to="/home" replace />,
       },
       {
         path: "home",

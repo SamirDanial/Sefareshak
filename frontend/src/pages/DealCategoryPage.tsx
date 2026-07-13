@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Icon from "@mdi/react";
-import { mdiArrowLeft, mdiRefresh, mdiTag } from "@mdi/js";
+import { mdiArrowLeft, mdiArrowRight, mdiRefresh, mdiTag } from "@mdi/js";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDealCategory } from "@/hooks/useApi";
@@ -60,7 +60,7 @@ export default function DealCategoryPage() {
             onClick={() => navigate("/home")}
             className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 p-2 shadow-lg shadow-rose-500/30"
           >
-            <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
+            <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.67} className="text-white" />
           </button>
           <div className="flex items-center gap-2">
             <Icon path={mdiRefresh} size={0.67} className="animate-spin text-pink-500" />
@@ -100,7 +100,7 @@ export default function DealCategoryPage() {
           onClick={() => navigate("/home")}
           className="rounded-full bg-gradient-to-r from-pink-500 to-rose-500 p-2 shadow-lg shadow-rose-500/30 hover:scale-105 transition-transform"
         >
-          <Icon path={mdiArrowLeft} size={0.67} className="text-white" />
+          <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.67} className="text-white" />
         </button>
         <h1 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
           {getLocalizedName(category.name, category.nameFa, i18n.language)}

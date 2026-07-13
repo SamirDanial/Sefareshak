@@ -314,13 +314,31 @@ function App() {
   const fallbackOrgName = (() => {
     if (!customerOrganizationSlug) return "";
 
-    const candidate =
+    const businessNameCandidate =
       ((branches || []).find((b: any) => (b as any)?.organization?.settings?.businessName) as any)
         ?.organization?.settings?.businessName ||
+      "";
+    const nameCandidate =
       ((branches || []).find((b: any) => (b as any)?.organization?.name) as any)?.organization?.name ||
       "";
-    const trimmed = typeof candidate === "string" ? candidate.trim() : "";
-    if (trimmed) return trimmed;
+    const nameFaCandidate =
+      ((branches || []).find((b: any) => (b as any)?.organization?.nameFa) as any)?.organization?.nameFa ||
+      "";
+    
+    const trimmedBusiness = typeof businessNameCandidate === "string" ? businessNameCandidate.trim() : "";
+    const trimmedName = typeof nameCandidate === "string" ? nameCandidate.trim() : "";
+    const trimmedNameFa = typeof nameFaCandidate === "string" ? nameFaCandidate.trim() : "";
+    
+    // Combine English and Persian names if both exist
+    if (trimmedBusiness && trimmedNameFa && trimmedBusiness !== trimmedNameFa) {
+      return `${trimmedBusiness} / ${trimmedNameFa}`;
+    }
+    if (trimmedName && trimmedNameFa && trimmedName !== trimmedNameFa) {
+      return `${trimmedName} / ${trimmedNameFa}`;
+    }
+    if (trimmedBusiness) return trimmedBusiness;
+    if (trimmedName) return trimmedName;
+    if (trimmedNameFa) return trimmedNameFa;
 
     // Last resort: prettify slug
     const slug = String(customerOrganizationSlug || "").trim();
@@ -334,8 +352,17 @@ function App() {
   })();
 
   const headerTitleParts = (() => {
-    const raw = (businessName && businessName.trim()) || "";
+    const businessNameRaw = (selectedBranch?.organization?.settings?.businessName || "").trim();
+    const orgNameRaw = (selectedBranch?.organization?.name || "").trim();
+    const orgNameFa = (selectedBranch?.organization?.nameFa as string | null | undefined) || "";
+    const raw = businessNameRaw || orgNameRaw;
     const orgLabelRaw = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "";
+    
+    // Combine English and Persian names if both exist
+    const combinedOrgLabel = orgNameFa && orgLabelRaw && orgLabelRaw !== orgNameFa
+      ? `${orgLabelRaw} / ${orgNameFa}`
+      : orgLabelRaw || orgNameFa;
+    
     const branchLabelRaw = (selectedBranch?.name || "").trim();
 
     // Truncate to 7 chars + "..." if longer than 7 chars (only on mobile)
@@ -345,7 +372,7 @@ function App() {
       return s.slice(0, 7) + "...";
     };
 
-    const orgLabel = isMobile ? truncate7(orgLabelRaw) : orgLabelRaw;
+    const orgLabel = isMobile ? truncate7(combinedOrgLabel) : combinedOrgLabel;
     const branchLabel = isMobile ? truncate7(branchLabelRaw) : branchLabelRaw;
 
     if (orgLabel && branchLabel) {

@@ -202,6 +202,7 @@
     "branchSwitcher": {
       "urgentlyClosed": "این شعبه موقتاً بسته است"
     },
+    "selected": "انتخاب شده",
     "servingHours": {
       "title": "ساعات کاری",
       "today": "امروز",
@@ -1293,7 +1294,8 @@
       "noStaffFound": "هیچ کارمندی یافت نشد."
     },
     "myStaff": {
-      "title": "کارکنان من"
+      "title": "کارکنان من",
+      "searchPlaceholder": "جستجو بر اساس نام یا ایمیل"
     },
     "deliverableQuantities": {
       "title": "مقادیر قابل تحویل"
@@ -3285,6 +3287,10 @@
         "takeawayServiceFee": "هزینه خدمات بیرون‌بر",
         "takeawayServiceFeeDescription": "هزینه اضافی برای سفارش‌های بیرون‌بر"
       },
+      "deliveryPaymentSettings": {
+        "title": "تنظیمات پرداخت تحویل",
+        "description": "روش‌های پرداخت موجود برای سفارش‌های تحویل را پیکربندی کنید"
+      },
       "paymentSettings": {
         "title": "تنظیمات پرداخت",
         "description": "روش‌های پرداخت قابل قبول را پیکربندی کنید",
@@ -3347,6 +3353,11 @@
         "description": "کنترل کنید که هنگام توقف یا فعال نبودن فروشگاه، بازدیدکنندگان چه چیزی را مشاهده کنند.",
         "label": "وضعیت فعلی",
         "previewLabel": "پیش‌نمایش برای بازدیدکنندگان"
+      },
+      "mainBranch": {
+        "title": "شعبه اصلی",
+        "description": "شعبه اصلی را انتخاب کنید تا به عنوان گزینه پیش‌فرض در تغییردهنده شعبه نمایش داده شود",
+        "label": "شعبه اصلی"
       },
       "servingHours": {
         "title": "ساعات ارائه خدمات تحویل",

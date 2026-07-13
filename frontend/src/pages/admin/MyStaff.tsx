@@ -12,11 +12,13 @@ import {
 import Icon from "@mdi/react";
 import { mdiAccountGroup, mdiMagnify, mdiRefresh } from "@mdi/js";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 import branchService, { type Branch } from "@/services/branchService";
 import { staffService, type StaffUser } from "@/services/staffService";
 
 const MyStaff: React.FC = () => {
   const { getToken } = useAuth();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(true);
   const [loadingBranches, setLoadingBranches] = useState(false);
@@ -165,7 +167,7 @@ const MyStaff: React.FC = () => {
                 <Input
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by name or email"
+                  placeholder={t("admin.myStaff.searchPlaceholder", { defaultValue: "Search by name or email" })}
                   className="pl-10"
                 />
               </div>

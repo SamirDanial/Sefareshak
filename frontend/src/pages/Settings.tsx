@@ -1891,7 +1891,7 @@ const SettingsPage: React.FC = () => {
 
         <CollapsibleCard
           icon={<Icon path={mdiWeb} size={0.83} className="text-pink-500" />}
-          title={t("admin.settings.qrCode.title", { defaultValue: "Organization QR Code" })}
+          title={t("admin.settings.qrCode.title")}
           description={t("admin.settings.qrCode.description", { defaultValue: "Generate a QR code link customers can scan to open your branded ordering experience." })}
         >
           <div className="space-y-4">
@@ -1915,7 +1915,7 @@ const SettingsPage: React.FC = () => {
                   {qrDataUrl ? (
                     <img
                       src={qrDataUrl}
-                      alt="Organization QR"
+                      alt={t("admin.settings.qrCode.title")}
                       className="h-64 w-64 rounded-xl border bg-white p-3"
                     />
                   ) : (
@@ -3227,8 +3227,8 @@ const SettingsPage: React.FC = () => {
         {/* Delivery Payment Settings */}
         <CollapsibleCard
           icon={<Icon path={mdiCreditCard} size={0.83} className="text-pink-500" />}
-          title={t("admin.settings.deliveryPaymentSettings.title", { defaultValue: "Delivery Payment Settings" })}
-          description={t("admin.settings.deliveryPaymentSettings.description", { defaultValue: "Configure payment methods available for delivery orders" })}
+          title={t("admin.settings.deliveryPaymentSettings.title")}
+          description={t("admin.settings.deliveryPaymentSettings.description")}
         >
           <div className="space-y-4">
             <div className="space-y-4">
@@ -3490,13 +3490,13 @@ const SettingsPage: React.FC = () => {
         {/* Main Branch Configuration */}
         <CollapsibleCard
           icon={<Icon path={mdiOfficeBuilding} size={0.83} className="text-pink-500" />}
-          title="Main Branch"
-          description="Select the main branch to display as the default option in the branch switcher"
+          title={t("admin.settings.mainBranch.title")}
+          description={t("admin.settings.mainBranch.description")}
         >
           <div className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="mainBranchId">
-                Main Branch
+                {t("admin.settings.mainBranch.label")}
               </Label>
               {loadingBranches ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">

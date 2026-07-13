@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import Icon from "@mdi/react";
 import { mdiCheck, mdiChevronDown } from "@mdi/js";
 import type { Organization } from "@/services/branchService";
+import { useTranslation } from "react-i18next";
+import { getLocalizedName } from "@/utils/localization";
 
 type Props = {
   organizations: Organization[];
@@ -22,6 +24,7 @@ const OrganizationSearchSelect: React.FC<Props> = ({
   placeholder = "Select organization",
   disabled,
 }) => {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -55,7 +58,7 @@ const OrganizationSearchSelect: React.FC<Props> = ({
           )}
         >
           <span className={cn("truncate", !selected && "text-muted-foreground")}>
-            {selected?.name || placeholder}
+            {getLocalizedName(selected?.name, selected?.nameFa, i18n.language) || placeholder}
           </span>
           <Icon path={mdiChevronDown} size={0.67} className="opacity-60" />
         </Button>
@@ -64,7 +67,7 @@ const OrganizationSearchSelect: React.FC<Props> = ({
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search..."
+          placeholder={t("common.search", { defaultValue: "Search..." })}
           className="bg-transparent text-foreground border-border"
           autoFocus
         />
@@ -91,7 +94,7 @@ const OrganizationSearchSelect: React.FC<Props> = ({
                   <span className="w-4 h-4 flex items-center justify-center">
                     {isSelected && <Icon path={mdiCheck} size={0.67} />}
                   </span>
-                  <span className="truncate">{org.name}</span>
+                  <span className="truncate">{getLocalizedName(org.name, org.nameFa, i18n.language)}</span>
                 </button>
               );
             })

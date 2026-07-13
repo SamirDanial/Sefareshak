@@ -33,6 +33,7 @@ export class BranchController {
         select: {
           id: true,
           name: true,
+          nameFa: true,
           slug: true,
           organizationNumber: true,
           isActive: true,
@@ -241,6 +242,8 @@ export class BranchController {
           organization: {
             select: {
               id: true,
+              name: true,
+              nameFa: true,
               maxActiveBranches: true,
               freeVersion: true,
               reservationsAllowed: true,
@@ -407,6 +410,10 @@ export class BranchController {
         data.name = body.name.trim();
       }
 
+      if (body.nameFa !== undefined) {
+        data.nameFa = body.nameFa || null;
+      }
+
       if (body.isActive !== undefined) {
         data.isActive = Boolean(body.isActive);
       }
@@ -481,6 +488,8 @@ export class BranchController {
           data,
           select: {
             id: true,
+            name: true,
+            nameFa: true,
             isActive: true,
             maxActiveBranches: true,
             freeVersion: true,
@@ -2008,6 +2017,7 @@ export class BranchController {
             select: {
               id: true,
               name: true,
+              nameFa: true,
               slug: true,
               isActive: true,
               isValidated: true,
@@ -2531,6 +2541,7 @@ export class BranchController {
         select: {
           id: true,
           name: true,
+          nameFa: true,
           slug: true,
           organizationNumber: true,
           isActive: true,
@@ -2584,6 +2595,7 @@ export class BranchController {
 
       const createData: any = {
         name: name.trim(),
+        nameFa: body.nameFa || null,
         slug: finalSlug,
         isActive: true,
       };

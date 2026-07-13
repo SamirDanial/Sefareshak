@@ -27,6 +27,7 @@ import { usePermissions } from "@/contexts/PermissionContext";
 type BranchForm = {
   // basic
   name: string;
+  nameFa?: string;
   code?: string;
   isActive?: boolean;
   serviceType?: "RESTAURANT" | "MEAT_SHOP" | "BAKERY" | "FOOD_TRUCK" | null;
@@ -255,7 +256,7 @@ const defaultForm: BranchForm = {
 const BranchCreate: React.FC = () => {
   const { getToken } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { rbacUser, isSuperAdmin } = usePermissions();
   const { id } = useParams<{ id: string }>();
   const isEditMode = !!id;
@@ -1368,6 +1369,16 @@ const BranchCreate: React.FC = () => {
                 placeholder={t("admin.branchManagement.create.businessInformation.namePlaceholder")}
               />
             </div>
+            {i18n.language === "da" && (
+              <div className="space-y-2">
+                <Label>{t("admin.branchManagement.create.businessInformation.nameFa", { defaultValue: "Name" })}</Label>
+                <Input
+                  value={form.nameFa}
+                  onChange={(e) => handleChange("nameFa", e.target.value)}
+                  placeholder={t("admin.branchManagement.create.businessInformation.nameFaPlaceholder", { defaultValue: "نام" })}
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label>{t("admin.branchManagement.create.businessInformation.code")}</Label>
               <Input

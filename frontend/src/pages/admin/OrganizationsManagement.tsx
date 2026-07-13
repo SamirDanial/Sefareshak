@@ -55,6 +55,7 @@ const OrganizationsManagement: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeOrg, setActiveOrg] = useState<Organization | null>(null);
   const [name, setName] = useState("");
+  const [nameFa, setNameFa] = useState("");
   const [maxActiveBranches, setMaxActiveBranches] = useState<string>("");
   const [reservationsAllowed, setReservationsAllowed] = useState<boolean>(true);
   const [onlinePaymentsAllowed, setOnlinePaymentsAllowed] = useState<boolean>(true);
@@ -302,6 +303,7 @@ const OrganizationsManagement: React.FC = () => {
   const openCreate = () => {
     setActiveOrg(null);
     setName("");
+    setNameFa("");
     setMaxActiveBranches("");
     setFreeVersion(false);
     setReservationsAllowed(true);
@@ -314,6 +316,7 @@ const OrganizationsManagement: React.FC = () => {
   const openEdit = (org: Organization) => {
     setActiveOrg(org);
     setName(org.name || "");
+    setNameFa(org.nameFa || "");
     setMaxActiveBranches(
       org.freeVersion === true 
         ? "1"
@@ -343,6 +346,9 @@ const OrganizationsManagement: React.FC = () => {
     try {
       if (activeOrg) {
         const payload: any = { name: trimmed };
+        if (nameFa && nameFa.trim()) {
+          payload.nameFa = nameFa.trim();
+        }
         if (isSuperAdmin) {
           const raw = maxActiveBranches.trim();
           payload.maxActiveBranches = raw.length === 0 ? null : Number(raw);
@@ -358,6 +364,9 @@ const OrganizationsManagement: React.FC = () => {
         toast.success(t("admin.organizations.updated", { defaultValue: "Organization updated" }));
       } else {
         const payload: any = { name: trimmed };
+        if (nameFa && nameFa.trim()) {
+          payload.nameFa = nameFa.trim();
+        }
         if (isSuperAdmin) {
           const raw = maxActiveBranches.trim();
           payload.maxActiveBranches = raw.length === 0 ? null : Number(raw);
@@ -375,6 +384,7 @@ const OrganizationsManagement: React.FC = () => {
       setDialogOpen(false);
       setActiveOrg(null);
       setName("");
+      setNameFa("");
       setMaxActiveBranches("");
       setFreeVersion(false);
       setReservationsAllowed(true);
@@ -429,7 +439,14 @@ const OrganizationsManagement: React.FC = () => {
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <div className="font-medium truncate">{org.name}</div>
+                  <div className="font-medium truncate">
+                    {org.name}
+                    {org.nameFa && (
+                      <span dir="rtl" lang="fa" className="ml-1 text-foreground/80">
+                        {org.nameFa}
+                      </span>
+                    )}
+                  </div>
                   <span
                     className={
                       "px-2 py-0.5 text-xs rounded-full " +
@@ -749,6 +766,7 @@ const OrganizationsManagement: React.FC = () => {
           if (!open) {
             setActiveOrg(null);
             setName("");
+            setNameFa("");
             setMaxActiveBranches("");
             setFreeVersion(false);
             setReservationsAllowed(true);
@@ -787,6 +805,20 @@ const OrganizationsManagement: React.FC = () => {
                 })}
                 required
                 className="bg-transparent text-foreground border-border"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">
+                {t("admin.organizations.nameFa", { defaultValue: "Persian" })}
+              </Label>
+              <Input
+                value={nameFa}
+                onChange={(e) => setNameFa(e.target.value)}
+                placeholder={t("admin.organizations.nameFaPlaceholder", {
+                  defaultValue: "نام",
+                })}
+                className="bg-transparent text-foreground border-border"
+                dir="auto"
               />
             </div>
 

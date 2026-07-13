@@ -94,7 +94,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
               deliveryFee: 3.99,
               enableMinimumOrder: false,
               minimumOrderAmount: 15.0,
-              currency: "USD",
+              currency: "AFN",
               taxInclusive: false,
               enableFreeDelivery: false,
               freeDeliveryThreshold: 50.0,

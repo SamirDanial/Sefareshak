@@ -14,6 +14,7 @@ import { mdiStore, mdiLoading, mdiLock, mdiAlert } from "@mdi/js";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { getOptimizedImageUrl } from "@/utils/imageUtils";
+import { getLocalizedName } from "@/utils/localization";
 import { ServingHoursService } from "@/services/servingHoursService";
 import { calculateDistance } from "@/utils/distanceCalculator";
 import branchClickService from "@/services/branchClickService";
@@ -39,7 +40,7 @@ export function BranchSwitcher({
 }) {
   const { branch, visibleBranches, loadingBranches, setBranch, clearReservationLock, customerServiceType, customerLocation } = useBranch();
   const { settings } = useSettings();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { userId } = useAuth();
   const mainBranchId = settings?.mainBranchId;
   const [isModifying, setIsModifying] = useState(false);
@@ -578,7 +579,7 @@ export function BranchSwitcher({
 
                 <div className="p-3">
                   <div className="text-white font-semibold leading-tight truncate">
-                    {b.name || `Branch ${b.id.slice(0, 8)}`}
+                    {getLocalizedName(b.name, (b as any).nameFa, i18n.language) || `Branch ${b.id.slice(0, 8)}`}
                   </div>
                   <div className="text-xs text-gray-400 mt-1 line-clamp-2">
                     {[b.city, b.state, b.country].filter(Boolean).join(", ") ||
@@ -666,7 +667,7 @@ export function BranchSwitcher({
                   value={selectedBranch.id}
                   className="bg-green-500/10 border-l-2 border-green-500 text-white hover:bg-green-500/20 focus:bg-green-500/20 focus:text-white font-semibold"
                 >
-                  {selectedBranch.name || `Branch ${selectedBranch.id.slice(0, 8)}`}
+                  {getLocalizedName(selectedBranch.name, (selectedBranch as any).nameFa, i18n.language) || `Branch ${selectedBranch.id.slice(0, 8)}`}
                 </SelectItem>
               )}
               {selectedBranch && otherBranches.length > 0 && (
@@ -678,7 +679,7 @@ export function BranchSwitcher({
                   value={b.id}
                   className="text-white hover:bg-[#2d2d2d] focus:bg-[#2d2d2d] focus:text-white"
                 >
-                  {b.name || `Branch ${b.id.slice(0, 8)}`}
+                  {getLocalizedName(b.name, (b as any).nameFa, i18n.language) || `Branch ${b.id.slice(0, 8)}`}
                 </SelectItem>
             ))}
           </SelectContent>

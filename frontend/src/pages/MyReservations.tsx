@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@mdi/react";
-import { mdiCalendar, mdiClock, mdiAccountGroup, mdiMapMarker, mdiArrowLeft, mdiEye, mdiCloseCircle, mdiCreditCard, mdiRefresh, mdiPencil, mdiOfficeBuilding, mdiTableFurniture, mdiChefHat } from "@mdi/js";
+import { mdiCalendar, mdiClock, mdiAccountGroup, mdiMapMarker, mdiArrowLeft, mdiArrowRight, mdiEye, mdiCloseCircle, mdiCreditCard, mdiRefresh, mdiPencil, mdiOfficeBuilding, mdiTableFurniture, mdiChefHat } from "@mdi/js";
 import {
   reservationService,
   type Reservation,
@@ -42,7 +42,7 @@ import {
 import { getOptimizedImageUrl, isExternalImage } from "@/utils/imageUtils";
 
 const MyReservations: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { getToken } = useAuth();
@@ -517,7 +517,7 @@ const MyReservations: React.FC = () => {
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-pink-500 hover:text-pink-400 transition-colors"
           >
-            <Icon path={mdiArrowLeft} size={0.83} className="text-pink-500" />
+            <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.83} className="text-pink-500" />
             <span className="text-sm font-medium">{t("reservations.myReservations.back")}</span>
           </button>
           <h1 className="text-lg font-semibold text-white whitespace-nowrap">{t("reservations.myReservations.title")}</h1>

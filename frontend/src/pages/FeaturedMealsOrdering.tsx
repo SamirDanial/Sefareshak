@@ -22,7 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Icon from "@mdi/react";
-import { mdiArrowLeft, mdiDragVertical, mdiRefresh, mdiStar } from "@mdi/js";
+import { mdiArrowLeft, mdiArrowRight, mdiDragVertical, mdiRefresh, mdiStar } from "@mdi/js";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getOptimizedImageUrl, isExternalImage } from "@/utils/imageUtils";
@@ -103,7 +103,7 @@ const SortableMealCard: React.FC<SortableMealCardProps> = ({ meal, index }) => {
 
 const FeaturedMealsOrdering: React.FC = () => {
   const { getToken } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { canAny } = usePermissions();
   const [featuredMeals, setFeaturedMeals] = useState<Meal[]>([]);
   const [order, setOrder] = useState<string[]>([]);
@@ -243,7 +243,7 @@ const FeaturedMealsOrdering: React.FC = () => {
             className="border-border text-foreground hover:bg-muted"
           >
             <Link to="/admin/menu" className="flex items-center">
-              <Icon path={mdiArrowLeft} size={0.67} className="mr-2" />
+              <Icon path={i18n.language === "da" ? mdiArrowRight : mdiArrowLeft} size={0.67} className="mr-2" />
               {t("common.back")}
             </Link>
           </Button>

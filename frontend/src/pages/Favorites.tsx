@@ -9,11 +9,12 @@ import { Button } from "@/components/ui/button";
 import Icon from "@mdi/react";
 import { mdiHeart, mdiStore, mdiArrowRight } from "@mdi/js";
 import { getOptimizedImageUrl } from "@/utils/imageUtils";
+import { getLocalizedName } from "@/utils/localization";
 import branchService from "@/services/branchService";
 
 export default function Favorites() {
   const { isSignedIn, getToken } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { setBranch, branch } = useBranch();
   const { clearCart } = useCartStore();
@@ -213,7 +214,11 @@ export default function Favorites() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {favoriteBranches.map((branchData) => {
           const isSelected = branch?.id && branchData.id === branch.id;
-          const organizationName = branchData?.organization?.name || branchData?.organization?.settings?.businessName;
+          const organizationName = getLocalizedName(
+    branchData?.organization?.name || branchData?.organization?.settings?.businessName,
+    branchData?.organization?.nameFa,
+    i18n.language
+  );
 
           return (
             <Card
