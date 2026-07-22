@@ -5,7 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import enTranslations from "./locales/en.json";
 import daTranslations from "./locales/da.json";
 
-const languageDirections: Record<string, "ltr" | "rtl"> = {
+export const languageDirections: Record<string, "ltr" | "rtl"> = {
   en: "ltr",
   da: "rtl",
 };

@@ -1,15 +1,15 @@
-import { StrictMode, lazy, Suspense } from "react";
+import { StrictMode, lazy, Suspense, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./i18n/config";
 import App from "./App.tsx";
-import { createBrowserRouter, Navigate, RouterProvider, useRouteError } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useNavigate, useRouteError } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { PermissionProvider, RequirePermission, RequireAnyPermission } from "./contexts/PermissionContext";
 import { RESOURCES, ACTIONS } from "./lib/permissions";
 import { SettingsProvider } from "./contexts/SettingsContext";
-import { BranchProvider } from "./contexts/BranchContext";
+import { BranchProvider, useBranch } from "./contexts/BranchContext";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import LoadingSpinner from "./components/LoadingSpinner.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
@@ -208,6 +208,15 @@ if (isProduction && isUsingDevKey && isValidClerkKey) {
 const isDevelopmentMode =
   clerkPublishableKey === "pk_test_your_publishable_key_here";
 
+function RootRedirect() {
+  const navigate = useNavigate();
+  const { customerLocation } = useBranch();
+  useEffect(() => {
+    navigate(customerLocation ? "/home" : "/scope", { replace: true });
+  }, [customerLocation, navigate]);
+  return null;
+}
+
 const ErrorPage = () => {
   const error = useRouteError() as any;
 
@@ -279,7 +288,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/home" replace />,
+        element: <RootRedirect />,
       },
       {
         path: "home",
